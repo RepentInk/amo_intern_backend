@@ -42,6 +42,6 @@ export class OrderItemController {
     orderItems: MockOrderItem[];
   } {
     const orderItems = this.orderItemService.getOrderItemsByItemId(item_id);
-    return { message: 'Order items retrieved successfully', orderItems };
+    return { message: `Item ${item_id} retrieved successfully`, orderItems };
   }
 }
