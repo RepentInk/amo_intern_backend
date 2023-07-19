@@ -41,4 +41,12 @@ export class CustomerService {
     });
     return this.getOneCustomer(id);
   }
+
+  //delete a customer by id
+  deleteCustomer(id: number) {
+    this.customers = this.customers.filter((customer) => {
+      return customer.id !== id;
+    });
+    return this.getCustomers();
+  }
 }
