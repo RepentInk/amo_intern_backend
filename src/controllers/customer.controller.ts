@@ -1,8 +1,21 @@
-import { Controller, NotFoundException, Query, Get, Param, Post, Body } from '@nestjs/common';
+import {
+  Controller,
+  NotFoundException,
+  Query,
+  Get,
+  Param,
+  Post,
+  Body,
+  Put,
+} from '@nestjs/common';
+import { Customer } from 'src/dto/customer.dto';
+import { CustomerService } from 'src/services/customer.service';
 
 @Controller('customers')
-export class CustomersController {
-  constructor(private readonly customerService: CustomersService) {}
+export class CustomerController {
+  constructor(private readonly customerService: CustomerService) {}
+
+  // GetCustomers with optional query
   @Get()
   getCustomers(@Query('name') name: string) {
     try {
@@ -12,15 +25,17 @@ export class CustomersController {
     }
   }
 
-  @Get('id')
-  getOneCustomer(@Param('id') id: number) {
+  //Get One Customer
+  @Get(':id')
+  getOneCustomer(@Param('id') id: string) {
     try {
-      return this.customerService.getOneCustomer(id);
+      return this.customerService.getOneCustomer(+id);
     } catch (error) {
       throw new NotFoundException(`${error}`);
     }
   }
 
+  // Create a Customer
   @Post()
   createCustomer(@Body() newCustomer: Customer) {
     try {
@@ -30,5 +45,13 @@ export class CustomersController {
     }
   }
 
-  
+  //Update Customer Info
+  @Put(':id')
+  updateCustomer(@Param('id') id: string, @Body() updateCustomer: Customer[]) {
+    try {
+      return this.customerService.updateCustomer(+id, updateCustomer);
+    } catch (error) {
+      throw new NotFoundException(`${error}`);
+    }
+  }
 }
