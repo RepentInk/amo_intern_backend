@@ -5,11 +5,13 @@ import { Role } from 'src/interfaces/role.interface';
 export class RoleService {
   private roles = [];
   getAllRoles(): Role[] {
-    return this.roles;
+    const allRoles = this.roles.filter((role) => role.deleted_at !== '');
+    return allRoles;
   }
 
   getRole(id: number): Role {
-    const role = this.roles.find((role) => role.id === id);
+    const allRoles = this.roles.filter((role) => role.id !== id);
+    const role = allRoles.find((role) => role.id === id);
     if (!role) {
       throw new Error('role not found');
     }
@@ -28,7 +30,6 @@ export class RoleService {
 
   updateRole(id: number, updateRole: CreateRoleDto) {
     const oldRole = this.roles.find((role) => role.id === id);
-    console.log(oldRole);
 
     if (!oldRole) {
       throw new Error('user not found');
@@ -41,7 +42,14 @@ export class RoleService {
 
   removeRole(id: number) {
     const roleToRemove = this.roles.find((role) => role.id === id);
-    this.roles = this.roles.filter((role) => role.id !== id);
+
+    if (!roleToRemove) {
+      throw new Error('user not found');
+    }
+    roleToRemove['deleted_at'] = Date.now();
+    this.roles = this.roles.map((role) =>
+      role.id === id ? { ...role, ...roleToRemove } : role,
+    );
     return roleToRemove;
   }
 }
