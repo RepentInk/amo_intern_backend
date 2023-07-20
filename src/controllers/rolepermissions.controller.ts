@@ -25,7 +25,6 @@ export class RolePermissionsController {
 
   @Get()
   getAllRolePermissions(): RolePermissions[] {
-    // return this.rolePermissionsService.getAllRolePermissions();
     return this.rolePermissionsService.getAllRolePermissions();
   }
 
