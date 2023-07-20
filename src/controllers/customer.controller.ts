@@ -8,8 +8,10 @@ import {
   Body,
   Put,
   Delete,
+  ParseIntPipe,
+  ValidationPipe,
 } from '@nestjs/common';
-import { Customer } from 'src/dto/customer.dto';
+import { CustomerDto } from 'src/dto/customer.dto';
 import { CustomerService } from 'src/services/customer.service';
 
 @Controller('customers')
@@ -28,9 +30,9 @@ export class CustomerController {
 
   //Get One Customer
   @Get(':id')
-  getOneCustomer(@Param('id') id: string) {
+  getOneCustomer(@Param('id', ParseIntPipe) id: number) {
     try {
-      return this.customerService.getOneCustomer(+id);
+      return this.customerService.getOneCustomer(id);
     } catch (error) {
       throw new NotFoundException(`${error}`);
     }
@@ -38,7 +40,7 @@ export class CustomerController {
 
   // Create a Customer
   @Post()
-  createCustomer(@Body() newCustomer: Customer) {
+  createCustomer(@Body(new ValidationPipe()) newCustomer: CustomerDto) {
     try {
       return this.customerService.createCustomer(newCustomer);
     } catch (error) {
@@ -48,9 +50,12 @@ export class CustomerController {
 
   //Update Customer Info
   @Put(':id')
-  updateCustomer(@Param('id') id: string, @Body() updateCustomer: Customer[]) {
+  updateCustomer(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(new ValidationPipe()) updateCustomer: CustomerDto[],
+  ) {
     try {
-      return this.customerService.updateCustomer(+id, updateCustomer);
+      return this.customerService.updateCustomer(id, updateCustomer);
     } catch (error) {
       throw new NotFoundException(`${error}`);
     }
@@ -58,9 +63,9 @@ export class CustomerController {
 
   //Delete a customer
   @Delete(':id')
-  deleteCustomer(@Param('id') id: string) {
+  deleteCustomer(@Param('id', ParseIntPipe) id: number) {
     try {
-      return this.customerService.deleteCustomer(+id);
+      return this.customerService.deleteCustomer(id);
     } catch (error) {
       throw new NotFoundException(`${error}`);
     }
