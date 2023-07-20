@@ -36,11 +36,11 @@ export class OrderController {
 
   @Put(':id')
   updateOrder(@Param('id') id: number, @Body() updateOrderDto: CreateOrderDto) {
-    return { id };
+    return this.orderService.updateOrder(id, updateOrderDto);
   }
 
   @Delete(':id')
   removeOrder(@Param('id') id: number) {
-    return { id };
+    return this.orderService.removeOrder(id);
   }
 }
