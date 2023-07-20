@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { OrderItemService } from './services/orderItems.service';
-import { OrderItemController } from './controllers/orderItems.controler';
+import { OrderItemController } from './controllers/orderItems.controller';
 
 @Module({
   providers: [OrderItemService],

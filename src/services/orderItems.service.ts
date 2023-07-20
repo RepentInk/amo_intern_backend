@@ -4,68 +4,90 @@ import { json } from 'node:stream/consumers';
 
 @Injectable()
 export class OrderItemService {
-  createOrderItem(
+  createOrderItems(
     order_id: number,
-    item_id: number,
-    quantity: number,
-    price: number,
-  ): MockOrderItem {
-    const id = mockOrderItems.length + 1;
+    orderItemsData: {
+      item_id: number;
+      quantity: number;
+      price: number;
+    }[],
+  ): MockOrderItem[] {
     const created_at = new Date();
     const updated_at = new Date();
 
-    const orderItem = new MockOrderItem(
-      id,
-      order_id,
-      item_id,
-      quantity,
-      price,
-      created_at,
-      updated_at,
-      null,
+    const createdOrderItems: MockOrderItem[] = orderItemsData.map(
+      (orderItemData, index) => {
+        const id = mockOrderItems.length + index + 1;
+
+        const orderItem = new MockOrderItem(
+          id,
+          order_id,
+          orderItemData.item_id,
+          orderItemData.quantity,
+          orderItemData.price,
+          created_at,
+          updated_at,
+          null,
+        );
+
+        return orderItem;
+      },
     );
 
-    mockOrderItems.push(orderItem);
+    mockOrderItems.push(...createdOrderItems);
 
-    return orderItem;
+    return createdOrderItems;
   }
 
-  getAllOrderItems(): MockOrderItem[] {
+  getItemsInAllOrders(): MockOrderItem[] {
     return mockOrderItems;
   }
 
-  getOrderItemsByOrderId(order_id: number): MockOrderItem[] {
-    return mockOrderItems.filter((item) => item.order_id === order_id);
+  getItemsInOneOrder(id: number): MockOrderItem | null {
+    return mockOrderItems.find((item) => item.id === id) || null;
   }
 
-  getOrderItemsByItemId(item_id: number): MockOrderItem[] {
-    return mockOrderItems.filter((item) => item.item_id === item_id);
+  editOrderItems(
+    order_id: number,
+    orderItemsData: {
+      id: number;
+      item_id?: number;
+      quantity?: number;
+      price?: number;
+    }[],
+  ): MockOrderItem[] {
+    const updated_at = new Date();
+
+    const updatedOrderItems: MockOrderItem[] = orderItemsData.map(
+      (orderItemData) => {
+        const orderItem = mockOrderItems.find(
+          (item) => item.id === orderItemData.id,
+        );
+        if (orderItem) {
+          orderItem.item_id = orderItemData.item_id ?? orderItem.item_id;
+          orderItem.quantity = orderItemData.quantity ?? orderItem.quantity;
+          orderItem.price = orderItemData.price ?? orderItem.price;
+          orderItem.updated_at = updated_at;
+        }
+        return orderItem;
+      },
+    );
+    return updatedOrderItems;
   }
 
-  updateOrderItem(
-    id: number,
-    quantity: number,
-    price: number,
-  ): MockOrderItem | null {
-    const orderItem = mockOrderItems.find((item) => item.id === id);
+  deleteItemsInAnOrder(order_id: number): MockOrderItem[] {
+    const orderItemsToDelete = mockOrderItems.filter(
+      (item) => item.order_id === order_id,
+    );
 
-    if (orderItem) {
-      orderItem.quantity = quantity;
-      orderItem.price = price;
-      orderItem.updated_at = new Date();
+    if (orderItemsToDelete.length === 0) {
+      return [];
     }
 
-    return orderItem || null;
-  }
-
-  deleteOrderItem(id: number): boolean {
-    const index = mockOrderItems.findIndex((item) => item.id === id);
-
-    if (index !== -1) {
-      mockOrderItems.splice(index, 1);
-      return true;
+    for (const orderItem of orderItemsToDelete) {
+      orderItem.deleted_at = new Date();
     }
 
-    return false;
+    return orderItemsToDelete;
   }
 }
