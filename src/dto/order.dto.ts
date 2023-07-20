@@ -12,7 +12,7 @@ export class CreateOrderDto {
   delivery_point: string;
 
   @IsEnum(['half_payment', 'full_payment'])
-  payment: 'half_payment' | 'full_payment';
+  payment: string;
 
   status: string;
   amount_paid: number;

@@ -16,11 +16,13 @@ export class OrderService {
   ];
 
   getAllOrders(): Order[] {
-    return this.orders;
+    const allOrders = this.orders.filter((order) => order.deleted_at === '');
+    return allOrders;
   }
 
   getOrder(id: number): Order {
-    const order = this.orders.find((order) => order.id === id);
+    const allOrders = this.orders.filter((order) => order.deleted_at === '');
+    const order = allOrders.find((order) => order.id === id);
     if (!order) {
       throw new Error('order not found');
     }
@@ -29,13 +31,12 @@ export class OrderService {
   }
 
   createOrder(createOrderDto: CreateOrderDto) {
-    if (createOrderDto) {
-      createOrderDto['id'] = this.orders.length + 1;
-      createOrderDto['created_at'] = Date.now().toLocaleString();
-      createOrderDto['updated_at'] = Date.now().toLocaleString();
-      createOrderDto['deleted_at'] = '';
-      return this.orders.push(createOrderDto);
-    }
+    createOrderDto['id'] = this.orders.at(-1) ? this.orders.at(-1).id + 1 : 0;
+    createOrderDto['created_at'] = Date.now().toLocaleString();
+    createOrderDto['updated_at'] = Date.now().toLocaleString();
+    createOrderDto['deleted_at'] = '';
+    this.orders.push(createOrderDto);
+    return createOrderDto;
   }
 
   updateOrder(id: number, updateOrder: CreateOrderDto) {
@@ -51,7 +52,13 @@ export class OrderService {
 
   removeOrder(id: number) {
     const orderToRemove = this.orders.find((order) => order.id === id);
-    this.orders = this.orders.filter((order) => order.id !== id);
+    if (!orderToRemove) {
+      throw new Error('order not found');
+    }
+    orderToRemove['deleted_at'] = Date.now();
+    this.orders = this.orders.map((order) =>
+      order.id === id ? { ...order, ...orderToRemove } : order,
+    );
     return orderToRemove;
   }
 }
