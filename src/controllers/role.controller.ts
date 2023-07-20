@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   ValidationPipe,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { RoleService } from '../services/role.service';
 import { Role } from 'src/interfaces/role.interface';
@@ -25,6 +26,15 @@ export class RoleController {
     }
   }
 
+  @Get(':id')
+  getRole(@Param('id', ParseIntPipe) id: number): Role {
+    try {
+      return this.roleService.getRole(id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   @Post()
   createRole(@Body(new ValidationPipe()) createRoleDto: CreateRoleDto) {
     try {
@@ -35,12 +45,23 @@ export class RoleController {
   }
 
   @Put(':id')
-  updateRole(@Param('id') id: number, @Body() updateRoleDto: CreateRoleDto) {
-    return { id };
+  updateRole(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateRoleDto: CreateRoleDto,
+  ) {
+    try {
+      return this.roleService.updateRole(id, updateRoleDto);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   @Delete(':id')
-  removeRole(@Param('id') id: number) {
-    return { id };
+  removeRole(@Param('id', ParseIntPipe) id: number) {
+    try {
+      return this.roleService.removeRole(id);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

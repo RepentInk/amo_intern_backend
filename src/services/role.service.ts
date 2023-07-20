@@ -1,20 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from 'src/dto/role.dto';
 import { Role } from 'src/interfaces/role.interface';
-
 @Injectable()
 export class RoleService {
-  private roles = [
-    // {
-    //   id: 0,
-    //   name: 'administrator',
-    //   description: 'has all permissions',
-    //   created_at: '7/19/2023',
-    //   updated_at: '7/19/2023',
-    //   deleted_at: '',
-    // },
-  ];
-
+  private roles = [];
   getAllRoles(): Role[] {
     return this.roles;
   }
@@ -29,17 +18,18 @@ export class RoleService {
   }
 
   createRole(createRoleDto: CreateRoleDto) {
-    if (createRoleDto) {
-      createRoleDto['id'] = this.roles.length + 1;
-      createRoleDto['created_at'] = Date.now().toLocaleString();
-      createRoleDto['updated_at'] = Date.now().toLocaleString();
-      createRoleDto['deleted_at'] = '';
-      return this.roles.push(createRoleDto);
-    }
+    createRoleDto['id'] = this.roles.at(-1) ? this.roles.at(-1).id + 1 : 0;
+    createRoleDto['created_at'] = Date.now().toLocaleString();
+    createRoleDto['updated_at'] = Date.now().toLocaleString();
+    createRoleDto['deleted_at'] = '';
+    this.roles.push(createRoleDto);
+    return createRoleDto;
   }
 
   updateRole(id: number, updateRole: CreateRoleDto) {
     const oldRole = this.roles.find((role) => role.id === id);
+    console.log(oldRole);
+
     if (!oldRole) {
       throw new Error('user not found');
     }

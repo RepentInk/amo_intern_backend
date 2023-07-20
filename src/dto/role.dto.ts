@@ -1,9 +1,10 @@
-import { IsEnum } from 'class-validator';
+import { MinLength } from 'class-validator';
 export class CreateRoleDto {
   id: number;
 
-  @IsEnum(['salesperson', 'marketer', 'administrator'])
+  // eslint-disable-next-line prettier/prettier
+  @MinLength(3)
   name: string;
 
-  description: string;
+  description?: string;
 }
