@@ -30,7 +30,7 @@ export class PermissionService {
 
   // Create a new permission
   createPermission(newPermission: PermissionDto): PermissionDto {
-    const id = this.permission.length + 1;
+    const id = Math.floor(Math.random() * 10000);
     this.permission.push({ id, ...newPermission });
     return this.getOnePermission(id);
   }

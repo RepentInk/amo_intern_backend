@@ -9,6 +9,8 @@ import {
   NotFoundException,
   ParseIntPipe,
   Delete,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PermissionService } from '../services/permission.service';
 import { PermissionInterface } from 'src/interface/permission.interface';
@@ -37,6 +39,7 @@ export class PermissionController {
   }
 
   @Post()
+  @UsePipes(new ValidationPipe())
   createPermission(@Body() newPermission: PermissionDto) {
     return this.permissionService.createPermission(newPermission);
   }
