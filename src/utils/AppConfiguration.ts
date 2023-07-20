@@ -1,58 +1,15 @@
 // Isaac Nyarko
 
-
-
-
-
-
-
 // Razak Ayariga
 
-
-
-
-
-
-
-
-// Razak Adams 
-
-
-
-
-
-
+// Razak Adams
 
 // Swanzy
 
-
-
-
-
-// Momo 
-
-
-
-
-
+// Momo
 
 // Emmanuel Darko
 
-
-
-
-
-
-
-
 // Calvin Asantey
 
-
-
-
-
-
-
-
-
-// Alfred 
+// Alfred
