@@ -39,7 +39,7 @@ export class CustomerService {
   }
 
   //update customer by passing id and updated info
-  updateCustomer(id: number, updateCustomer: CustomerDto[]) {
+  updateCustomer(id: number, updateCustomer: CustomerDto) {
     this.customers = this.customers.map((customer) => {
       if (customer.id === id) {
         return { ...customer, ...updateCustomer };

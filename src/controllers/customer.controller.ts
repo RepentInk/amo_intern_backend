@@ -52,7 +52,7 @@ export class CustomerController {
   @Put(':id')
   updateCustomer(
     @Param('id', ParseIntPipe) id: number,
-    @Body(new ValidationPipe()) updateCustomer: CustomerDto[],
+    @Body(new ValidationPipe()) updateCustomer: CustomerDto,
   ) {
     try {
       return this.customerService.updateCustomer(id, updateCustomer);
