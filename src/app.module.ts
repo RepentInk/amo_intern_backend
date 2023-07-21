@@ -10,13 +10,15 @@ import { RolePermissionsModule } from './rolepermissions.module';
 import { UsersModule } from './users.module';
 import { PermissionModule } from './permission.module';
 import { CustomerModule } from './customer.module';
+import { OrderModule } from './order.module';
 
 @Module({
   imports: [
     UsersModule,
     PermissionModule,
     RolePermissionsModule,
-    CustomerModule
+    CustomerModule,
+    OrderModule
   ],
   controllers: [
     AppController,
@@ -28,7 +30,7 @@ import { CustomerModule } from './customer.module';
     UserLogService,
     ItemsService,
     CategoryService
-  ],
+  ]
 })
 
 export class AppModule { }
