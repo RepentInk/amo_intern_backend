@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from 'src/dto/role.dto';
 import { Role } from 'src/interfaces/role.interface';
+
+
 @Injectable()
 export class RoleService {
   private roles = [];
