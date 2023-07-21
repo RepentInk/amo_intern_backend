@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PermissionInterface } from 'src/interface/permission.interface';
+import { PermissionInterface } from 'src/interfaces/permission.interface';
 import { PermissionDto } from 'src/dto/permission.dto';
 
 @Injectable()

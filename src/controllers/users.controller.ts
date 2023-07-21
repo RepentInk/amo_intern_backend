@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { User } from 'src/dto/users.dto';
-import { UserInterface } from 'src/interface/users.interface';
+import { UserInterface } from 'src/interfaces/users.interface';
 
 @Controller('users')
 export class UsersController {

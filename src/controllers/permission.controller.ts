@@ -13,7 +13,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { PermissionService } from '../services/permission.service';
-import { PermissionInterface } from 'src/interface/permission.interface';
+import { PermissionInterface } from 'src/interfaces/permission.interface';
 import { PermissionDto } from 'src/dto/permission.dto';
 
 @Controller('permission')
