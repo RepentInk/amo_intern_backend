@@ -11,6 +11,7 @@ import { UsersModule } from './users.module';
 import { PermissionModule } from './permission.module';
 import { CustomerModule } from './customer.module';
 import { OrderModule } from './order.module';
+import { OrderItemModule } from './orderItems.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { OrderModule } from './order.module';
     PermissionModule,
     RolePermissionsModule,
     CustomerModule,
-    OrderModule
+    OrderModule,
+    OrderItemModule
   ],
   controllers: [
     AppController,
