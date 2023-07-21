@@ -6,6 +6,7 @@ import { ItemsController } from './controllers/items.controller';
 import { ItemsService } from './services/items.services';
 import { CategoryController } from './controllers/categories.controller';
 import { CategoryService } from './services/categories.service';
+import { RolePermissionsModule } from './rolepermissions.module';
 
 @Module({
   imports: [],
@@ -18,9 +19,9 @@ import { CategoryService } from './services/categories.service';
     AppService,
     UserLogService,
     ItemsService,
-    CategoryService
+    CategoryService,
+    RolePermissionsModule
   ],
 })
-
 
 export class AppModule { }
