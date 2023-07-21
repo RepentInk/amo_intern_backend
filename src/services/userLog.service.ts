@@ -27,7 +27,7 @@ export class UserLogService {
 
     this.userLogs.push(userLog);
 
-    const message = `${user_id} ${action} a ${model}`;
+    const message = `User ${user_id} ${action} ${model}`;
 
     return message;
   }
