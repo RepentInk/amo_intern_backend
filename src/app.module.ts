@@ -8,9 +8,14 @@ import { CategoryController } from './controllers/categories.controller';
 import { CategoryService } from './services/categories.service';
 import { RolePermissionsModule } from './rolepermissions.module';
 import { UsersModule } from './users.module';
+import { PermissionModule } from './permission.module';
 
 @Module({
-  imports: [UsersModule],
+  imports: [
+    UsersModule,
+    PermissionModule,
+    RolePermissionsModule
+  ],
   controllers: [
     AppController,
     ItemsController,
@@ -20,8 +25,7 @@ import { UsersModule } from './users.module';
     AppService,
     UserLogService,
     ItemsService,
-    CategoryService,
-    RolePermissionsModule
+    CategoryService
   ],
 })
 
