@@ -9,12 +9,14 @@ import { CategoryService } from './services/categories.service';
 import { RolePermissionsModule } from './rolepermissions.module';
 import { UsersModule } from './users.module';
 import { PermissionModule } from './permission.module';
+import { CustomerModule } from './customer.module';
 
 @Module({
   imports: [
     UsersModule,
     PermissionModule,
-    RolePermissionsModule
+    RolePermissionsModule,
+    CustomerModule
   ],
   controllers: [
     AppController,
