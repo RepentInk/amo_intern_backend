@@ -35,7 +35,7 @@ export class CategoryController {
   }
 
   //Update a category by the id
-  @Put()
+  @Put(':id')
   async updateCategory(
     @Param('id') id: number,
     @Body() category: Category,
@@ -44,7 +44,7 @@ export class CategoryController {
   }
 
   //Delete a category by the id
-  @Delete()
+  @Delete(':id')
   async deleteCategory(@Param('id') id: number): Promise<{ message: string }> {
     return this.CategoryService.deleteCategory(id);
   }
