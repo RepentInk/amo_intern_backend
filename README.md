@@ -1,5 +1,7 @@
 # Isaac Nyarko
-
+* Note: All branch names should be lowercaps
+* run npm install when you pull from new branch
+* 
 
 
 
