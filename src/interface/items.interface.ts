@@ -8,6 +8,6 @@ export interface Items {
   price: number;
   category_id: number; // Foreign key from categories
   created_at: Date;
-  updated_at: Date;
-  deleted_at: Date;
+  updated_at: Date | null;
+  deleted_at: Date | null;
 }
