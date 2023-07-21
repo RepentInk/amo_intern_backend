@@ -7,9 +7,10 @@ import { ItemsService } from './services/items.services';
 import { CategoryController } from './controllers/categories.controller';
 import { CategoryService } from './services/categories.service';
 import { RolePermissionsModule } from './rolepermissions.module';
+import { UsersModule } from './users.module';
 
 @Module({
-  imports: [],
+  imports: [UsersModule],
   controllers: [
     AppController,
     ItemsController,
