@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Category } from 'src/interface/categories.interface';
+import { Category } from 'src/interfaces/categories.interface';
 
 @Injectable()
 export class CategoryService {

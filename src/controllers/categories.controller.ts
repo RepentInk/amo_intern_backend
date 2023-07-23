@@ -8,7 +8,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { CategoryService } from 'src/services/categories.service';
-import { Category } from 'src/interface/categories.interface';
+import { Category } from 'src/interfaces/categories.interface';
 
 @Controller('categories')
 export class CategoryController {
