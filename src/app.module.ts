@@ -9,30 +9,31 @@ import { CategoryService } from './services/categories.service';
 import { RolePermissionsModule } from './rolepermissions.module';
 import { UsersModule } from './users.module';
 import { PermissionModule } from './permission.module';
-import { CustomerModule } from './customer.module';
-import { OrderModule } from './order.module';
-import { OrderItemModule } from './orderItems.module';
+import { CustomerController } from './controllers/customer.controller';
+import { CustomerService } from './services/customer.service';
+import { OrderController } from './controllers/order.controller';
+import { OrderService } from './services/order.service';
+import { OrderItemService } from './services/orderItems.service';
+import { OrderItemController } from './controllers/orderItems.controller';
 
 @Module({
-  imports: [
-    UsersModule,
-    PermissionModule,
-    RolePermissionsModule,
-    CustomerModule,
-    OrderModule,
-    OrderItemModule
-  ],
+  imports: [UsersModule, PermissionModule, RolePermissionsModule],
   controllers: [
     AppController,
     ItemsController,
-    CategoryController
+    CategoryController,
+    CustomerController,
+    OrderController,
+    OrderItemController,
   ],
   providers: [
     AppService,
     UserLogService,
     ItemsService,
-    CategoryService
-  ]
+    CategoryService,
+    CustomerService,
+    OrderService,
+    OrderItemService,
+  ],
 })
-
-export class AppModule { }
+export class AppModule {}
