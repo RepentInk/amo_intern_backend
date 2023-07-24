@@ -19,6 +19,26 @@ import { UsersService } from './services/users.service';
 import { RolePermissionsController } from './controllers/rolepermissions.controller';
 import { RolePermissionsService } from './services/rolepermissions.service';
 
+// Ayariga
+
+
+
+
+
+// Swanzy
+
+
+
+
+// Adams
+
+
+
+
+
+
+
+
 @Module({
   imports: [],
   controllers: [
@@ -31,6 +51,24 @@ import { RolePermissionsService } from './services/rolepermissions.service';
     PermissionController,
     UsersController,
     RolePermissionsController,
+
+    // Agariga
+
+
+
+
+
+    // Swanzy
+
+
+
+
+    // Adams 
+
+
+
+
+
   ],
   providers: [
     AppService,
@@ -43,6 +81,23 @@ import { RolePermissionsService } from './services/rolepermissions.service';
     PermissionService,
     UsersService,
     RolePermissionsService,
+
+    // Agariga
+
+
+
+
+
+    // Swanzy
+
+
+
+
+    // Adams 
+
+
+
+    
   ],
 })
 export class AppModule {}
