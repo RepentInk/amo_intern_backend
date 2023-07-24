@@ -5,19 +5,22 @@ import { UserLogService } from './services/userLog.service';
 import { ItemsController } from './controllers/items.controller';
 import { ItemsService } from './services/items.services';
 import { CategoryController } from './controllers/categories.controller';
-import { CategoryService } from './services/categories.service';
-import { RolePermissionsModule } from './rolepermissions.module';
-import { UsersModule } from './users.module';
-import { PermissionModule } from './permission.module';
+import { CategoryService } from './services/categories.service';;
 import { CustomerController } from './controllers/customer.controller';
 import { CustomerService } from './services/customer.service';
 import { OrderController } from './controllers/order.controller';
 import { OrderService } from './services/order.service';
 import { OrderItemService } from './services/orderItems.service';
 import { OrderItemController } from './controllers/orderItems.controller';
+import { PermissionController } from './controllers/permission.controller';
+import { PermissionService } from './services/permission.service';
+import { UsersController } from './controllers/users.controller';
+import { UsersService } from './services/users.service';
+import { RolePermissionsController } from './controllers/rolepermissions.controller';
+import { RolePermissionsService } from './services/rolepermissions.service';
 
 @Module({
-  imports: [UsersModule, PermissionModule, RolePermissionsModule],
+  imports: [],
   controllers: [
     AppController,
     ItemsController,
@@ -25,6 +28,9 @@ import { OrderItemController } from './controllers/orderItems.controller';
     CustomerController,
     OrderController,
     OrderItemController,
+    PermissionController,
+    UsersController,
+    RolePermissionsController,
   ],
   providers: [
     AppService,
@@ -34,6 +40,9 @@ import { OrderItemController } from './controllers/orderItems.controller';
     CustomerService,
     OrderService,
     OrderItemService,
+    PermissionService,
+    UsersService,
+    RolePermissionsService,
   ],
 })
 export class AppModule {}

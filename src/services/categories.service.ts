@@ -25,7 +25,6 @@ export class CategoryService {
         created_at,
         updated_at: null,
         deleted_at: null,
-        ...category,
       };
 
       this.categories.push(newCategory);
