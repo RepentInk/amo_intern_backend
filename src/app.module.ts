@@ -31,8 +31,9 @@ import { RolePermissionsService } from './services/rolepermissions.service';
 
 
 // Adams
-
-
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { dbConfig } from './database/dbconfig';
 
 
 
@@ -40,7 +41,13 @@ import { RolePermissionsService } from './services/rolepermissions.service';
 
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }), 
+    TypeOrmModule.forRoot({
+      type: 'mysql', 
+      ...dbConfig, 
+    }) 
+  ],
   controllers: [
     AppController,
     ItemsController,
