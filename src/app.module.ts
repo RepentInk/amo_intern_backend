@@ -5,7 +5,7 @@ import { UserLogService } from './services/userLog.service';
 import { ItemsController } from './controllers/items.controller';
 import { ItemsService } from './services/items.services';
 import { CategoryController } from './controllers/categories.controller';
-import { CategoryService } from './services/categories.service';;
+import { CategoryService } from './services/categories.service';
 import { CustomerController } from './controllers/customer.controller';
 import { CustomerService } from './services/customer.service';
 import { OrderController } from './controllers/order.controller';
@@ -21,23 +21,9 @@ import { RolePermissionsService } from './services/rolepermissions.service';
 
 // Ayariga
 
-
-
-
-
 // Swanzy
 
-
-
-
 // Adams
-
-
-
-
-
-
-
 
 @Module({
   imports: [],
@@ -54,21 +40,9 @@ import { RolePermissionsService } from './services/rolepermissions.service';
 
     // Agariga
 
-
-
-
-
     // Swanzy
 
-
-
-
-    // Adams 
-
-
-
-
-
+    // Adams
   ],
   providers: [
     AppService,
@@ -84,20 +58,9 @@ import { RolePermissionsService } from './services/rolepermissions.service';
 
     // Agariga
 
-
-
-
-
     // Swanzy
 
-
-
-
-    // Adams 
-
-
-
-    
+    // Adams
   ],
 })
 export class AppModule {}
