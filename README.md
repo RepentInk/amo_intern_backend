@@ -15,8 +15,9 @@
 
 
 # Razak Adams
-
-
+## enttity index.ts file
+imports all entities and exports the array to the dbConfig.ts in database folder.
+Allowing all entities to be passed as a single array variable.
 
 
 # Swanzy
