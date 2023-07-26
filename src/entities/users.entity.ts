@@ -8,6 +8,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Order } from './order.entity';
+import { UserLog } from './userLog.entities';
 
 @Entity()
 export class Users {
@@ -49,4 +50,10 @@ export class Users {
 
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
+
+  @OneToMany(() => Order, (order) => order.user_id)
+  orders: Order[];
+
+  @OneToMany(() => UserLog, (userLog) => userLog.user_id)
+  userLog: UserLog;
 }

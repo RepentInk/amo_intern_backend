@@ -5,7 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
+import { Order } from './order.entity';
 
 @Entity()
 export class OrderItems {
@@ -32,4 +35,8 @@ export class OrderItems {
 
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
+
+  @OneToOne(() => Order, (order) => order.orderItems)
+  @JoinColumn({ name: 'order_id' })
+  order: Order;
 }

@@ -5,7 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
+import { Users } from './users.entity';
 
 @Entity()
 export class UserLog {
@@ -26,4 +29,8 @@ export class UserLog {
 
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
+
+  @OneToMany(() => Users, (users) => users.userLog)
+  @JoinColumn({ name: 'user_id' })
+  userLog: UserLog;
 }
