@@ -1,7 +1,4 @@
 export interface UserInterface {
-  /**
-   * name
-   */
-  getAllUsers(): Promise<User>;
-  createUser(user: User): User;
+  getAllUsers(): Promise<void>;
+  createUser(user: []): Promise<void>;
 }
