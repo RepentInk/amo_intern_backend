@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class OrderEntity {
+export class RolePermission {
   @PrimaryGeneratedColumn()
   id: number;
   @Column({ name: 'role_id' })

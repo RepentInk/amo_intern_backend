@@ -1,5 +1,6 @@
 import { ConfigModule } from '@nestjs/config/dist';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+// import entities from 'src/entities';
 ConfigModule.forRoot();
 export const dbConfig: MysqlConnectionOptions = {
   type: 'mysql',
@@ -9,5 +10,7 @@ export const dbConfig: MysqlConnectionOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   entities: [],
-  synchronize: true,
+  // entities: ['dist/src/**/*.entity.js'],
+  synchronize: false,
+  migrations:[]
 }

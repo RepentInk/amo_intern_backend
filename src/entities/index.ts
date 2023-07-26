@@ -1,7 +1,7 @@
+//swanzy
 import { Customer } from './category.entity';
 import { Items } from './items.entiy';
 import { Category } from './customer.entity';
-//swanzy
 
 
 
@@ -12,49 +12,29 @@ import { Category } from './customer.entity';
 
 
 
-
-
-
-
 // Adams
-
-
-
-
-
-
-
-
-
-
+import { Role } from './role.entity';
+import { Permission } from './permission.entity';
+import { RolePermission } from './rolepermssion.entity';
 
 
 
 const entities = [
-    //swanzy
-    Customer, 
-    Items, 
-    Category
+  //swanzy
+  Customer, 
+  Items, 
+  Category,
+
+
+  //Ayariga
 
 
 
 
-
-    //Ayariga
-    
-
-
-
-
-
-
-    //Adams
-
-
-
-
-
-
+  //Adams
+  Role,
+  Permission,
+  RolePermission
 
 
     ]
