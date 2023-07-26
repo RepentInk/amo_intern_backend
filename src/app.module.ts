@@ -5,7 +5,7 @@ import { UserLogService } from './services/userLog.service';
 import { ItemsController } from './controllers/items.controller';
 import { ItemsService } from './services/items.services';
 import { CategoryController } from './controllers/categories.controller';
-import { CategoryService } from './services/categories.service';;
+import { CategoryService } from './services/categories.service';
 import { CustomerController } from './controllers/customer.controller';
 import { CustomerService } from './services/customer.service';
 import { OrderController } from './controllers/order.controller';
@@ -18,31 +18,13 @@ import { UsersController } from './controllers/users.controller';
 import { UsersService } from './services/users.service';
 import { RolePermissionsController } from './controllers/rolepermissions.controller';
 import { RolePermissionsService } from './services/rolepermissions.service';
-
-// Ayariga
-
-
-
-
-
-// Swanzy
-
-
-
-
-// Adams
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { dbConfig } from './database/dbconfig';
 
-
-
-
-
-
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }), 
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(dbConfig),
   ],
   controllers: [
@@ -55,24 +37,6 @@ import { dbConfig } from './database/dbconfig';
     PermissionController,
     UsersController,
     RolePermissionsController,
-
-    // Agariga
-
-
-
-
-
-    // Swanzy
-
-
-
-
-    // Adams 
-
-
-
-
-
   ],
   providers: [
     AppService,
@@ -85,23 +49,6 @@ import { dbConfig } from './database/dbconfig';
     PermissionService,
     UsersService,
     RolePermissionsService,
-
-    // Agariga
-
-
-
-
-
-    // Swanzy
-
-
-
-
-    // Adams 
-
-
-
-    
   ],
 })
 export class AppModule {}
