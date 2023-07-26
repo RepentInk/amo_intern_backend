@@ -43,10 +43,7 @@ import { dbConfig } from './database/dbconfig';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), 
-    TypeOrmModule.forRoot({
-      type: 'mysql', 
-      ...dbConfig, 
-    }) 
+    TypeOrmModule.forRoot(dbConfig),
   ],
   controllers: [
     AppController,
