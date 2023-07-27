@@ -20,11 +20,11 @@ export class Role {
 
   @ManyToMany(() => Permission)
   @JoinTable()
-  rolepermissons: Permission[];
+  role_permissions: Permission[];
   
   @Column()
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @CreateDateColumn()
+  created_at: Date;
+  @UpdateDateColumn()
+  updated_at: Date;
 }

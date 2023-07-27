@@ -8,60 +8,42 @@ import {
   Delete,
   ValidationPipe,
   ParseIntPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { RoleService } from '../services/role.service';
-import { Role } from 'src/interfaces/role.interface';
-import { CreateRoleDto } from 'src/dto/role.dto';
+import { BasicController } from 'src/interfaces/controller.interface';
+import { RoleDto } from 'src/dto/role.dto';
 
 @Controller('roles')
-export class RoleController {
+export class RoleController implements BasicController {
   constructor(private readonly roleService: RoleService) {}
 
   @Get()
-  getRoles(): Role[] {
-    try {
-      return this.roleService.getAllRoles();
-    } catch (error) {
-      console.log(error);
-    }
+  findAll(): Promise<any> {
+    return this.roleService.findAll();
   }
 
   @Get(':id')
-  getRole(@Param('id', ParseIntPipe) id: number): Role {
-    try {
-      return this.roleService.getRole(id);
-    } catch (error) {
-      console.log(error);
-    }
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    return this.roleService.findOne(id);
   }
 
   @Post()
-  createRole(@Body(new ValidationPipe()) createRoleDto: CreateRoleDto) {
-    try {
-      return this.roleService.createRole(createRoleDto);
-    } catch (error) {
-      console.log(error);
-    }
+  @UsePipes(new ValidationPipe())
+  create(@Body() roleDto: RoleDto): Promise<any> {
+    return this.roleService.create(roleDto);
   }
 
   @Put(':id')
-  updateRole(
+  update(
+    @Body() roleDto: RoleDto,
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateRoleDto: CreateRoleDto,
-  ) {
-    try {
-      return this.roleService.updateRole(id, updateRoleDto);
-    } catch (error) {
-      console.log(error);
-    }
+  ): Promise<any> {
+    return this.roleService.update(roleDto, id);
   }
 
   @Delete(':id')
-  removeRole(@Param('id', ParseIntPipe) id: number) {
-    try {
-      return this.roleService.removeRole(id);
-    } catch (error) {
-      console.log(error);
-    }
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.roleService.delete(id);
   }
 }

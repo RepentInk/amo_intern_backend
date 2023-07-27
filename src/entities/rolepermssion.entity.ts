@@ -1,7 +1,6 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  Column,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
@@ -17,15 +16,15 @@ export class RolePermission {
   id: number;
 
   @ManyToOne(() => Role, (role) => role.id)
-  @JoinColumn({ name: 'role_id' })
-  roleId: Role;
+  @JoinColumn()
+  role_id: Role;
 
   @ManyToOne(() => Permission, (permission) => permission.id)
-  @JoinColumn({ name: 'permission_id' })
-  permissionId: Permission;
+  @JoinColumn()
+  permission_id: Permission;
 
-  @CreateDateColumn({ name: 'created_at' })
-  createdAt: Date;
-  @UpdateDateColumn({ name: 'updated_at' })
-  updatedAt: Date;
+  @CreateDateColumn()
+  created_at: Date;
+  @UpdateDateColumn()
+  updated_at: Date;
 }
