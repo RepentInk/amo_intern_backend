@@ -1,8 +1,11 @@
+import { PermissionDto } from 'src/dto/permission.dto';
 export interface PermissionInterface {
-  readonly id: number;
-  name: string;
-  display_name: string;
-  created_at?: Date;
-  updated_at?: Date;
-  deleted_at?: Date;
+  getAllPermissions(): Promise<PermissionDto[]>;
+  getOnePermission(id: number): Promise<PermissionDto>;
+  createPermission(newRole: PermissionDto): Promise<PermissionDto>;
+  updatePermission(
+    id: number,
+    updateInfo: PermissionDto,
+  ): Promise<PermissionDto>;
+  deletePermission(id: number): Promise<void>
 }

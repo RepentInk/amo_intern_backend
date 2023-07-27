@@ -1,8 +1,8 @@
+import { RoleDto } from 'src/dto/role.dto';
 export interface Role {
-  id: number;
-  name: string;
-  description: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string;
+  getAllRoles(): Promise<RoleDto[]>;
+  getOneRole(id: number): Promise<RoleDto>;
+  createRole(newRole: RoleDto): Promise<RoleDto>;
+  updateRole(id: number, updateInfo: RoleDto): Promise<RoleDto>;
+  deleteRole(id: number): Promise<void>;
 }
