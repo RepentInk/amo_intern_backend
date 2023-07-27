@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRoleDto } from 'src/dto/role.dto';
+import { RoleDto } from 'src/dto/role.dto';
 import { Role } from 'src/interfaces/role.interface';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class RoleService {
     return role;
   }
 
-  createRole(createRoleDto: CreateRoleDto) {
+  createRole(createRoleDto: RoleDto) {
     createRoleDto['id'] = this.roles.at(-1) ? this.roles.at(-1).id + 1 : 0;
     createRoleDto['created_at'] = Date.now().toLocaleString();
     createRoleDto['updated_at'] = Date.now().toLocaleString();
@@ -29,7 +29,7 @@ export class RoleService {
     return createRoleDto;
   }
 
-  updateRole(id: number, updateRole: CreateRoleDto) {
+  updateRole(id: number, updateRole: RoleDto) {
     const oldRole = this.roles.find((role) => role.id === id);
 
     if (!oldRole) {

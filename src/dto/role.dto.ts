@@ -1,5 +1,6 @@
 import { MinLength } from 'class-validator';
-export class CreateRoleDto {
+
+export class RoleDto {
   id: number;
 
   // eslint-disable-next-line prettier/prettier
