@@ -1,15 +1,13 @@
-import { ConfigModule } from '@nestjs/config/dist';
-import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
+import { DataSource } from 'typeorm';
 import { Users } from 'src/entities/users.entity';
+import { UserLog } from 'src/entities/userLog.entities';
 import { Order } from 'src/entities/order.entity';
 import { Items } from 'src/entities/items.entity';
 import { Category } from 'src/entities/category.entity';
 import { Customer } from 'src/entities/customer.entity';
 import { OrderItems } from 'src/entities/orderItems.entity';
-import { UserLog } from 'src/entities/userLog.entities';
-ConfigModule.forRoot();
 
-export const dbConfig: MysqlConnectionOptions = {
+const AppDataSource = new DataSource({
   type: 'mysql',
   host: process.env.HOST_NAME,
   port: parseInt(process.env.PORT, 10),
@@ -19,4 +17,12 @@ export const dbConfig: MysqlConnectionOptions = {
   entities: [Users, Order, Items, Category, Customer, OrderItems, UserLog],
   synchronize: true,
   migrations: [],
-};
+});
+
+AppDataSource.initialize()
+  .then(() => {
+    console.log('Data Source has been initialized!');
+  })
+  .catch((err) => {
+    console.error('Error during Data Source initialization', err);
+  });
