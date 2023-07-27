@@ -1,15 +1,8 @@
-import { RoleDto } from "src/dto/role.dto";
-
+import { RoleDto } from 'src/dto/role.dto';
 export interface Role {
-
-  readAll(): Promise<RoleDto[]>;
-
-  readOne(roleDto: RoleDto): Promise<RoleDto>
-
-  create(roleDto: RoleDto): Promise<RoleDto>;
-
-  update(sroleDto: RoleDto, id: number): Promise<RoleDto>;
-
-  delete(roleDto: RoleDto): Promise<RoleDto>;
-
+  getAllRoles(): Promise<RoleDto[]>;
+  getOneRole(id: number): Promise<RoleDto>;
+  createRole(newRole: RoleDto): Promise<RoleDto>;
+  updateRole(id: number, updateInfo: RoleDto): Promise<RoleDto>;
+  deleteRole(id: number): Promise<void>;
 }
