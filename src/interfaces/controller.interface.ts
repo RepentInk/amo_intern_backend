@@ -1,13 +1,11 @@
 export interface BasicController {
-    
-    findAll(): Promise<any>;
+  findAll(): Promise<any>;
 
-    findOne(id: number): Promise<any>;
+  findOne(id: number): Promise<any>;
 
-    create(request: any): Promise<any>;
+  create(request: any): Promise<any>;
 
-    update(request: any, id: number): Promise<any>;
+  update(request: any, id: number): Promise<any>;
 
-    delete(request: any): Promise<any>;
-
+  delete(request: any): Promise<any>;
 }

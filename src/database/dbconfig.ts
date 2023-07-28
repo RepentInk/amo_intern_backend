@@ -2,7 +2,6 @@ import entities from 'src/database';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { ConfigModule } from '@nestjs/config';
 
-
 ConfigModule.forRoot();
 export const dbConfig: MysqlConnectionOptions = {
   type: 'mysql',

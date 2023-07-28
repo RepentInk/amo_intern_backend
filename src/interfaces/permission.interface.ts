@@ -7,5 +7,5 @@ export interface PermissionInterface {
     id: number,
     updateInfo: PermissionDto,
   ): Promise<PermissionDto>;
-  deletePermission(id: number): Promise<void>
+  deletePermission(id: number): Promise<void>;
 }
