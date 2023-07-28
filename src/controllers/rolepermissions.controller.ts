@@ -16,9 +16,7 @@ import { RolePermissionDto } from 'src/dto/rolepermissions.dto';
 
 @Controller('rolepermissions')
 export class RolePermissionsControlle implements BasicController {
-  constructor(
-    private readonly rolePermissionService: RolePermissionService,
-  ) {}
+  constructor(private readonly rolePermissionService: RolePermissionService) {}
   @Get()
   findAll(): Promise<any> {
     return this.rolePermissionService.findAll();
@@ -46,4 +44,5 @@ export class RolePermissionsControlle implements BasicController {
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.rolePermissionService.delete(id)
+}
 }

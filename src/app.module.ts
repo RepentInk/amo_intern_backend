@@ -16,8 +16,8 @@ import { PermissionController } from './controllers/permission.controller';
 import { PermissionService } from './services/permission.service';
 import { UsersController } from './controllers/users.controller';
 import { UsersService } from './services/users.service';
-import { RolePermissionsController } from './controllers/rolepermissions.controller';
-import { RolePermissionsService } from './services/rolepermissions.service';
+import { RolePermissionsControlle } from './controllers/rolepermissions.controller';
+import { RolePermissionService } from './services/rolepermissions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { dbConfig } from './database/dbconfig';
@@ -36,7 +36,7 @@ import { dbConfig } from './database/dbconfig';
     OrderItemController,
     PermissionController,
     UsersController,
-    RolePermissionsController,
+    RolePermissionsControlle,
   ],
   providers: [
     AppService,
@@ -48,7 +48,7 @@ import { dbConfig } from './database/dbconfig';
     OrderItemService,
     PermissionService,
     UsersService,
-    RolePermissionsService,
+    RolePermissionService,
   ],
 })
 export class AppModule {}
