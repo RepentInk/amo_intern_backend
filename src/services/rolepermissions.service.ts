@@ -57,6 +57,7 @@ export class RolePermissionService implements RolePermissionInterface {
       console.log(error);
     }
   }
+
   async delete(id: number): Promise<RolePermission> {
     try {
       const rolePermission = await this.findOne(id);
@@ -66,4 +67,5 @@ export class RolePermissionService implements RolePermissionInterface {
       console.log(error);
     }
   }
+  
 }

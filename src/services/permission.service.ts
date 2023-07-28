@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class PermissionService implements PermissionInterface {
+  
   constructor(
     @InjectRepository(Permission)
     private permissionRepository: Repository<Permission>,
@@ -40,6 +41,7 @@ export class PermissionService implements PermissionInterface {
       console.log(error);
     }
   }
+
   async update(permissionDto: PermissionDto, id: number): Promise<Permission> {
     try {
       const permission = await this.findOne(id);
@@ -52,6 +54,7 @@ export class PermissionService implements PermissionInterface {
       console.log(error);
     }
   }
+
   async delete(id: number): Promise<PermissionDto> {
     try {
       const permission = await this.findOne(id);
@@ -61,4 +64,5 @@ export class PermissionService implements PermissionInterface {
       console.log(error);
     }
   }
+  
 }

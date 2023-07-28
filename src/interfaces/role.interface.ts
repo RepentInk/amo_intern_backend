@@ -1,4 +1,5 @@
 import { RoleDto } from 'src/dto/role.dto';
+
 export interface RoleInterface {
   findAll(): Promise<RoleDto[]>;
   findOne(id: number): Promise<RoleDto>;

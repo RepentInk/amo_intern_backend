@@ -1,4 +1,5 @@
 import { PermissionDto } from 'src/dto/permission.dto';
+
 export interface PermissionInterface {
   findAll(): Promise<PermissionDto[]>;
   findOne(id: number): Promise<PermissionDto>;
