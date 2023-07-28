@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsDate } from 'class-validator';
 
 export class PermissionDto {
-  readonly id: number;
+  id: number;
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -10,5 +10,4 @@ export class PermissionDto {
   @IsDate()
   created_at?: Date;
   updated_at?: Date;
-  deleted_at?: Date;
 }

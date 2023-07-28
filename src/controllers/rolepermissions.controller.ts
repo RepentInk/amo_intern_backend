@@ -7,42 +7,42 @@ import {
   Body,
   Param,
   ParseIntPipe,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
-import { RolePermissionsService } from '../services/rolepermissions.service';
-import { RolePermissions } from 'src/dto/rolepermissions.dto';
+import { RolePermissionService } from '../services/rolepermissions.service';
+import { BasicController } from 'src/interfaces/controller.interface';
+import { RolePermissionDto } from 'src/dto/rolepermissions.dto';
 
 @Controller('rolepermissions')
-export class RolePermissionsController {
-  constructor(
-    private readonly rolePermissionsService: RolePermissionsService,
-  ) {}
-
-  @Post('create')
-  createRolePermission(@Body() rolePermission: RolePermissions) {
-    console.log(rolePermission);
-    return this.rolePermissionsService.createRolePermission(rolePermission);
-  }
-
+export class RolePermissionsControlle implements BasicController {
+  constructor(private readonly rolePermissionService: RolePermissionService) {}
   @Get()
-  getAllRolePermissions(): RolePermissions[] {
-    return this.rolePermissionsService.getAllRolePermissions();
+  findAll(): Promise<any> {
+    return this.rolePermissionService.findAll();
   }
 
   @Get(':id')
-  getAllPermissionsById(@Param('id', ParseIntPipe) id: number) {
-    return this.rolePermissionsService.getRolePermissionsById(id);
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    return this.rolePermissionService.findOne(id);
+  }
+
+  @Post()
+  @UsePipes(new ValidationPipe())
+  create(@Body() rolePermissionDto: RolePermissionDto): Promise<any> {
+    return this.rolePermissionService.create(rolePermissionDto);
   }
 
   @Put(':id')
-  updateRolePermission(
-    @Param('id') id: number,
-    @Body() rolePermission: RolePermissions,
-  ) {
-    return this.rolePermissionsService.updateRolePermission(id, rolePermission);
+  update(
+    @Body() rolePermissionDto: RolePermissionDto,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<any> {
+    return this.rolePermissionService.update(rolePermissionDto, id);
   }
 
   @Delete(':id')
-  deleteRolePermission(@Param('id', ParseIntPipe) id: number) {
-    return this.rolePermissionsService.deleteRolePermission(id);
-  }
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.rolePermissionService.delete(id)
+}
 }

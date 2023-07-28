@@ -1,56 +1,68 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PermissionInterface } from 'src/interfaces/permission.interface';
 import { PermissionDto } from 'src/dto/permission.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Permission } from 'src/entities/permission.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class PermissionService {
-  //
-  private permission = [];
+export class PermissionService implements PermissionInterface {
+  
+  constructor(
+    @InjectRepository(Permission)
+    private permissionRepository: Repository<Permission>,
+  ) {}
 
-  // Get all permissions
-  getAllPermission(name?: string): PermissionInterface[] {
-    if (name) {
-      const getPermission = this.permission.filter((permission) => {
-        return permission.name === name;
-      });
-      return getPermission;
-    } else {
-      return this.permission;
+  async findAll(): Promise<Permission[]> {
+    try {
+      return this.permissionRepository.find();
+    } catch (error) {
+      console.log(error);
     }
   }
 
-  // Get One Permission By id
-  getOnePermission(id: number): PermissionInterface {
-    const permission = this.permission.find((perName) => perName.id === id);
-    if (!permission) {
-      throw new Error('Permission Not Found');
-    }
-    return permission;
-  }
-
-  // Create a new permission
-  createPermission(newPermission: PermissionDto): PermissionDto {
-    const id = Math.floor(Math.random() * 10000);
-    this.permission.push({ id, ...newPermission });
-    return this.getOnePermission(id);
-  }
-
-  // Update Permission
-  updatePermission(id: number, updatePermission: PermissionDto) {
-    this.permission = this.permission.map((permission) => {
-      if (permission.id == id) {
-        return { ...permission, ...updatePermission };
+  async findOne(id: number): Promise<Permission> {
+    try {
+      const permission = await this.permissionRepository.findOneBy({ id });
+      if (!permission) {
+        throw new NotFoundException('Permsission not found');
       }
       return permission;
-    });
-    return this.getOnePermission(id);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  // Delete Permission
-  deletePermission(id: number) {
-    this.permission = this.permission.filter((permission) => {
-      return permission.id !== id;
-    });
-    return this.getAllPermission();
+  async create(permissionDto: PermissionDto): Promise<Permission> {
+    try {
+      const newPermission = this.permissionRepository.create(permissionDto);
+      return this.permissionRepository.save(newPermission);
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  async update(permissionDto: PermissionDto, id: number): Promise<Permission> {
+    try {
+      const permission = await this.findOne(id);
+      if (!permission) {
+        throw new NotFoundException('Permsission not found');
+      }
+      this.permissionRepository.merge(permission, permissionDto);
+      return this.permissionRepository.save(permission);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async delete(id: number): Promise<PermissionDto> {
+    try {
+      const permission = await this.findOne(id);
+      await this.permissionRepository.remove(permission);
+      return permission;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
 }

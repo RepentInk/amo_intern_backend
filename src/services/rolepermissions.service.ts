@@ -1,38 +1,71 @@
-import { Injectable } from '@nestjs/common';
-import { RolePermissions } from 'src/dto/rolepermissions.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { RolePermissionDto } from 'src/dto/rolepermissions.dto';
+import { RolePermission } from 'src/entities/rolepermssion.entity';
+import { RolePermissionInterface } from 'src/interfaces/rolepermission.interface';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class RolePermissionsService {
-  private allRolePermissions = [];
-  //adding  new rolepermission
-  createRolePermission(newRolePermission: RolePermissions) {
-    this.allRolePermissions.push(newRolePermission);
-    return newRolePermission;
+export class RolePermissionService implements RolePermissionInterface {
+  constructor(
+    @InjectRepository(RolePermission)
+    private rolePermissionRepository: Repository<RolePermission>
+  ) {}
+
+  async findAll(): Promise<RolePermission[]> {
+    try {
+      return this.rolePermissionRepository.find();
+    } catch (error) {
+      console.log(error);
+    }
   }
-  //getting all the rolepermissions
-  getAllRolePermissions(): RolePermissions[] {
-    return this.allRolePermissions;
+
+  async findOne(id: number): Promise<RolePermission> {
+    try {
+      const rolePermission = await this.rolePermissionRepository.findOneBy({ id });
+      if (!rolePermission) {
+        throw new NotFoundException('RolePermsission not found');
+      }
+      return rolePermission;
+    } catch (error) {
+      console.log(error);
+    }
   }
-  //getting rolepermission based on id
-  getRolePermissionsById(id: number) {
-    const findRolePermission = this.allRolePermissions.find(
-      (rolePermission) => rolePermission.id == id,
-    );
-    return findRolePermission;
+
+  async create(rolePermissionDto: RolePermissionDto): Promise<RolePermission> {
+    try {
+      const newRolePermission =
+        this.rolePermissionRepository.create(rolePermissionDto);
+      return this.rolePermissionRepository.save(newRolePermission);
+    } catch (error) {
+      console.log(error);
+    }
   }
-  //updating an existing rolepermission
-  updateRolePermission(id: number, updateRolePermission: RolePermissions) {
-    this.allRolePermissions = this.allRolePermissions.map((rolePermission) => {
-      if (rolePermission.id == id) {
-        return { ...rolePermission, ...updateRolePermission };
-      } else return rolePermission;
-    });
+
+  async update(
+    rolePermissionDto: RolePermissionDto,
+    id: number,
+  ): Promise<RolePermission> {
+    try {
+      const rolePermission = await this.findOne(id);
+      if (!rolePermission) {
+        throw new NotFoundException('RolePermsission not found');
+      }
+      this.rolePermissionRepository.merge(rolePermission, rolePermissionDto);
+      return this.rolePermissionRepository.save(rolePermission);
+    } catch (error) {
+      console.log(error);
+    }
   }
-  //delete a rolepermission
-  deleteRolePermission(id: number) {
-    this.allRolePermissions = this.allRolePermissions.filter(
-      (rolePermission) => rolePermission.id !== id,
-    );
-    return this.allRolePermissions;
+
+  async delete(id: number): Promise<RolePermission> {
+    try {
+      const rolePermission = await this.findOne(id);
+      await this.rolePermissionRepository.remove(rolePermission);
+      return rolePermission;
+    } catch (error) {
+      console.log(error);
+    }
   }
+  
 }

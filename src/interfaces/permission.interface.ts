@@ -1,11 +1,9 @@
 import { PermissionDto } from 'src/dto/permission.dto';
+
 export interface PermissionInterface {
-  getAllPermissions(): Promise<PermissionDto[]>;
-  getOnePermission(id: number): Promise<PermissionDto>;
-  createPermission(newRole: PermissionDto): Promise<PermissionDto>;
-  updatePermission(
-    id: number,
-    updateInfo: PermissionDto,
-  ): Promise<PermissionDto>;
-  deletePermission(id: number): Promise<void>;
+  findAll(): Promise<PermissionDto[]>;
+  findOne(id: number): Promise<PermissionDto>;
+  create(permissionDto: PermissionDto): Promise<PermissionDto>;
+  update(permissionDto: PermissionDto, id: number): Promise<PermissionDto>;
+  delete(id: number): Promise<PermissionDto>
 }

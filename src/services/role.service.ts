@@ -1,56 +1,66 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { RoleDto } from 'src/dto/role.dto';
-import { Role } from 'src/interfaces/role.interface';
+import { Role } from 'src/entities/role.entity';
+import { RoleInterface } from 'src/interfaces/role.interface';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class RoleService {
-  private roles = [];
-  getAllRoles(): Role[] {
-    const allRoles = this.roles.filter((role) => role.deleted_at !== '');
-    return allRoles;
-  }
+export class RoleService implements RoleInterface{
+  constructor(
+    @InjectRepository(Role)
+    private roleRepository: Repository<Role>,
+  ) {}
 
-  getRole(id: number): Role {
-    const allRoles = this.roles.filter((role) => role.id !== id);
-    const role = allRoles.find((role) => role.id === id);
-    if (!role) {
-      throw new Error('role not found');
+  async findAll(): Promise<Role[]> {
+    try {
+      return this.roleRepository.find();
+    } catch (error) {
+      console.log(error);
     }
-
-    return role;
   }
 
-  createRole(createRoleDto: RoleDto) {
-    createRoleDto['id'] = this.roles.at(-1) ? this.roles.at(-1).id + 1 : 0;
-    createRoleDto['created_at'] = Date.now().toLocaleString();
-    createRoleDto['updated_at'] = Date.now().toLocaleString();
-    createRoleDto['deleted_at'] = '';
-    this.roles.push(createRoleDto);
-    return createRoleDto;
-  }
-
-  updateRole(id: number, updateRole: RoleDto) {
-    const oldRole = this.roles.find((role) => role.id === id);
-
-    if (!oldRole) {
-      throw new Error('user not found');
+  async findOne(id: number): Promise<Role> {
+    try {
+      const role = await this.roleRepository.findOneBy({ id });
+      if (!role) {
+        throw new NotFoundException('Role not found');
+      }
+      return role;
+    } catch (error) {
+      console.log(error);
     }
-    this.roles = this.roles.map((role) =>
-      role.id === id ? { ...role, ...updateRole } : role,
-    );
-    return this.getRole(id);
   }
 
-  removeRole(id: number) {
-    const roleToRemove = this.roles.find((role) => role.id === id);
-
-    if (!roleToRemove) {
-      throw new Error('user not found');
+  async create(roleDto: RoleDto): Promise<Role> {
+    try {
+      const newRole = this.roleRepository.create(roleDto);
+      return this.roleRepository.save(newRole);
+    } catch (error) {
+      console.log(error);
     }
-    roleToRemove['deleted_at'] = Date.now();
-    this.roles = this.roles.map((role) =>
-      role.id === id ? { ...role, ...roleToRemove } : role,
-    );
-    return roleToRemove;
+  }
+
+  async update(roleDto: RoleDto, id: number): Promise<Role> {
+    try {
+      const role = await this.findOne(id);
+      if (!role) {
+        throw new NotFoundException('Role not found');
+      }
+      this.roleRepository.merge(role, roleDto);
+      return this.roleRepository.save(role);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  async delete(id: number): Promise<Role> {
+    try {
+      const role = await this.findOne(id);
+      await this.roleRepository.remove(role);
+      return role;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

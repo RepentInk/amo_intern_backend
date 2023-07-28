@@ -1,4 +1,4 @@
-import entities from 'src/database';
+import entities from 'src/database/entities';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
 import { ConfigModule } from '@nestjs/config';
 

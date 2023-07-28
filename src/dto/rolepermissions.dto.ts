@@ -1,8 +1,7 @@
 export class RolePermissionDto {
-  readonly id: number;
-  role_id: number;
-  permission_id: number;
+  id: number;
+  role_id: any;
+  permission_id: any;
   created_at?: Date;
   updated_at?: Date;
-  deleted_at?: Date;
 }
