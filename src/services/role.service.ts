@@ -53,6 +53,7 @@ export class RoleService implements RoleInterface {
       console.log(error);
     }
   }
+  
   async delete(id: number): Promise<Role> {
     try {
       const role = await this.findOne(id);

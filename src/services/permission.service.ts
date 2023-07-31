@@ -7,12 +7,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class PermissionService implements PermissionInterface {
-  constructor(
-    @InjectRepository(Permission)
-    private permissionRepository: Repository<Permission>,
-  ) {}
 
-  async findAll(): Promise<Permission[]> {
+  constructor(@InjectRepository(Permission) private permissionRepository: Repository<Permission>) {}
+
+  async findAll(): Promise<PermissionDto[]> {
     try {
       return this.permissionRepository.find();
     } catch (error) {
@@ -20,7 +18,7 @@ export class PermissionService implements PermissionInterface {
     }
   }
 
-  async findOne(id: number): Promise<Permission> {
+  async findOne(id: number): Promise<PermissionDto> {
     try {
       const permission = await this.permissionRepository.findOneBy({ id });
       if (!permission) {
@@ -32,7 +30,7 @@ export class PermissionService implements PermissionInterface {
     }
   }
 
-  async create(permissionDto: PermissionDto): Promise<Permission> {
+  async create(permissionDto: PermissionDto): Promise<PermissionDto> {
     try {
       const newPermission = this.permissionRepository.create(permissionDto);
       return this.permissionRepository.save(newPermission);
@@ -41,9 +39,9 @@ export class PermissionService implements PermissionInterface {
     }
   }
 
-  async update(permissionDto: PermissionDto, id: number): Promise<Permission> {
+  async update(permissionDto: PermissionDto, id: number): Promise<PermissionDto> {
     try {
-      const permission = await this.findOne(id);
+      const permission: any = await this.findOne(id);
       if (!permission) {
         throw new NotFoundException('Permission not found');
       }
@@ -56,7 +54,7 @@ export class PermissionService implements PermissionInterface {
 
   async delete(id: number): Promise<PermissionDto> {
     try {
-      const permission = await this.findOne(id);
+      const permission: any = await this.findOne(id);
       await this.permissionRepository.remove(permission);
       return permission;
     } catch (error) {

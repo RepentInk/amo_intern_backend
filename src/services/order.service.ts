@@ -7,23 +7,21 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrderService implements OrderInterface {
-  constructor(
-    @InjectRepository(Order)
-    private orderRepository: Repository<Order>,
-  ) {}
 
-  async findAll(): Promise<Order[]> {
+  constructor(@InjectRepository(Order) private orderRepository: Repository<Order>) { }
+
+  async findAll(): Promise<OrderDto[]> {
     try {
-      const order = await this.orderRepository.find();
+      const order: any = await this.orderRepository.find();
       return order;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async findOne(id: number): Promise<Order> {
+  async findOne(id: number): Promise<OrderDto> {
     try {
-      const order = await this.orderRepository.findOneBy({ id });
+      const order: any = await this.orderRepository.findOneBy({ id });
       if (!order) {
         throw new NotFoundException('Order not found');
       }
@@ -33,31 +31,35 @@ export class OrderService implements OrderInterface {
     }
   }
 
-  async create(orderDto: OrderDto): Promise<Order> {
+  async create(orderDto: OrderDto): Promise<OrderDto> {
     try {
-      const newOrder = this.orderRepository.create(orderDto);
+      const newOrder: any = this.orderRepository.create(orderDto);
       await this.orderRepository.save(newOrder);
+
       return newOrder;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async update(orderDto: OrderDto, id: number): Promise<Order> {
+  async update(orderDto: OrderDto, id: number): Promise<OrderDto> {
     try {
-      const order = await this.orderRepository.findOneBy({ id });
+      const order: any = await this.orderRepository.findOneBy({ id });
+
       if (!order) {
         throw new NotFoundException('Order not found');
       }
       this.orderRepository.merge(order, orderDto);
+
       return this.orderRepository.save(order);
     } catch (error) {
       console.log(error);
     }
   }
-  async delete(id: number): Promise<Order> {
+
+  async delete(id: number): Promise<OrderDto> {
     try {
-      const order = await this.findOne(id);
+      const order: any = await this.findOne(id);
       if (!order) {
         throw new NotFoundException('Order not found');
       }
@@ -67,4 +69,5 @@ export class OrderService implements OrderInterface {
       console.log(error);
     }
   }
+
 }

@@ -13,16 +13,19 @@ import { OrderService } from 'src/services/order.service';
 
 @Controller('orders')
 export class OrderController implements BasicController {
+
   constructor(private readonly orderService: OrderService) {}
 
   @Get()
-  findAll(): Promise<any> {
+  findAll(): Promise<OrderDto[]> {
     return this.orderService.findAll();
   }
+
   @Get(':id')
   findOne(@Param('id') id: number): Promise<any> {
     return this.orderService.findOne(id);
   }
+  
   @Post()
   create(@Body() orderDto: OrderDto) {
     return this.orderService.create(orderDto);
