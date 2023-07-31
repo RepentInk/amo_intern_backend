@@ -7,14 +7,12 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService implements UserInterface {
-  constructor(
-    @InjectRepository(Users)
-    private userRepository: Repository<Users>,
-  ) {}
+
+  constructor(@InjectRepository(Users) private userRepository: Repository<Users>) { }
 
   async findAll(): Promise<UserDto[]> {
     try {
-      const users = await this.userRepository.find();
+      const users: any = await this.userRepository.find();
       return users;
     } catch (error) {
       console.log(error);
@@ -22,30 +20,31 @@ export class UserService implements UserInterface {
     }
   }
 
-  async findOne(id: number): Promise<Users> {
+  async findOne(id: number): Promise<UserDto> {
     try {
-      const role = await this.userRepository.findOneBy({ id });
+      const role: any = await this.userRepository.findOneBy({ id });
       if (!role) {
         throw new NotFoundException('User not found');
       }
+
       return role;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async create(userDto: UserDto): Promise<Users> {
+  async create(userDto: UserDto): Promise<UserDto> {
     try {
-      const newUser = this.userRepository.create(userDto);
+      const newUser: any = this.userRepository.create(userDto);
       return this.userRepository.save(newUser);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async update(userDto: UserDto, id: number): Promise<Users> {
+  async update(userDto: UserDto, id: number): Promise<UserDto> {
     try {
-      const user = await this.findOne(id);
+      const user: any = await this.findOne(id);
       if (!user) {
         throw new NotFoundException('User not found');
       }
@@ -55,13 +54,15 @@ export class UserService implements UserInterface {
       console.log(error);
     }
   }
-  async delete(id: number): Promise<Users> {
+
+  async delete(id: number): Promise<UserDto> {
     try {
-      const user = await this.findOne(id);
+      const user: any = await this.findOne(id);
       await this.userRepository.remove(user);
       return user;
     } catch (error) {
       console.log(error);
     }
   }
+
 }
