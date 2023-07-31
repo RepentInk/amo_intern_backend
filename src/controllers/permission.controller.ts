@@ -13,9 +13,11 @@ import {
 import { PermissionService } from '../services/permission.service';
 import { PermissionDto } from 'src/dto/permission.dto';
 import { BasicController } from 'src/interfaces/controller.interface';
+
+
 @Controller('permission')
 export class PermissionController implements BasicController {
-  constructor(private readonly permissionService: PermissionService) {}
+  constructor(private readonly permissionService: PermissionService) { }
 
   @Get()
   findAll(): Promise<any> {
