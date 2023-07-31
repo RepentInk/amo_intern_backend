@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { Users } from './users.entity';
 import { OrderItems } from './orderItems.entity';
+import { Customer } from './customer.entity';
 
 @Entity()
 export class Order {
@@ -22,12 +23,6 @@ export class Order {
 
   @Column()
   order_code: string;
-
-  @Column()
-  customer_id: number;
-
-  @Column()
-  user_id: string;
 
   @Column()
   delivery_point: string;
@@ -48,7 +43,7 @@ export class Order {
   order_channel: string;
 
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
-  created_atP: Date;
+  created_at: Date;
 
   @UpdateDateColumn({
     default: () => 'CURRENT_TIMESTAMP',
@@ -65,4 +60,8 @@ export class Order {
 
   @OneToOne(() => OrderItems, (OrderItems) => OrderItems.order)
   orderItems: OrderItems[];
+
+  @OneToOne(() => Customer, (customer) => customer.order)
+  @JoinColumn({ name: 'customer_id' })
+  customer: Customer;
 }

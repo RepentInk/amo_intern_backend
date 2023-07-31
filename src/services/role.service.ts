@@ -6,7 +6,7 @@ import { RoleInterface } from 'src/interfaces/role.interface';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class RoleService implements RoleInterface{
+export class RoleService implements RoleInterface {
   constructor(
     @InjectRepository(Role)
     private roleRepository: Repository<Role>,
@@ -53,7 +53,6 @@ export class RoleService implements RoleInterface{
       console.log(error);
     }
   }
-  
   async delete(id: number): Promise<Role> {
     try {
       const role = await this.findOne(id);

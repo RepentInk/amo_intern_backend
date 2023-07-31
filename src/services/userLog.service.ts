@@ -1,34 +1,70 @@
-import { Injectable } from '@nestjs/common';
-
-interface UserLog {
-  id: number;
-  user_id: number;
-  action: string;
-  model: string;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date;
-}
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserLogDto } from 'src/dto/userLog.dto';
+import { UserLog } from 'src/entities/userLog.entities';
+import { UserLogInterface } from 'src/interfaces/userLog.interface';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class UserLogService {
-  private userLogs: UserLog[] = [];
+export class UserLogService implements UserLogInterface {
+  constructor(
+    @InjectRepository(UserLog)
+    private userLogRepository: Repository<UserLog>,
+  ) {}
+  async findAll(): Promise<UserLogDto[]> {
+    try {
+      const userLogs = await this.userLogRepository.find();
+      return userLogs;
+    } catch (error) {
+      console.log(error);
+      throw new Error('An error occurred while fetching user logs');
+    }
+  }
 
-  logUserActivity(user_id: number, action: string, model: string): string {
-    const userLog: UserLog = {
-      id: this.userLogs.length + 1,
-      user_id,
-      action,
-      model,
-      created_at: new Date(),
-      updated_at: new Date(),
-      deleted_at: null,
-    };
+  async findOne(id: number): Promise<UserLogDto> {
+    try {
+      const userLog = await this.userLogRepository.findOneBy({ id });
+      if (!userLog) {
+        throw new NotFoundException('UserLog not found');
+      }
+      return userLog;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    this.userLogs.push(userLog);
+  async create(userLogDto: UserLogDto): Promise<UserLogDto> {
+    try {
+      const newUserLog = this.userLogRepository.create(userLogDto);
+      return this.userLogRepository.save(newUserLog);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    const message = `User ${user_id} ${action} ${model}`;
+  async update(userLogDto: UserLogDto, id: number): Promise<UserLogDto> {
+    try {
+      const userLog = await this.findOne(id);
+      if (!userLog) {
+        throw new NotFoundException('UserLog not found!');
+      }
+      this.userLogRepository.merge(userLog, userLogDto);
+      return this.userLogRepository.save(userLog);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-    return message;
+  async delete(id: number): Promise<UserLogDto> {
+    try {
+      const userLog = await this.userLogRepository.findOneBy({ id });
+      if (!userLog) {
+        throw new NotFoundException('UserLog not found');
+      }
+      await this.userLogRepository.remove(userLog);
+      return userLog;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

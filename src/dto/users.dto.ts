@@ -1,6 +1,6 @@
 import { IsDate, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
-export class User {
+export class UserDto {
   readonly id: number;
   name: string;
 
@@ -21,6 +21,4 @@ export class User {
   @IsDate()
   created_at: Date;
   updated_at?: Date;
-  deleted_at?: Date;
-  //Properties for Users
 }

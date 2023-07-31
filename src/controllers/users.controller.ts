@@ -7,48 +7,35 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
-import { User } from 'src/dto/users.dto';
-import { UserInterface } from 'src/interfaces/users.interface';
+import { UserService } from '../services/users.service';
+import { UserDto } from 'src/dto/users.dto';
+import { BasicController } from 'src/interfaces/controller.interface';
 
 @Controller('users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class UsersController implements BasicController {
+  constructor(private readonly userService: UserService) {}
 
   @Get()
-  getAllUsers(): UserInterface[] {
-    try {
-      return this.usersService.getAllUsers();
-    } catch (error) {
-      return error;
-    }
-  } // To get all users in the database
+  findAll(): Promise<any> {
+    return this.userService.findAll();
+  }
 
   @Get(':id')
-  getOneUser(@Param('id') id: number): UserInterface {
-    try {
-      return this.usersService.getOneUser(id);
-    } catch (error) {
-      return error;
-    }
-  } // To get one user that exist in the database
-
+  findOne(@Param('id') id: number): Promise<any> {
+    return this.userService.findOne(id);
+  }
   @Post('create')
-  createUser(@Body() newUsers: User) {
-    return this.usersService.createUser(newUsers);
-  } // To create a user
+  create(@Body() userDto: UserDto) {
+    return this.userService.create(userDto);
+  }
 
   @Put(':id')
-  updateUser(@Param('id') id: number, @Body() editUsers: User) {
-    try {
-      return this.usersService.updateUser(id, editUsers);
-    } catch (error) {
-      return error;
-    }
+  update(@Body() userDto: UserDto, @Param('id') id: number): Promise<any> {
+    return this.userService.update(userDto, id);
   }
 
   @Delete(':id')
-  deleteUser(@Param('id') id: number) {
-    return this.usersService.deleteUser(id);
+  delete(@Param('id') id: number) {
+    return this.userService.delete(id);
   }
 }

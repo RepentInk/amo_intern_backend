@@ -1,5 +1,6 @@
 // customer.entity.ts
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Order } from './order.entity';
 
 @Entity()
 export class Customer {
@@ -29,4 +30,7 @@ export class Customer {
 
   @Column({ nullable: true })
   deleted_at: Date;
+
+  @OneToOne(() => Order, (order) => order.customer)
+  order: Order;
 }

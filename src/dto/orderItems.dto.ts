@@ -1,6 +1,6 @@
 import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
 
-export class OrderItems {
+export class OrderItemsDto {
   @IsNotEmpty()
   @IsNumber()
   id: number;

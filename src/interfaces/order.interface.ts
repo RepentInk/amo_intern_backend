@@ -1,16 +1,10 @@
-export interface Order {
-  id: number;
-  unique_number: string;
-  order_code: string;
-  customer_id: number;
-  user_id: number;
-  delivery_point: string;
-  payment: number;
-  status: string;
-  amount_paid: number;
-  payment_mode: string;
-  order_channel: string;
-  created_at: string;
-  updated_at: string;
-  deleted_at: string;
+import { OrderDto } from 'src/dto/order.dto';
+import { Order } from 'src/entities/order.entity';
+
+export interface OrderInterface {
+  findAll(): Promise<Order[]>;
+  findOne(id: number): Promise<Order>;
+  create(orderDto: OrderDto): Promise<Order>;
+  update(orderDto: OrderDto, id: number): Promise<Order>;
+  delete(id: number): Promise<Order>;
 }
