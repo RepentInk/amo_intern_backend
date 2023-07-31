@@ -1,64 +1,70 @@
-import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from 'src/dto/order.dto';
-import { Order } from 'src/interfaces/order.interface';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { OrderDto } from 'src/dto/order.dto';
+import { Order } from 'src/entities/order.entity';
+import { OrderInterface } from 'src/interfaces/order.interface';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class OrderService {
-  private orders = [
-    // {
-    //   id: 0,
-    //   name: 'administrator',
-    //   description: 'has all permissions',
-    //   created_at: '7/19/2023',
-    //   updated_at: '7/19/2023',
-    //   deleted_at: '',
-    // },
-  ];
+export class OrderService implements OrderInterface {
+  constructor(
+    @InjectRepository(Order)
+    private orderRepository: Repository<Order>,
+  ) {}
 
-  getAllOrders(): Order[] {
-    const allOrders = this.orders.filter((order) => order.deleted_at === '');
-    return allOrders;
-  }
-
-  getOrder(id: number): Order {
-    const allOrders = this.orders.filter((order) => order.deleted_at === '');
-    const order = allOrders.find((order) => order.id === id);
-    if (!order) {
-      throw new Error('order not found');
+  async findAll(): Promise<Order[]> {
+    try {
+      const order = await this.orderRepository.find();
+      return order;
+    } catch (error) {
+      console.log(error);
     }
-
-    return order;
   }
 
-  createOrder(createOrderDto: CreateOrderDto) {
-    createOrderDto['id'] = this.orders.at(-1) ? this.orders.at(-1).id + 1 : 0;
-    createOrderDto['created_at'] = Date.now().toLocaleString();
-    createOrderDto['updated_at'] = Date.now().toLocaleString();
-    createOrderDto['deleted_at'] = '';
-    this.orders.push(createOrderDto);
-    return createOrderDto;
-  }
-
-  updateOrder(id: number, updateOrder: CreateOrderDto) {
-    const oldOrder = this.orders.find((order) => order.id === id);
-    if (!oldOrder) {
-      throw new Error('order not found');
+  async findOne(id: number): Promise<Order> {
+    try {
+      const order = await this.orderRepository.findOneBy({ id });
+      if (!order) {
+        throw new NotFoundException('Order not found');
+      }
+      return order;
+    } catch (error) {
+      console.log(error);
     }
-    this.orders = this.orders.map((order) =>
-      order.id === id ? { ...order, ...updateOrder } : order,
-    );
-    return this.getOrder(id);
   }
 
-  removeOrder(id: number) {
-    const orderToRemove = this.orders.find((order) => order.id === id);
-    if (!orderToRemove) {
-      throw new Error('order not found');
+  async create(orderDto: OrderDto): Promise<Order> {
+    try {
+      const newOrder = this.orderRepository.create(orderDto);
+      await this.orderRepository.save(newOrder);
+      return newOrder;
+    } catch (error) {
+      console.log(error);
     }
-    orderToRemove['deleted_at'] = Date.now();
-    this.orders = this.orders.map((order) =>
-      order.id === id ? { ...order, ...orderToRemove } : order,
-    );
-    return orderToRemove;
+  }
+
+  async update(orderDto: OrderDto, id: number): Promise<Order> {
+    try {
+      const order = await this.orderRepository.findOneBy({ id });
+      if (!order) {
+        throw new NotFoundException('Order not found');
+      }
+      this.orderRepository.merge(order, orderDto);
+      return this.orderRepository.save(order);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async delete(id: number): Promise<Order> {
+    try {
+      const order = await this.findOne(id);
+      if (!order) {
+        throw new NotFoundException('Order not found');
+      }
+      await this.orderRepository.remove(order);
+      return order;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

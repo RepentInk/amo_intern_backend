@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class PermissionService implements PermissionInterface {
-  
   constructor(
     @InjectRepository(Permission)
     private permissionRepository: Repository<Permission>,
@@ -46,7 +45,7 @@ export class PermissionService implements PermissionInterface {
     try {
       const permission = await this.findOne(id);
       if (!permission) {
-        throw new NotFoundException('Permsission not found');
+        throw new NotFoundException('Permission not found');
       }
       this.permissionRepository.merge(permission, permissionDto);
       return this.permissionRepository.save(permission);
@@ -64,5 +63,4 @@ export class PermissionService implements PermissionInterface {
       console.log(error);
     }
   }
-  
 }

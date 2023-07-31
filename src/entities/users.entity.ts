@@ -6,9 +6,11 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import { Order } from './order.entity';
 import { UserLog } from './userLog.entities';
+import { Role } from './role.entity';
 
 @Entity()
 export class Users {
@@ -26,9 +28,6 @@ export class Users {
 
   @Column()
   phone_number: string;
-
-  @Column()
-  role_id: number;
 
   @Column()
   verified: boolean;
@@ -51,9 +50,13 @@ export class Users {
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
-  @OneToMany(() => Order, (order) => order.user_id)
+  @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
   @OneToMany(() => UserLog, (userLog) => userLog.user_id)
   userLog: UserLog;
+
+  @OneToMany(() => Role, (role) => role.users)
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
 }

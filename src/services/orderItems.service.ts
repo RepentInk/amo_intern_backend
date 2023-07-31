@@ -1,93 +1,69 @@
-import { Injectable } from '@nestjs/common';
-import { MockOrderItem, mockOrderItems } from '../mockup';
-import { json } from 'node:stream/consumers';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { OrderItemsDto } from 'src/dto/orderItems.dto';
+import { OrderItems } from 'src/entities/orderItems.entity';
+import { OrderItemsInterface } from 'src/interfaces/orderItems.interface';
 
 @Injectable()
-export class OrderItemService {
-  createOrderItems(
-    order_id: number,
-    orderItemsData: {
-      item_id: number;
-      quantity: number;
-      price: number;
-    }[],
-  ): MockOrderItem[] {
-    const created_at = new Date();
-    const updated_at = new Date();
+export class OrderItemService implements OrderItemsInterface {
+  constructor(
+    @InjectRepository(OrderItems)
+    private orderItemsRepository: Repository<OrderItems>,
+  ) {}
 
-    const createdOrderItems: MockOrderItem[] = orderItemsData.map(
-      (orderItemData, index) => {
-        const id = mockOrderItems.length + index + 1;
-
-        const orderItem = new MockOrderItem(
-          id,
-          order_id,
-          orderItemData.item_id,
-          orderItemData.quantity,
-          orderItemData.price,
-          created_at,
-          updated_at,
-          null,
-        );
-
-        return orderItem;
-      },
-    );
-
-    mockOrderItems.push(...createdOrderItems);
-
-    return createdOrderItems;
-  }
-
-  getItemsInAllOrders(): MockOrderItem[] {
-    return mockOrderItems;
-  }
-
-  getItemsInOneOrder(id: number): MockOrderItem | null {
-    return mockOrderItems.find((item) => item.id === id) || null;
-  }
-
-  editOrderItems(
-    order_id: number,
-    orderItemsData: {
-      id: number;
-      item_id?: number;
-      quantity?: number;
-      price?: number;
-    }[],
-  ): MockOrderItem[] {
-    const updated_at = new Date();
-
-    const updatedOrderItems: MockOrderItem[] = orderItemsData.map(
-      (orderItemData) => {
-        const orderItem = mockOrderItems.find(
-          (item) => item.id === orderItemData.id,
-        );
-        if (orderItem) {
-          orderItem.item_id = orderItemData.item_id ?? orderItem.item_id;
-          orderItem.quantity = orderItemData.quantity ?? orderItem.quantity;
-          orderItem.price = orderItemData.price ?? orderItem.price;
-          orderItem.updated_at = updated_at;
-        }
-        return orderItem;
-      },
-    );
-    return updatedOrderItems;
-  }
-
-  deleteItemsInAnOrder(order_id: number): MockOrderItem[] {
-    const orderItemsToDelete = mockOrderItems.filter(
-      (item) => item.order_id === order_id,
-    );
-
-    if (orderItemsToDelete.length === 0) {
-      return [];
+  async findAll(): Promise<OrderItemsDto[]> {
+    try {
+      return this.orderItemsRepository.find();
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    for (const orderItem of orderItemsToDelete) {
-      orderItem.deleted_at = new Date();
+  async findOne(id: number): Promise<OrderItemsDto> {
+    try {
+      const orderItem = await this.findOne(id);
+      if (!orderItem) {
+        throw new NotFoundException('OrderItem not found');
+      }
+      return orderItem;
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    return orderItemsToDelete;
+  async create(orderItemDto: OrderItemsDto): Promise<OrderItemsDto> {
+    try {
+      const newOrderItem = this.orderItemsRepository.create(orderItemDto);
+      return this.orderItemsRepository.save(newOrderItem);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async update(
+    orderItemDto: OrderItemsDto,
+    id: number,
+  ): Promise<OrderItemsDto> {
+    try {
+      const orderItem = await this.orderItemsRepository.findOneBy({ id });
+      if (!orderItem) {
+        throw new NotFoundException('Order Item not found!');
+      }
+      this.orderItemsRepository.merge(orderItem, orderItemDto);
+      return this.orderItemsRepository.save(orderItem);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async delete(id: number): Promise<OrderItemsDto> {
+    try {
+      const orderItem = await this.orderItemsRepository.findOneBy({ id });
+      await this.orderItemsRepository.remove(orderItem);
+      return orderItem;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

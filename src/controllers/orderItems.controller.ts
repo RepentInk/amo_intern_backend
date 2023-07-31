@@ -3,86 +3,43 @@ import {
   Get,
   Post,
   Put,
-  Patch,
   Delete,
   Body,
   Param,
-  BadRequestException,
 } from '@nestjs/common';
 import { OrderItemService } from '../services/orderItems.service';
-import { MockOrderItem } from '../mockup';
+import { BasicController } from 'src/interfaces/controller.interface';
+import { OrderItemsDto } from 'src/dto/orderItems.dto';
 
 @Controller('orderItems')
-export class OrderItemController {
+export class OrderItemController implements BasicController {
   constructor(private readonly orderItemService: OrderItemService) {}
-  @Post()
-  createOrderItems(
-    @Param('order_id') order_id: number,
-    @Body() orderItemsData,
-  ): any {
-    const createdOrderItems = this.orderItemService.createOrderItems(
-      order_id,
-      orderItemsData,
-    );
-
-    return {
-      message: 'Order items successfully added!',
-      orderItems: createdOrderItems,
-    };
-  }
 
   @Get()
-  getAllOrderItems(): { message: string; orderItems: MockOrderItem[] } {
-    const orderItems = this.orderItemService.getItemsInAllOrders();
-    return { message: 'Order items retrieved successfully', orderItems };
+  findAll(): Promise<any> {
+    return this.orderItemService.findAll();
   }
 
-  @Get(':order_item_id')
-  getOrderItemById(@Param('id') id: number): any {
-    const orderItem = this.orderItemService.getItemsInOneOrder(id);
-
-    if (orderItem) {
-      return {
-        message: 'Order item found!',
-        orderItem,
-      };
-    } else {
-      return {
-        message: 'Order item not found.',
-      };
-    }
+  @Get(':id')
+  findOne(@Param('id') id: number): Promise<any> {
+    return this.orderItemService.findOne(id);
   }
 
-  @Patch(':order_id')
-  editOrderItems(
-    @Param('order_id') order_id: number,
-    @Body() orderItemsData,
-  ): any {
-    const updatedOrderItems = this.orderItemService.editOrderItems(
-      order_id,
-      orderItemsData,
-    );
-
-    return {
-      message: 'Order items successfully updated!',
-      orderItems: updatedOrderItems,
-    };
+  @Post()
+  create(@Body() orderItemsDto: OrderItemsDto): Promise<any> {
+    return this.orderItemService.create(orderItemsDto);
   }
 
-  @Delete(':order_id')
-  deleteOrderItemsByOrderId(@Param('order_id') order_id: number): any {
-    const deletedOrderItems =
-      this.orderItemService.deleteItemsInAnOrder(order_id);
+  @Put(':id')
+  update(
+    @Body() orderItemsDto: OrderItemsDto,
+    @Param('id') id: number,
+  ): Promise<any> {
+    return this.orderItemService.update(orderItemsDto, id);
+  }
 
-    if (deletedOrderItems.length === 0) {
-      return {
-        message: 'No order items found for the given order ID.',
-      };
-    } else {
-      return {
-        message: 'Order items successfully deleted.',
-        deletedOrderItems,
-      };
-    }
+  @Delete(':id')
+  delete(@Param('id') id: number): Promise<any> {
+    return this.orderItemService.delete(id);
   }
 }

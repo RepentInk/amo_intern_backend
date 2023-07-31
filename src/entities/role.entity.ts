@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
 import { Permission } from './permission.entity';
+import { Users } from './users.entity';
 
 @Entity()
 export class Role {
@@ -21,7 +23,10 @@ export class Role {
   @ManyToMany(() => Permission)
   @JoinTable()
   role_permissions: Permission[];
-  
+
+  @OneToMany(() => Users, (users) => users.role)
+  users: Users;
+
   @Column()
   @CreateDateColumn()
   created_at: Date;

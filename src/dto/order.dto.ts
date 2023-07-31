@@ -1,6 +1,6 @@
 import { IsUUID, IsEnum } from 'class-validator';
 
-export class CreateOrderDto {
+export class OrderDto {
   id: number;
 
   @IsUUID()

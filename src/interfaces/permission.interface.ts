@@ -5,5 +5,5 @@ export interface PermissionInterface {
   findOne(id: number): Promise<PermissionDto>;
   create(permissionDto: PermissionDto): Promise<PermissionDto>;
   update(permissionDto: PermissionDto, id: number): Promise<PermissionDto>;
-  delete(id: number): Promise<PermissionDto>
+  delete(id: number): Promise<PermissionDto>;
 }
