@@ -16,9 +16,7 @@ export class ItemsController {
 
   //create an item
   @Post()
-  async create(
-    @Body() items: Items,
-  ): Promise<{ message: string; items: Items }> {
+  async create(@Body() items: Items): Promise<{ message: string; items: Items }> {
     return this.ItemsService.create(items);
   }
 

@@ -16,29 +16,27 @@ import { RoleDto } from 'src/dto/role.dto';
 
 @Controller('roles')
 export class RoleController implements BasicController {
-  constructor(private readonly roleService: RoleService) {}
+
+  constructor(private readonly roleService: RoleService) { }
 
   @Get()
-  findAll(): Promise<any> {
+  findAll(): Promise<RoleDto[]> {
     return this.roleService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<RoleDto> {
     return this.roleService.findOne(id);
   }
 
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Body() roleDto: RoleDto): Promise<any> {
+  create(@Body() roleDto: RoleDto): Promise<RoleDto> {
     return this.roleService.create(roleDto);
   }
 
   @Put(':id')
-  update(
-    @Body() roleDto: RoleDto,
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<any> {
+  update(@Body() roleDto: RoleDto, @Param('id', ParseIntPipe) id: number): Promise<any> {
     return this.roleService.update(roleDto, id);
   }
 

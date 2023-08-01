@@ -13,29 +13,32 @@ import { BasicController } from 'src/interfaces/controller.interface';
 
 @Controller('users')
 export class UsersController implements BasicController {
-  constructor(private readonly userService: UserService) {}
+
+  constructor(private readonly userService: UserService) { }
 
   @Get()
-  findAll(): Promise<any> {
+  findAll(): Promise<UserDto[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<any> {
+  findOne(@Param('id') id: number): Promise<UserDto> {
     return this.userService.findOne(id);
   }
+
   @Post('create')
-  create(@Body() userDto: UserDto) {
+  create(@Body() userDto: UserDto): Promise<UserDto> {
     return this.userService.create(userDto);
   }
 
   @Put(':id')
-  update(@Body() userDto: UserDto, @Param('id') id: number): Promise<any> {
+  update(@Body() userDto: UserDto, @Param('id') id: number): Promise<UserDto> {
     return this.userService.update(userDto, id);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number) {
+  delete(@Param('id') id: number): Promise<UserDto> {
     return this.userService.delete(id);
   }
+
 }

@@ -7,47 +7,44 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class RolePermissionService implements RolePermissionInterface {
-  constructor(
-    @InjectRepository(RolePermission)
-    private rolePermissionRepository: Repository<RolePermission>
-  ) {}
 
-  async findAll(): Promise<RolePermission[]> {
+  constructor(@InjectRepository(RolePermission) private rolePermissionRepository: Repository<RolePermission>) { }
+
+  async findAll(): Promise<RolePermissionDto[]> {
     try {
-      return this.rolePermissionRepository.find();
+      const permissions: any = await this.rolePermissionRepository.find();
+      return permissions;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async findOne(id: number): Promise<RolePermission> {
+  async findOne(id: number): Promise<RolePermissionDto> {
     try {
-      const rolePermission = await this.rolePermissionRepository.findOneBy({ id });
+      const rolePermission: any = await this.rolePermissionRepository.findOneBy({ id });
+
       if (!rolePermission) {
         throw new NotFoundException('RolePermsission not found');
       }
+
       return rolePermission;
     } catch (error) {
       console.log(error);
     }
   }
 
-  async create(rolePermissionDto: RolePermissionDto): Promise<RolePermission> {
+  async create(rolePermissionDto: RolePermissionDto): Promise<RolePermissionDto> {
     try {
-      const newRolePermission =
-        this.rolePermissionRepository.create(rolePermissionDto);
+      const newRolePermission = this.rolePermissionRepository.create(rolePermissionDto);
       return this.rolePermissionRepository.save(newRolePermission);
     } catch (error) {
       console.log(error);
     }
   }
 
-  async update(
-    rolePermissionDto: RolePermissionDto,
-    id: number,
-  ): Promise<RolePermission> {
+  async update(rolePermissionDto: RolePermissionDto, id: number): Promise<RolePermission> {
     try {
-      const rolePermission = await this.findOne(id);
+      const rolePermission: any = await this.findOne(id);
       if (!rolePermission) {
         throw new NotFoundException('RolePermsission not found');
       }
@@ -58,14 +55,14 @@ export class RolePermissionService implements RolePermissionInterface {
     }
   }
 
-  async delete(id: number): Promise<RolePermission> {
+  async delete(id: number): Promise<RolePermissionDto> {
     try {
-      const rolePermission = await this.findOne(id);
+      const rolePermission: any = await this.findOne(id);
       await this.rolePermissionRepository.remove(rolePermission);
       return rolePermission;
     } catch (error) {
       console.log(error);
     }
   }
-  
+
 }

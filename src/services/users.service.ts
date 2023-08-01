@@ -7,13 +7,12 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService implements UserInterface {
-  constructor(
-    @InjectRepository(Users)
-    private userRepository: Repository<Users>,
-  ) {}
+
+  constructor(@InjectRepository(Users) private userRepository: Repository<Users>) { }
 
   async findAll(): Promise<UserDto[]> {
     try {
+      const users: any = await this.userRepository.find();
       const users: any = await this.userRepository.find();
       return users;
     } catch (error) {
@@ -28,6 +27,7 @@ export class UserService implements UserInterface {
       if (!role) {
         throw new NotFoundException('User not found');
       }
+
       return role;
     } catch (error) {
       console.log(error);
@@ -55,7 +55,7 @@ export class UserService implements UserInterface {
       console.log(error);
     }
   }
-  async delete(id: number): Promise<UserDto> {
+  async delete(id: number): Promise<Users> {
     try {
       const user: any = await this.findOne(id);
       await this.userRepository.remove(user);
@@ -64,4 +64,5 @@ export class UserService implements UserInterface {
       console.log(error);
     }
   }
+
 }
