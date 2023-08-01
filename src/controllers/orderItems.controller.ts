@@ -13,8 +13,7 @@ import { OrderItemsDto } from 'src/dto/orderItems.dto';
 
 @Controller('orderItems')
 export class OrderItemController implements BasicController {
-  
-  constructor(private readonly orderItemService: OrderItemService) { }
+  constructor(private readonly orderItemService: OrderItemService) {}
 
   @Get()
   findAll(): Promise<any> {
@@ -32,7 +31,10 @@ export class OrderItemController implements BasicController {
   }
 
   @Put(':id')
-  update(@Body() orderItemsDto: OrderItemsDto, @Param('id') id: number): Promise<any> {
+  update(
+    @Body() orderItemsDto: OrderItemsDto,
+    @Param('id') id: number,
+  ): Promise<any> {
     return this.orderItemService.update(orderItemsDto, id);
   }
 

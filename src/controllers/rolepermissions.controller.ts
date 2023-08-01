@@ -16,8 +16,7 @@ import { RolePermissionDto } from 'src/dto/rolepermissions.dto';
 
 @Controller('rolepermissions')
 export class RolePermissionsControlle implements BasicController {
-
-  constructor(private readonly rolePermissionService: RolePermissionService) { }
+  constructor(private readonly rolePermissionService: RolePermissionService) {}
 
   @Get()
   findAll(): Promise<RolePermissionDto[]> {
@@ -31,18 +30,24 @@ export class RolePermissionsControlle implements BasicController {
 
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Body() rolePermissionDto: RolePermissionDto): Promise<RolePermissionDto> {
+  create(
+    @Body() rolePermissionDto: RolePermissionDto,
+  ): Promise<RolePermissionDto> {
     return this.rolePermissionService.create(rolePermissionDto);
   }
 
   @Put(':id')
-  update(@Body() rolePermissionDto: RolePermissionDto, @Param('id', ParseIntPipe) id: number): Promise<RolePermissionDto> {
+  update(
+    @Body() rolePermissionDto: RolePermissionDto,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<RolePermissionDto> {
     return this.rolePermissionService.update(rolePermissionDto, id);
   }
 
   @Delete(':id')
-  async delete(@Param('id', ParseIntPipe) id: number): Promise<RolePermissionDto> {
-    return await this.rolePermissionService.delete(id)
+  async delete(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<RolePermissionDto> {
+    return await this.rolePermissionService.delete(id);
   }
-
 }

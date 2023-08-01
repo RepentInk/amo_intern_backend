@@ -50,7 +50,10 @@ export class CustomerController {
 
   //Update Customer Info
   @Put(':id')
-  updateCustomer(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) updateCustomer: CustomerDto) {
+  updateCustomer(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(new ValidationPipe()) updateCustomer: CustomerDto,
+  ) {
     try {
       return this.customerService.updateCustomer(id, updateCustomer);
     } catch (error) {

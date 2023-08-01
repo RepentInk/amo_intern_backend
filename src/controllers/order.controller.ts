@@ -13,7 +13,6 @@ import { OrderService } from 'src/services/order.service';
 
 @Controller('orders')
 export class OrderController implements BasicController {
-
   constructor(private readonly orderService: OrderService) {}
 
   @Get()
@@ -25,7 +24,7 @@ export class OrderController implements BasicController {
   findOne(@Param('id') id: number): Promise<any> {
     return this.orderService.findOne(id);
   }
-  
+
   @Post()
   create(@Body() orderDto: OrderDto) {
     return this.orderService.create(orderDto);

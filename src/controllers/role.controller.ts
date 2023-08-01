@@ -16,8 +16,7 @@ import { RoleDto } from 'src/dto/role.dto';
 
 @Controller('roles')
 export class RoleController implements BasicController {
-
-  constructor(private readonly roleService: RoleService) { }
+  constructor(private readonly roleService: RoleService) {}
 
   @Get()
   findAll(): Promise<RoleDto[]> {
@@ -36,7 +35,10 @@ export class RoleController implements BasicController {
   }
 
   @Put(':id')
-  update(@Body() roleDto: RoleDto, @Param('id', ParseIntPipe) id: number): Promise<any> {
+  update(
+    @Body() roleDto: RoleDto,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<any> {
     return this.roleService.update(roleDto, id);
   }
 

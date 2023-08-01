@@ -12,11 +12,13 @@ import { Category } from 'src/interfaces/categories.interface';
 
 @Controller('categories')
 export class CategoryController {
-  constructor(private readonly CategoryService: CategoryService) { }
+  constructor(private readonly CategoryService: CategoryService) {}
 
   //create a category
   @Post()
-  create(@Body() category: Category): Promise<{ message: string; category: Category }> {
+  create(
+    @Body() category: Category,
+  ): Promise<{ message: string; category: Category }> {
     return this.CategoryService.create(category);
   }
 
@@ -34,7 +36,10 @@ export class CategoryController {
 
   //Update a category by the id
   @Put(':id')
-  async updateCategory(@Param('id') id: number, @Body() category: Category): Promise<{ message: string, category: Category }> {
+  async updateCategory(
+    @Param('id') id: number,
+    @Body() category: Category,
+  ): Promise<{ message: string; category: Category }> {
     return this.CategoryService.updateCategory(id, category);
   }
 
@@ -43,5 +48,4 @@ export class CategoryController {
   async deleteCategory(@Param('id') id: number): Promise<{ message: string }> {
     return this.CategoryService.deleteCategory(id);
   }
-
 }
