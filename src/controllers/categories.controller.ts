@@ -1,52 +1,77 @@
 import {
+  Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Put,
-  Delete,
-  Body,
-  Param,
 } from '@nestjs/common';
-import { CategoryService } from 'src/services/categories.service';
+import { CategoryService } from '../services/categories.service';
+import { CategoryDto } from 'src/dto/category.dto';
 import { Category } from 'src/interfaces/categories.interface';
 import { BasicController } from 'src/interfaces/controller.interface';
+import {
+  ApiTags,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
+import { Categories } from 'src/entities/category.entity';
 
 @Controller('categories')
+@ApiTags('Categories')
 export class CategoryController implements BasicController {
-  constructor(private readonly CategoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) {}
 
-  //create a category
-  @Post()
-  create(
-    @Body() category: Category,
-  ): Promise<{ message: string; category: Category }> {
-    return this.CategoryService.create(category);
-  }
-
-  // Get all categories
   @Get()
+  @ApiOkResponse({
+    description: 'Successfully retrieved all categories.',
+    type: Categories,
+    isArray: true,
+  })
   async findAll(): Promise<Category[]> {
-    return this.CategoryService.getAllCategories();
+    return this.categoryService.findAll();
   }
 
-  //Get one category by the id
   @Get(':id')
+  @ApiOkResponse({
+    description: 'Successfully retrieved the category.',
+    type: Categories,
+  })
+  @ApiNotFoundResponse({ description: 'Category not found' })
   async findOne(@Param('id') id: number): Promise<Category> {
-    return this.CategoryService.getOneCategory(id);
+    return this.categoryService.findOne(id);
   }
 
-  //Update a category by the id
+  @Post()
+  @ApiCreatedResponse({
+    description: 'Category created successfully.',
+    type: Categories,
+  })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  async create(@Body() categoryDto: CategoryDto): Promise<Category> {
+    return this.categoryService.create(categoryDto);
+  }
+
   @Put(':id')
+  @ApiOkResponse({
+    description: 'Category updated successfully.',
+    type: Categories,
+  })
+  @ApiNotFoundResponse({ description: 'Category not found' })
   async update(
     @Param('id') id: number,
-    @Body() category: Category,
-  ): Promise<{ message: string; category: Category }> {
-    return this.CategoryService.updateCategory(id, category);
+    @Body() categoryDto: CategoryDto,
+  ): Promise<Category> {
+    return this.categoryService.update(id, categoryDto);
   }
 
-  //Delete a category by the id
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<{ message: string }> {
-    return this.CategoryService.deleteCategory(id);
+  @ApiOkResponse({ description: 'Category deleted successfully.' })
+  @ApiNotFoundResponse({ description: 'Category not found' })
+  async delete(@Param('id') id: number): Promise<void> {
+    return this.categoryService.delete(id);
   }
 }

@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Category } from './category.entity';
+import { Categories } from './category.entity';
 
 @Entity()
 export class Items {
@@ -18,8 +18,8 @@ export class Items {
   @Column()
   price: number;
 
-  @ManyToOne(() => Category, (category) => category.items, { nullable: true })
-  category?: Category;
+  @ManyToOne(() => Categories, (category) => category.items, { nullable: true })
+  category?: Categories;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

@@ -1,74 +1,79 @@
+import { BasicController } from 'src/interfaces/controller.interface';
 import {
+  Body,
   Controller,
-  NotFoundException,
-  Query,
+  Delete,
   Get,
   Param,
   Post,
-  Body,
   Put,
-  Delete,
-  ParseIntPipe,
-  ValidationPipe,
 } from '@nestjs/common';
+import { CustomerService } from '../services/customer.service';
 import { CustomerDto } from 'src/dto/customer.dto';
-import { CustomerService } from 'src/services/customer.service';
-import { BasicController } from 'src/interfaces/controller.interface';
+import { CustomerInterface } from 'src/interfaces/customer.interface';
+import {
+  ApiTags,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
 
 @Controller('customers')
+@ApiTags('Customers')
 export class CustomerController implements BasicController {
   constructor(private readonly customerService: CustomerService) {}
 
-  // GetCustomers with optional query
   @Get()
-  findAll(@Query('name') name: string) {
-    try {
-      return this.customerService.getCustomers(name);
-    } catch (error) {
-      throw new NotFoundException(`${error}`);
-    }
+  @ApiOkResponse({
+    description: 'Successfully retrieved all customers.',
+    type: CustomerDto,
+    isArray: true,
+  })
+  async findAll(): Promise<CustomerInterface[]> {
+    return this.customerService.getCustomers();
   }
 
-  //Get One Customer
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    try {
-      return this.customerService.getOneCustomer(id);
-    } catch (error) {
-      throw new NotFoundException(`${error}`);
-    }
+  @ApiOkResponse({
+    description: 'Successfully retrieved the customer.',
+    type: CustomerDto,
+  })
+  @ApiNotFoundResponse({ description: 'Customer not found' })
+  async findOne(@Param('id') id: number): Promise<CustomerInterface> {
+    return this.customerService.getOneCustomer(id);
   }
 
-  // Create a Customer
   @Post()
-  createCustomer(@Body(new ValidationPipe()) newCustomer: CustomerDto) {
-    try {
-      return this.customerService.createCustomer(newCustomer);
-    } catch (error) {
-      throw new NotFoundException(`${error}`);
-    }
+  @ApiCreatedResponse({
+    description: 'Customer created successfully.',
+    type: CustomerDto,
+  })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  async create(@Body() customerDto: CustomerDto): Promise<CustomerInterface> {
+    return this.customerService.createCustomer(customerDto);
   }
 
-  //Update Customer Info
   @Put(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body(new ValidationPipe()) updateCustomer: CustomerDto,
-  ) {
-    try {
-      return this.customerService.updateCustomer(id, updateCustomer);
-    } catch (error) {
-      throw new NotFoundException(`${error}`);
-    }
+  @ApiOkResponse({
+    description: 'Customer updated successfully.',
+    type: CustomerDto,
+  })
+  @ApiNotFoundResponse({ description: 'Customer not found' })
+  async update(
+    @Param('id') id: number,
+    @Body() customerDto: CustomerDto,
+  ): Promise<CustomerInterface> {
+    return this.customerService.updateCustomer(id, customerDto);
   }
 
-  //Delete a customer
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
-    try {
-      return this.customerService.deleteCustomer(id);
-    } catch (error) {
-      throw new NotFoundException(`${error}`);
+  @ApiOkResponse({ description: 'Customer deleted successfully.' })
+  @ApiNotFoundResponse({ description: 'Customer not found' })
+  async delete(@Param('id') id: number): Promise<void> {
+    const deleteCustomer = this.customerService.deleteCustomer(id);
+    if (deleteCustomer) {
+      return Promise.resolve({ message: 'Customer deleted successfully.' });
     }
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Category } from 'src/interfaces/categories.interface';
+import { CategoryDto } from 'src/dto/category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -11,76 +12,55 @@ export class CategoryService {
     return this.current_id;
   }
 
-  // create a category using async and try-catch
-  async create(
-    category: Category,
-  ): Promise<{ message: string; category: Category }> {
-    try {
-      const id = this.autoGenerateId();
-      const created_at = new Date();
+  async create(categoryDto: CategoryDto): Promise<Category> {
+    const id = this.autoGenerateId();
+    const created_at = new Date();
 
-      const newCategory: Category = {
-        id,
-        name: category.name,
-        created_at,
-        updated_at: null,
-        deleted_at: null,
-      };
+    const newCategory: Category = {
+      id,
+      name: categoryDto.name,
+      created_at,
+      updated_at: null,
+      deleted_at: null,
+    };
 
-      this.categories.push(newCategory);
+    this.categories.push(newCategory);
 
-      return {
-        message: 'Successful', // return successful message and the category created
-        category: newCategory,
-      };
-    } catch (error) {
-      console.log(error);
-      throw new Error('Failed');
-    }
+    return newCategory;
   }
 
-  async getAllCategories(): Promise<Category[]> {
+  async findAll(): Promise<Category[]> {
     return this.categories;
   }
 
-  // Find one category with its id
-  async getOneCategory(id: number): Promise<Category> {
-    const OneCategory = this.categories.find((category) => (category.id = id));
-    if (!OneCategory) {
+  async findOne(id: number): Promise<Category> {
+    const category = this.categories.find((category) => category.id === id);
+    if (!category) {
       throw new NotFoundException('Category not found');
     }
-    return OneCategory;
+    return category;
   }
 
-  // Update an existing category using its id
-  async updateCategory(id: number, updateCategory: Category) {
+  async update(id: number, categoryDto: CategoryDto): Promise<Category> {
     const existingCategory = this.categories.find(
-      (category) => (category.id = id),
+      (category) => category.id === id,
     );
     if (!existingCategory) {
       throw new NotFoundException('Category does not exist');
     }
-    existingCategory.name = updateCategory.name; //change the existing name to the updated name
-    existingCategory.updated_at = new Date(); // change the date in updated _at to current date
-
-    return {
-      message: 'Update successful',
-      category: updateCategory,
-    };
+    existingCategory.name = categoryDto.name;
+    existingCategory.updated_at = new Date();
+    return existingCategory;
   }
 
-  // Delete a category using its id
-  async deleteCategory(id: number): Promise<{ message: string }> {
+  async delete(id: number): Promise<void> {
     const existingCategory = this.categories.find(
-      (category) => (category.id = id),
+      (category) => category.id === id,
     );
     if (!existingCategory) {
       throw new NotFoundException('Category not found!');
     }
     this.categories = this.categories.filter((category) => category.id !== id);
-    existingCategory.deleted_at = new Date(); // set the deleted_at date to current date
-    return {
-      message: 'Deleted',
-    };
+    existingCategory.deleted_at = new Date();
   }
 }

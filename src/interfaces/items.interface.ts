@@ -3,7 +3,7 @@
 export interface Items {
   id: number;
   name: string;
-  description: string;
+  description?: string;
   unit: number;
   price: number;
   category_id: number; // Foreign key from categories
