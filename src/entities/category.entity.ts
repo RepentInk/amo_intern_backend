@@ -2,15 +2,12 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Items } from './items.entity';
 
 @Entity()
-export class Category {
+export class Categories {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   name: string;
-
-  @OneToMany(() => Items, (item) => item.category)
-  items: Items[];
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
@@ -20,4 +17,9 @@ export class Category {
 
   @Column({ nullable: true })
   deleted_at: Date;
+
+  
+  @OneToMany(() => Items, (item) => item.category)
+  items: Items[];
+  
 }

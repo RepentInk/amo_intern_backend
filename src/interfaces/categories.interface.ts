@@ -1,7 +1,9 @@
-export interface Category {
-  id: number;
-  name: string;
-  created_at: Date;
-  updated_at: Date | null;
-  deleted_at: Date | null;
+import { CategoryDto } from "src/dto/category.dto";
+
+export interface CategoryInterface {
+  findAll(): Promise<CategoryDto[]>;
+  findOne(id: number): Promise<CategoryDto>;
+  create(categoryDto: CategoryDto): Promise<CategoryDto>;
+  update(categoryDto: CategoryDto, id: number): Promise<CategoryDto>;
+  delete(id: number): Promise<CategoryDto>;
 }

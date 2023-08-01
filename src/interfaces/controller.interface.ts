@@ -1,5 +1,5 @@
 export interface BasicController {
-  findAll(): Promise<any>;
+  findAll(): Promise<any[]>;
 
   findOne(id: number): Promise<any>;
 

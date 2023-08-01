@@ -1,5 +1,5 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Category } from './category.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from 'typeorm';
+import { Categories } from './category.entity';
 
 @Entity()
 export class Items {
@@ -18,8 +18,9 @@ export class Items {
   @Column()
   price: number;
 
-  @ManyToOne(() => Category, (category) => category.items, { nullable: true })
-  category?: Category;
+  @ManyToOne(() => Categories, (category) => category.items, { nullable: true })
+  @JoinColumn({ name: 'category_id' })
+  category?: Categories;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

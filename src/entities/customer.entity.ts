@@ -1,5 +1,5 @@
 // customer.entity.ts
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Order } from './order.entity';
 
 @Entity()
@@ -33,4 +33,5 @@ export class Customer {
 
   @OneToOne(() => Order, (order) => order.customer)
   order: Order;
+  
 }

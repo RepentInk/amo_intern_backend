@@ -1,86 +1,68 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Category } from 'src/interfaces/categories.interface';
+import { CategoryInterface } from 'src/interfaces/categories.interface';
+import { CategoryDto } from 'src/dto/category.dto';
+import { Categories } from 'src/entities/category.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class CategoryService {
-  private categories: Category[] = [];
-  private current_id = 0;
+export class CategoryService implements CategoryInterface {
 
-  private autoGenerateId(): number {
-    this.current_id++;
-    return this.current_id;
-  }
+  constructor(@InjectRepository(Categories) private categoryRepository: Repository<Categories>) { }
 
-  // create a category using async and try-catch
-  async create(
-    category: Category,
-  ): Promise<{ message: string; category: Category }> {
+  async findAll(): Promise<CategoryDto[]> {
     try {
-      const id = this.autoGenerateId();
-      const created_at = new Date();
-
-      const newCategory: Category = {
-        id,
-        name: category.name,
-        created_at,
-        updated_at: null,
-        deleted_at: null,
-      };
-
-      this.categories.push(newCategory);
-
-      return {
-        message: 'Successful', // return successful message and the category created
-        category: newCategory,
-      };
+      const categories: any = await this.categoryRepository.find();
+      return categories;
     } catch (error) {
       console.log(error);
-      throw new Error('Failed');
+      throw new Error('An error occurred while fetching users');
     }
   }
 
-  async getAllCategories(): Promise<Category[]> {
-    return this.categories;
-  }
+  async findOne(id: number): Promise<CategoryDto> {
+    try {
+      const category: any = await this.categoryRepository.findOneBy({ id });
+      if (!category) {
+        throw new NotFoundException('Categories not found');
+      }
 
-  // Find one category with its id
-  async getOneCategory(id: number): Promise<Category> {
-    const OneCategory = this.categories.find((category) => (category.id = id));
-    if (!OneCategory) {
-      throw new NotFoundException('Category not found');
+      return category;
+    } catch (error) {
+      console.log(error);
     }
-    return OneCategory;
   }
 
-  // Update an existing category using its id
-  async updateCategory(id: number, updateCategory: Category) {
-    const existingCategory = this.categories.find(
-      (category) => (category.id = id),
-    );
-    if (!existingCategory) {
-      throw new NotFoundException('Category does not exist');
+  async create(categoryDto: CategoryDto): Promise<CategoryDto> {
+    try {
+      const category: any = this.categoryRepository.create(categoryDto);
+      return this.categoryRepository.save(category);
+    } catch (error) {
+      console.log(error);
     }
-    existingCategory.name = updateCategory.name; //change the existing name to the updated name
-    existingCategory.updated_at = new Date(); // change the date in updated _at to current date
-
-    return {
-      message: 'Update successful',
-      category: updateCategory,
-    };
   }
 
-  // Delete a category using its id
-  async deleteCategory(id: number): Promise<{ message: string }> {
-    const existingCategory = this.categories.find(
-      (category) => (category.id = id),
-    );
-    if (!existingCategory) {
-      throw new NotFoundException('Category not found!');
+  async update(categoryDto: CategoryDto, id: number): Promise<CategoryDto> {
+    try {
+      const category: any = await this.categoryRepository.findOneBy({ id });
+      if (!category) {
+        throw new NotFoundException('User not found');
+      }
+      this.categoryRepository.merge(category, categoryDto);
+      return this.categoryRepository.save(category);
+    } catch (error) {
+      console.log(error);
     }
-    this.categories = this.categories.filter((category) => category.id !== id);
-    existingCategory.deleted_at = new Date(); // set the deleted_at date to current date
-    return {
-      message: 'Deleted',
-    };
   }
+
+  async delete(id: number): Promise<CategoryDto> {
+    try {
+      const category: any = await this.categoryRepository.findOneBy({ id });
+      await this.categoryRepository.remove(category);
+      return category;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }
