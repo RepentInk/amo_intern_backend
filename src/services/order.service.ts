@@ -33,9 +33,9 @@ export class OrderService implements OrderInterface {
     }
   }
 
-  async create(orderDto: OrderDto): Promise<Order> {
+  async create(orderDto: OrderDto): Promise<OrderDto> {
     try {
-      const newOrder = this.orderRepository.create(orderDto);
+      const newOrder: any = this.orderRepository.create(orderDto);
       await this.orderRepository.save(newOrder);
       return newOrder;
     } catch (error) {

@@ -16,9 +16,6 @@ export class UserLog {
   id: number;
 
   @Column()
-  user_id: number;
-
-  @Column()
   activity: string;
 
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })

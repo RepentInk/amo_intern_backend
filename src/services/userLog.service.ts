@@ -13,7 +13,7 @@ export class UserLogService implements UserLogInterface {
   ) {}
   async findAll(): Promise<UserLogDto[]> {
     try {
-      const userLogs = await this.userLogRepository.find();
+      const userLogs: any = await this.userLogRepository.find();
       return userLogs;
     } catch (error) {
       console.log(error);
@@ -23,7 +23,7 @@ export class UserLogService implements UserLogInterface {
 
   async findOne(id: number): Promise<UserLogDto> {
     try {
-      const userLog = await this.userLogRepository.findOneBy({ id });
+      const userLog: any = await this.userLogRepository.findOneBy({ id });
       if (!userLog) {
         throw new NotFoundException('UserLog not found');
       }
@@ -35,7 +35,7 @@ export class UserLogService implements UserLogInterface {
 
   async create(userLogDto: UserLogDto): Promise<UserLogDto> {
     try {
-      const newUserLog = this.userLogRepository.create(userLogDto);
+      const newUserLog: any = this.userLogRepository.create(userLogDto);
       return this.userLogRepository.save(newUserLog);
     } catch (error) {
       console.log(error);
@@ -44,7 +44,7 @@ export class UserLogService implements UserLogInterface {
 
   async update(userLogDto: UserLogDto, id: number): Promise<UserLogDto> {
     try {
-      const userLog = await this.findOne(id);
+      const userLog: any = await this.findOne(id);
       if (!userLog) {
         throw new NotFoundException('UserLog not found!');
       }
@@ -57,7 +57,7 @@ export class UserLogService implements UserLogInterface {
 
   async delete(id: number): Promise<UserLogDto> {
     try {
-      const userLog = await this.userLogRepository.findOneBy({ id });
+      const userLog: any = await this.userLogRepository.findOneBy({ id });
       if (!userLog) {
         throw new NotFoundException('UserLog not found');
       }
