@@ -11,6 +11,7 @@ export class UserLogDto {
 
   @IsDate()
   created_at: Date;
-  updated_at: Date;
-  deleted_at: Date;
+  updated_at?: Date;
+  deleted_at?: Date;
+
 }

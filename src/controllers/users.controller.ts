@@ -13,6 +13,7 @@ import { BasicController } from 'src/interfaces/controller.interface';
 
 @Controller('users')
 export class UsersController implements BasicController {
+
   constructor(private readonly userService: UserService) {}
 
   @Get()
@@ -39,4 +40,5 @@ export class UsersController implements BasicController {
   delete(@Param('id') id: number): Promise<UserDto> {
     return this.userService.delete(id);
   }
+  
 }

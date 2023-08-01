@@ -6,13 +6,12 @@ import { UserInterface } from 'src/interfaces/users.interface';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class UserService implements UserInterface {
+export class UsersService implements UserInterface {
 
   constructor(@InjectRepository(Users) private userRepository: Repository<Users>) { }
 
   async findAll(): Promise<UserDto[]> {
     try {
-      const users: any = await this.userRepository.find();
       const users: any = await this.userRepository.find();
       return users;
     } catch (error) {
@@ -55,7 +54,8 @@ export class UserService implements UserInterface {
       console.log(error);
     }
   }
-  async delete(id: number): Promise<Users> {
+
+  async delete(id: number): Promise<UserDto> {
     try {
       const user: any = await this.findOne(id);
       await this.userRepository.remove(user);

@@ -1,4 +1,4 @@
-import { IsUUID, IsEnum } from 'class-validator';
+import { IsUUID, IsEnum, IsDate } from 'class-validator';
 
 export class OrderDto {
   id: number;
@@ -18,4 +18,10 @@ export class OrderDto {
   amount_paid: number;
   payment_mode: string;
   order_channel: string;
+
+  @IsDate()
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date;
+  
 }

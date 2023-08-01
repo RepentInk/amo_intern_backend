@@ -13,33 +13,32 @@ import { OrderItemsDto } from 'src/dto/orderItems.dto';
 
 @Controller('orderItems')
 export class OrderItemController implements BasicController {
-  constructor(private readonly orderItemService: OrderItemService) {}
+
+  constructor(private readonly orderItemService: OrderItemService) { }
 
   @Get()
-  findAll(): Promise<any> {
+  findAll(): Promise<OrderItemsDto[]> {
     return this.orderItemService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number): Promise<any> {
+  findOne(@Param('id') id: number): Promise<OrderItemsDto> {
     return this.orderItemService.findOne(id);
   }
 
   @Post()
-  create(@Body() orderItemsDto: OrderItemsDto): Promise<any> {
+  create(@Body() orderItemsDto: OrderItemsDto): Promise<OrderItemsDto> {
     return this.orderItemService.create(orderItemsDto);
   }
 
   @Put(':id')
-  update(
-    @Body() orderItemsDto: OrderItemsDto,
-    @Param('id') id: number,
-  ): Promise<any> {
+  update(@Body() orderItemsDto: OrderItemsDto, @Param('id') id: number): Promise<OrderItemsDto> {
     return this.orderItemService.update(orderItemsDto, id);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): Promise<any> {
+  delete(@Param('id') id: number): Promise<OrderItemsDto> {
     return this.orderItemService.delete(id);
   }
+
 }

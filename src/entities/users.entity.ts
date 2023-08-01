@@ -53,10 +53,11 @@ export class Users {
   @OneToMany(() => Order, (order) => order.user)
   orders: Order[];
 
-  @OneToMany(() => UserLog, (userLog) => userLog.user_id)
+  @OneToMany(() => UserLog, (userLog) => userLog.userLog)
   userLog: UserLog;
 
   @OneToMany(() => Role, (role) => role.users)
   @JoinColumn({ name: 'role_id' })
   role: Role;
+  
 }

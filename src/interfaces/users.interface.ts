@@ -1,5 +1,4 @@
 import { UserDto } from 'src/dto/users.dto';
-import { Users } from 'src/entities/users.entity';
 
 export interface UserInterface {
   findAll(): Promise<UserDto[]>;

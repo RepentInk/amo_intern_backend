@@ -8,7 +8,7 @@ import { OrderItemsInterface } from 'src/interfaces/orderItems.interface';
 @Injectable()
 export class OrderItemService implements OrderItemsInterface {
 
-  constructor(@InjectRepository(OrderItems) private orderItemsRepository: Repository<OrderItems>) {}
+  constructor(@InjectRepository(OrderItems) private orderItemsRepository: Repository<OrderItems>) { }
 
   async findAll(): Promise<OrderItemsDto[]> {
     try {
@@ -66,4 +66,5 @@ export class OrderItemService implements OrderItemsInterface {
       console.log(error);
     }
   }
+
 }

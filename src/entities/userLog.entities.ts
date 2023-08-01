@@ -30,4 +30,5 @@ export class UserLog {
   @OneToMany(() => Users, (users) => users.userLog)
   @JoinColumn({ name: 'user_id' })
   userLog: UserLog;
+  
 }

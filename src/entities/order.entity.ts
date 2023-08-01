@@ -34,7 +34,7 @@ export class Order {
   status: string;
 
   @Column()
-  amount_paid: string;
+  amount_paid: number;
 
   @Column()
   payment_mode: string;
