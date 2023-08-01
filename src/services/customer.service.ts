@@ -4,6 +4,12 @@ import { CustomerInterface } from 'src/interfaces/customer.interface';
 
 @Injectable()
 export class CustomerService {
+  update(
+    id: number,
+    CustomerDto: CustomerDto,
+  ): CustomerDto | PromiseLike<CustomerDto> {
+    throw new Error('Method not implemented.');
+  }
   // Initial Customers Array
   private customers = [];
 

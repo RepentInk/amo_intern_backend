@@ -1,8 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ItemsDto } from 'src/dto/items.dto';
 import { Items } from 'src/interfaces/items.interface';
 
 @Injectable()
 export class ItemsService {
+  update(
+    id: number,
+    itemsDto: ItemsDto,
+  ):
+    | import('../dto/items.dto').ItemsDto
+    | PromiseLike<import('../dto/items.dto').ItemsDto> {
+    throw new Error('Method not implemented.');
+  }
   private items: Items[] = [];
   private current_id = 0; // initialize the current id
 

@@ -61,10 +61,10 @@ export class CustomerController implements BasicController {
   })
   @ApiNotFoundResponse({ description: 'Customer not found' })
   async update(
+    @Body() CustomerDto: CustomerDto,
     @Param('id') id: number,
-    @Body() customerDto: CustomerDto,
-  ): Promise<CustomerInterface> {
-    return this.customerService.updateCustomer(id, customerDto);
+  ): Promise<CustomerDto> {
+    return this.customerService.update(id, CustomerDto);
   }
 
   @Delete(':id')

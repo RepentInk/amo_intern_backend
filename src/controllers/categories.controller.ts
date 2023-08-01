@@ -62,10 +62,10 @@ export class CategoryController implements BasicController {
   })
   @ApiNotFoundResponse({ description: 'Category not found' })
   async update(
+    @Body() CategoryDto: CategoryDto,
     @Param('id') id: number,
-    @Body() categoryDto: CategoryDto,
-  ): Promise<Category> {
-    return this.categoryService.update(id, categoryDto);
+  ): Promise<CategoryDto> {
+    return this.categoryService.update(id, CategoryDto);
   }
 
   @Delete(':id')

@@ -58,10 +58,10 @@ export class ItemsController implements BasicController {
   @ApiOkResponse({ description: 'Item updated successfully.', type: ItemsDto })
   @ApiNotFoundResponse({ description: 'Item not found' })
   async update(
-    @Param('id') id: number,
     @Body() itemsDto: ItemsDto,
-  ): Promise<Items> {
-    return this.itemsService.updateItem(id, itemsDto);
+    @Param('id') id: number,
+  ): Promise<ItemsDto> {
+    return this.itemsService.update(id, itemsDto);
   }
 
   @Delete(':id')
