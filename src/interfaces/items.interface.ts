@@ -1,13 +1,9 @@
-// import { Category } from './categories.interface';
+import { ItemsDto } from "src/dto/items.dto";
 
-export interface Items {
-  id: number;
-  name: string;
-  description?: string;
-  unit: number;
-  price: number;
-  category_id: number; // Foreign key from categories
-  created_at: Date;
-  updated_at: Date | null;
-  deleted_at: Date | null;
+export interface ItemsInterface {
+  findAll(): Promise<ItemsDto[]>;
+  findOne(id: number): Promise<ItemsDto>;
+  create(itemsDto: ItemsDto): Promise<ItemsDto>;
+  update(itemsDto: ItemsDto, id: number): Promise<ItemsDto>;
+  delete(id: number): Promise<ItemsDto>;
 }

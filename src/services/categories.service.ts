@@ -1,66 +1,68 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Category } from 'src/interfaces/categories.interface';
+import { CategoryInterface } from 'src/interfaces/categories.interface';
 import { CategoryDto } from 'src/dto/category.dto';
+import { Categories } from 'src/entities/category.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
-export class CategoryService {
-  private categories: Category[] = [];
-  private current_id = 0;
+export class CategoryService implements CategoryInterface {
 
-  private autoGenerateId(): number {
-    this.current_id++;
-    return this.current_id;
-  }
+  constructor(@InjectRepository(Categories) private categoryRepository: Repository<Categories>) { }
 
-  async create(categoryDto: CategoryDto): Promise<Category> {
-    const id = this.autoGenerateId();
-    const created_at = new Date();
-
-    const newCategory: Category = {
-      id,
-      name: categoryDto.name,
-      created_at,
-      updated_at: null,
-      deleted_at: null,
-    };
-
-    this.categories.push(newCategory);
-
-    return newCategory;
-  }
-
-  async findAll(): Promise<Category[]> {
-    return this.categories;
-  }
-
-  async findOne(id: number): Promise<Category> {
-    const category = this.categories.find((category) => category.id === id);
-    if (!category) {
-      throw new NotFoundException('Category not found');
+  async findAll(): Promise<CategoryDto[]> {
+    try {
+      const categories: any = await this.categoryRepository.find();
+      return categories;
+    } catch (error) {
+      console.log(error);
+      throw new Error('An error occurred while fetching users');
     }
-    return category;
   }
 
-  async update(id: number, categoryDto: CategoryDto): Promise<Category> {
-    const existingCategory = this.categories.find(
-      (category) => category.id === id,
-    );
-    if (!existingCategory) {
-      throw new NotFoundException('Category does not exist');
+  async findOne(id: number): Promise<CategoryDto> {
+    try {
+      const category: any = await this.categoryRepository.findOneBy({ id });
+      if (!category) {
+        throw new NotFoundException('Categories not found');
+      }
+
+      return category;
+    } catch (error) {
+      console.log(error);
     }
-    existingCategory.name = categoryDto.name;
-    existingCategory.updated_at = new Date();
-    return existingCategory;
   }
 
-  async delete(id: number): Promise<void> {
-    const existingCategory = this.categories.find(
-      (category) => category.id === id,
-    );
-    if (!existingCategory) {
-      throw new NotFoundException('Category not found!');
+  async create(categoryDto: CategoryDto): Promise<CategoryDto> {
+    try {
+      const category: any = this.categoryRepository.create(categoryDto);
+      return this.categoryRepository.save(category);
+    } catch (error) {
+      console.log(error);
     }
-    this.categories = this.categories.filter((category) => category.id !== id);
-    existingCategory.deleted_at = new Date();
   }
+
+  async update(categoryDto: CategoryDto, id: number): Promise<CategoryDto> {
+    try {
+      const category: any = await this.categoryRepository.findOneBy({ id });
+      if (!category) {
+        throw new NotFoundException('User not found');
+      }
+      this.categoryRepository.merge(category, categoryDto);
+      return this.categoryRepository.save(category);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async delete(id: number): Promise<CategoryDto> {
+    try {
+      const category: any = await this.categoryRepository.findOneBy({ id });
+      await this.categoryRepository.remove(category);
+      return category;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }

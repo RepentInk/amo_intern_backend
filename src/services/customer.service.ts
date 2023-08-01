@@ -1,65 +1,68 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CustomerDto } from 'src/dto/customer.dto';
+import { Customer } from 'src/entities/customer.entity';
 import { CustomerInterface } from 'src/interfaces/customer.interface';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class CustomerService {
-  update(
-    id: number,
-    CustomerDto: CustomerDto,
-  ): CustomerDto | PromiseLike<CustomerDto> {
-    throw new Error('Method not implemented.');
-  }
-  // Initial Customers Array
-  private customers = [];
+export class CustomerService implements CustomerInterface {
 
-  //getCustomers class method  with optional query parameter
-  getCustomers = (name?: string): CustomerInterface[] => {
-    if (name) {
-      return this.customers.filter((customer) => customer.name === name);
-    }
-    return this.customers;
-  };
+  constructor(@InjectRepository(Customer) private customerRepository: Repository<Customer>) { }
 
-  //getOneCustomer returns a single field in the customers database/array or throws an error when no entry exists.
-  getOneCustomer = (id: number): CustomerInterface => {
-    const findCustomer = this.customers.find((customer) => customer.id == id);
-    if (findCustomer) return findCustomer;
-    else throw new Error(`Customer does not exist... Please register`);
-  };
-
-  //createCustomer creates a new entry of customer and returns the newly created customer
-  createCustomer(newCustomerInfo: CustomerDto) {
-    // find if customer exist
-    const findCustomer = this.customers.find(
-      (customer) => customer.email == newCustomerInfo.email,
-    );
-    if (!findCustomer) {
-      const id = Math.floor(Math.random() * 10000000000000); //Auto assign id to customers
-      const newCustomer = { id, ...newCustomerInfo };
-      this.customers.push(newCustomer);
-      return this.getOneCustomer(id);
-    } else {
-      throw new Error('Customer already exist!');
-    }
-  }
-
-  //update customer by passing id and updated info
-  updateCustomer(id: number, updateCustomer: CustomerDto) {
-    this.customers = this.customers.map((customer) => {
-      if (customer.id === id) {
-        return { ...customer, ...updateCustomer };
-      }
+  async findAll(): Promise<CustomerDto[]> {
+    try {
+      const customer: any = await this.customerRepository.find();
       return customer;
-    });
-    return this.getOneCustomer(id);
+    } catch (error) {
+      console.log(error);
+      throw new Error('An error occurred while fetching users');
+    }
   }
 
-  //delete a customer by id
-  deleteCustomer(id: number) {
-    this.customers = this.customers.filter((customer) => {
-      return customer.id !== id;
-    });
-    return this.getCustomers();
+  async findOne(id: number): Promise<CustomerDto> {
+    try {
+      const customer: any = await this.customerRepository.findOneBy({ id });
+      if (!customer) {
+        throw new NotFoundException('Categories not found');
+      }
+
+      return customer;
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  async create(customerDto: CustomerDto): Promise<CustomerDto> {
+    try {
+      const customer: any = this.customerRepository.create(customerDto);
+      return await this.customerRepository.save(customer);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async update(customerDto: CustomerDto, id: number): Promise<CustomerDto> {
+    try {
+      const customer: any = await this.customerRepository.findOneBy({ id });
+      if (!customer) {
+        throw new NotFoundException('Customer not found');
+      }
+      this.customerRepository.merge(customer, customerDto);
+      return this.customerRepository.save(customer);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async delete(id: number): Promise<CustomerDto> {
+    try {
+      const customer: any = await this.customerRepository.findOneBy({ id });
+      await this.customerRepository.remove(customer);
+      return customer;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }

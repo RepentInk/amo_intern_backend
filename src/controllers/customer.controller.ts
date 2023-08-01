@@ -1,4 +1,5 @@
 import { BasicController } from 'src/interfaces/controller.interface';
+import { CustomerInterface } from 'src/interfaces/customer.interface';
 import {
   Body,
   Controller,
@@ -10,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { CustomerService } from '../services/customer.service';
 import { CustomerDto } from 'src/dto/customer.dto';
-import { CustomerInterface } from 'src/interfaces/customer.interface';
 import {
   ApiTags,
   ApiOkResponse,
@@ -22,6 +22,7 @@ import {
 @Controller('customers')
 @ApiTags('Customers')
 export class CustomerController implements BasicController {
+
   constructor(private readonly customerService: CustomerService) {}
 
   @Get()
@@ -30,7 +31,7 @@ export class CustomerController implements BasicController {
     type: CustomerDto,
     isArray: true,
   })
-  async findAll(): Promise<CustomerInterface[]> {
+  async findAll(): Promise<CustomerDto[]> {
     return this.customerService.getCustomers();
   }
 
@@ -40,7 +41,7 @@ export class CustomerController implements BasicController {
     type: CustomerDto,
   })
   @ApiNotFoundResponse({ description: 'Customer not found' })
-  async findOne(@Param('id') id: number): Promise<CustomerInterface> {
+  async findOne(@Param('id') id: number): Promise<CustomerDto> {
     return this.customerService.getOneCustomer(id);
   }
 
@@ -50,7 +51,7 @@ export class CustomerController implements BasicController {
     type: CustomerDto,
   })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async create(@Body() customerDto: CustomerDto): Promise<CustomerInterface> {
+  async create(@Body() customerDto: CustomerDto): Promise<CustomerDto> {
     return this.customerService.createCustomer(customerDto);
   }
 
@@ -60,20 +61,15 @@ export class CustomerController implements BasicController {
     type: CustomerDto,
   })
   @ApiNotFoundResponse({ description: 'Customer not found' })
-  async update(
-    @Body() CustomerDto: CustomerDto,
-    @Param('id') id: number,
-  ): Promise<CustomerDto> {
+  async update(@Body() CustomerDto: CustomerDto, @Param('id') id: number): Promise<CustomerDto> {
     return this.customerService.update(id, CustomerDto);
   }
 
   @Delete(':id')
   @ApiOkResponse({ description: 'Customer deleted successfully.' })
   @ApiNotFoundResponse({ description: 'Customer not found' })
-  async delete(@Param('id') id: number): Promise<void> {
-    const deleteCustomer = this.customerService.deleteCustomer(id);
-    if (deleteCustomer) {
-      return Promise.resolve({ message: 'Customer deleted successfully.' });
-    }
+  async delete(@Param('id') id: number): Promise<CustomerDto> {
+    return this.customerService.deleteCustomer(id);
   }
+  
 }

@@ -9,9 +9,6 @@ export class Categories {
   @Column()
   name: string;
 
-  @OneToMany(() => Items, (item) => item.category)
-  items: Items[];
-
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
@@ -20,4 +17,9 @@ export class Categories {
 
   @Column({ nullable: true })
   deleted_at: Date;
+
+  
+  @OneToMany(() => Items, (item) => item.category)
+  items: Items[];
+  
 }

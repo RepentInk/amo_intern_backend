@@ -1,4 +1,6 @@
 import { BasicController } from 'src/interfaces/controller.interface';
+import { ItemsService } from '../services/items.service';
+import { ItemsDto } from 'src/dto/items.dto';
 import {
   Body,
   Controller,
@@ -8,9 +10,6 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ItemsService } from '../services/items.service';
-import { ItemsDto } from 'src/dto/items.dto';
-import { Items } from 'src/interfaces/items.interface';
 import {
   ApiTags,
   ApiOkResponse,
@@ -22,7 +21,8 @@ import {
 @Controller('items')
 @ApiTags('Items')
 export class ItemsController implements BasicController {
-  constructor(private readonly itemsService: ItemsService) {}
+
+  constructor(private readonly itemsService: ItemsService) { }
 
   @Get()
   @ApiOkResponse({
@@ -30,8 +30,8 @@ export class ItemsController implements BasicController {
     type: ItemsDto,
     isArray: true,
   })
-  async findAll(): Promise<Items[]> {
-    return this.itemsService.getAllItems();
+  async findAll(): Promise<ItemsDto[]> {
+    return this.itemsService.findAll();
   }
 
   @Get(':id')
@@ -40,8 +40,8 @@ export class ItemsController implements BasicController {
     type: ItemsDto,
   })
   @ApiNotFoundResponse({ description: 'Item not found' })
-  async findOne(@Param('id') id: number): Promise<Items> {
-    return this.itemsService.getOneItem(id);
+  async findOne(@Param('id') id: number): Promise<ItemsDto> {
+    return this.itemsService.findOne(id);
   }
 
   @Post()
@@ -50,24 +50,22 @@ export class ItemsController implements BasicController {
     type: ItemsDto,
   })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async create(@Body() itemsDto: ItemsDto): Promise<Items> {
+  async create(@Body() itemsDto: ItemsDto): Promise<ItemsDto> {
     return this.itemsService.create(itemsDto);
   }
 
   @Put(':id')
   @ApiOkResponse({ description: 'Item updated successfully.', type: ItemsDto })
   @ApiNotFoundResponse({ description: 'Item not found' })
-  async update(
-    @Body() itemsDto: ItemsDto,
-    @Param('id') id: number,
-  ): Promise<ItemsDto> {
-    return this.itemsService.update(id, itemsDto);
+  async update(@Body() itemsDto: ItemsDto, @Param('id') id: number): Promise<ItemsDto> {
+    return this.itemsService.update(itemsDto, id);
   }
 
   @Delete(':id')
   @ApiOkResponse({ description: 'Item deleted successfully.' })
   @ApiNotFoundResponse({ description: 'Item not found' })
-  async delete(@Param('id') id: number): Promise<void> {
-    return this.itemsService.deleteItem(id);
+  async delete(@Param('id') id: number): Promise<ItemsDto> {
+    return this.itemsService.delete(id);
   }
+
 }
