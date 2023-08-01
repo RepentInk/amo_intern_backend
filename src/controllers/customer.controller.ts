@@ -13,14 +13,15 @@ import {
 } from '@nestjs/common';
 import { CustomerDto } from 'src/dto/customer.dto';
 import { CustomerService } from 'src/services/customer.service';
+import { BasicController } from 'src/interfaces/controller.interface';
 
 @Controller('customers')
-export class CustomerController {
+export class CustomerController implements BasicController {
   constructor(private readonly customerService: CustomerService) {}
 
   // GetCustomers with optional query
   @Get()
-  getCustomers(@Query('name') name: string) {
+  findAll(@Query('name') name: string) {
     try {
       return this.customerService.getCustomers(name);
     } catch (error) {
@@ -30,7 +31,7 @@ export class CustomerController {
 
   //Get One Customer
   @Get(':id')
-  getOneCustomer(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     try {
       return this.customerService.getOneCustomer(id);
     } catch (error) {
@@ -50,7 +51,10 @@ export class CustomerController {
 
   //Update Customer Info
   @Put(':id')
-  updateCustomer(@Param('id', ParseIntPipe) id: number, @Body(new ValidationPipe()) updateCustomer: CustomerDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(new ValidationPipe()) updateCustomer: CustomerDto,
+  ) {
     try {
       return this.customerService.updateCustomer(id, updateCustomer);
     } catch (error) {
@@ -60,7 +64,7 @@ export class CustomerController {
 
   //Delete a customer
   @Delete(':id')
-  deleteCustomer(@Param('id', ParseIntPipe) id: number) {
+  delete(@Param('id', ParseIntPipe) id: number) {
     try {
       return this.customerService.deleteCustomer(id);
     } catch (error) {
