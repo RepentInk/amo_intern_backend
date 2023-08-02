@@ -1,22 +1,22 @@
 // src/sms/sms.service.ts
 import { Injectable } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { SmsInterface } from 'src/interface/sms.interface';
 import * as Twilio from 'twilio';
+ConfigModule.forRoot();
 
 @Injectable()
-export class SmsService  {
-  private readonly twilioClient: Twilio.Twilio;
-
-  constructor() {
-    // Replace YOUR_ACCOUNT_SID and YOUR_AUTH_TOKEN with your Twilio credentials
-    this.twilioClient = Twilio(YOUR_ACCOUNT_SID, YOUR_AUTH_TOKEN);
+export class SmsService implements SmsInterface {
+  constructor(private readonly twilioClient: Twilio.Twilio) {
+    //Twilio credentials
+    this.twilioClient = Twilio(process.env.SMS_SID, process.env.SMS_TOKEN);
   }
 
-  async sendSms(phoneNumber: string, message: string): Promise<void> {
+  async sendSms(customerNumber: string, message: string): Promise<void> {
     try {
       await this.twilioClient.messages.create({
-        to: phoneNumber,
-        from: 'YOUR_TWILIO_PHONE_NUMBER', // Replace with your Twilio phone number
+        to: customerNumber,
+        from: process.env.VIRTUAL_NUMBER, //Twilio phone number
         body: message,
       });
     } catch (error) {
@@ -24,4 +24,4 @@ export class SmsService  {
       throw new Error('Failed to send SMS');
     }
   }
-}
+};
