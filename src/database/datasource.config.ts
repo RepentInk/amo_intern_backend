@@ -3,7 +3,7 @@ import { Users } from 'src/entities/users.entity';
 import { UserLog } from 'src/entities/userLog.entities';
 import { Order } from 'src/entities/order.entity';
 import { Items } from 'src/entities/items.entity';
-import { Category } from 'src/entities/category.entity';
+import { Categories } from 'src/entities/category.entity';
 import { Customer } from 'src/entities/customer.entity';
 import { OrderItems } from 'src/entities/orderItems.entity';
 
@@ -14,7 +14,7 @@ const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [Users, Order, Items, Category, Customer, OrderItems, UserLog],
+  entities: [Users, Order, Items, Categories, Customer, OrderItems, UserLog],
   synchronize: true,
   migrations: [],
 });

@@ -4,7 +4,7 @@ import { Setting } from 'src/interfaces/setting.interface';
 
 @Injectable()
 export class SettingService implements Setting {
-  findAll(): Promise<SettingDto> {
+  findAll(): Promise<SettingDto[]> {
     throw new Error('Method not implemented.');
   }
   findOne(settingDto: SettingDto): Promise<SettingDto> {

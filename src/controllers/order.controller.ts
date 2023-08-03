@@ -41,4 +41,9 @@ export class OrderController implements BasicController {
     return this.orderService.delete(id);
   }
 
+  @Get('chart_data')
+   orderData(): Promise<any> {
+     return this.orderService.OrderData()
+   }
+
 }
