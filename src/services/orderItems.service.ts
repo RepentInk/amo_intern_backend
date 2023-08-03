@@ -22,7 +22,9 @@ export class OrderItemService implements OrderItemsInterface {
 
   async findOne(id: number): Promise<OrderItemsDto> {
     try {
-      const orderItem = await this.findOne(id);
+      const orderItem = await this.orderItemsRepository.findOne({
+        where: { id },
+      });
 
       if (!orderItem) {
         throw new NotFoundException('OrderItem not found');
@@ -48,7 +50,9 @@ export class OrderItemService implements OrderItemsInterface {
     id: number,
   ): Promise<OrderItemsDto> {
     try {
-      const orderItem = await this.orderItemsRepository.findOneBy({ id });
+      const orderItem = await this.orderItemsRepository.findOne({
+        where: { id },
+      });
 
       if (!orderItem) {
         throw new NotFoundException('Order Item not found!');
@@ -64,7 +68,9 @@ export class OrderItemService implements OrderItemsInterface {
 
   async delete(id: number): Promise<OrderItemsDto> {
     try {
-      const orderItem = await this.orderItemsRepository.findOneBy({ id });
+      const orderItem = await this.orderItemsRepository.findOne({
+        where: { id },
+      });
       await this.orderItemsRepository.remove(orderItem);
       return orderItem;
     } catch (error) {

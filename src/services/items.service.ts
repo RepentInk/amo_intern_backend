@@ -23,7 +23,7 @@ export class ItemsService implements ItemsInterface {
 
   async findOne(id: number): Promise<ItemsDto> {
     try {
-      const item: any = await this.itemRepository.findOneBy({ id });
+      const item: any = await this.itemRepository.findOne({ where: { id } });
       if (!item) {
         throw new NotFoundException('Item not found');
       }
@@ -45,7 +45,7 @@ export class ItemsService implements ItemsInterface {
 
   async update(itemsDto: ItemsDto, id: number): Promise<ItemsDto> {
     try {
-      const item: any = await this.itemRepository.findOneBy({ id });
+      const item: any = await this.itemRepository.findOne({ where: { id } });
       if (!item) {
         throw new NotFoundException('Item not found');
       }
@@ -58,7 +58,7 @@ export class ItemsService implements ItemsInterface {
 
   async delete(id: number): Promise<ItemsDto> {
     try {
-      const item: any = await this.itemRepository.findOneBy({ id });
+      const item: any = await this.itemRepository.findOne({ where: { id } });
       await this.itemRepository.remove(item);
       return item;
     } catch (error) {

@@ -23,9 +23,9 @@ export class RolePermissionService implements RolePermissionInterface {
 
   async findOne(id: number): Promise<RolePermissionDto> {
     try {
-      const rolePermission: any = await this.rolePermissionRepository.findOneBy(
-        { id },
-      );
+      const rolePermission: any = await this.rolePermissionRepository.findOne({
+        where: { id },
+      });
 
       if (!rolePermission) {
         throw new NotFoundException('RolePermsission not found');

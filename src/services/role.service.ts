@@ -22,7 +22,7 @@ export class RoleService implements RoleInterface {
 
   async findOne(id: number): Promise<Role> {
     try {
-      const role = await this.roleRepository.findOneBy({ id });
+      const role = await this.roleRepository.findOne({ where: { id } });
       if (!role) {
         throw new NotFoundException('Role not found');
       }

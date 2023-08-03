@@ -20,14 +20,13 @@ export class Role {
   @Column()
   description: string;
 
-  @ManyToMany(() => Permission)
+  @ManyToMany(() => Permission, (permission) => permission.roles)
   @JoinTable()
-  role_permissions: Permission[];
+  permissions: Permission[];
 
   @OneToMany(() => Users, (users) => users.role)
-  users: Users;
+  users: Users[];
 
-  @Column()
   @CreateDateColumn()
   created_at: Date;
   @UpdateDateColumn()

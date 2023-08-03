@@ -4,7 +4,6 @@ import { UserLogDto } from 'src/dto/userLog.dto';
 import { UserLog } from 'src/entities/userLog.entities';
 import { UserLogInterface } from 'src/interfaces/userLog.interface';
 import { Repository } from 'typeorm';
-
 @Injectable()
 export class UserLogService implements UserLogInterface {
   constructor(
@@ -23,7 +22,9 @@ export class UserLogService implements UserLogInterface {
 
   async findOne(id: number): Promise<UserLogDto> {
     try {
-      const userLog: any = await this.userLogRepository.findOneBy({ id });
+      const userLog: any = await this.userLogRepository.findOne({
+        where: { id },
+      });
       if (!userLog) {
         throw new NotFoundException('UserLog not found');
       }
@@ -44,7 +45,9 @@ export class UserLogService implements UserLogInterface {
 
   async update(userLogDto: UserLogDto, id: number): Promise<UserLogDto> {
     try {
-      const userLog: any = await this.findOne(id);
+      const userLog: any = await this.userLogRepository.findOne({
+        where: { id },
+      });
       if (!userLog) {
         throw new NotFoundException('UserLog not found!');
       }
@@ -57,7 +60,9 @@ export class UserLogService implements UserLogInterface {
 
   async delete(id: number): Promise<UserLogDto> {
     try {
-      const userLog: any = await this.userLogRepository.findOneBy({ id });
+      const userLog: any = await this.userLogRepository.findOne({
+        where: { id },
+      });
       if (!userLog) {
         throw new NotFoundException('UserLog not found');
       }

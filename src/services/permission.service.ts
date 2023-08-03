@@ -22,7 +22,9 @@ export class PermissionService implements PermissionInterface {
 
   async findOne(id: number): Promise<PermissionDto> {
     try {
-      const permission = await this.permissionRepository.findOneBy({ id });
+      const permission = await this.permissionRepository.findOne({
+        where: { id },
+      });
       if (!permission) {
         throw new NotFoundException('Permsission not found');
       }

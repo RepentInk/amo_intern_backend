@@ -13,6 +13,7 @@ import { OrderController } from './controllers/order.controller';
 import { OrderService } from './services/order.service';
 import { OrderItemService } from './services/orderItems.service';
 import { OrderItemController } from './controllers/orderItems.controller';
+import { UserLogController } from './controllers/userLog.controller';
 import { PermissionController } from './controllers/permission.controller';
 import { PermissionService } from './services/permission.service';
 import { UsersController } from './controllers/users.controller';
@@ -22,23 +23,26 @@ import { RolePermissionService } from './services/rolepermissions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { dbConfig } from './database/dbconfig';
+import { SmsService } from './services/sms.service';
+import entities from './database/entities';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(dbConfig),
+    TypeOrmModule.forFeature(entities),
   ],
   controllers: [
     AppController,
+    UserLogController,
     ItemsController,
     CategoryController,
     CustomerController,
     OrderController,
     OrderItemController,
-    PermissionController,
     UsersController,
+    PermissionController,
     RolePermissionsController,
-    UserLogController,
   ],
   providers: [
     AppService,
@@ -51,6 +55,7 @@ import { dbConfig } from './database/dbconfig';
     PermissionService,
     UsersService,
     RolePermissionService,
+    SmsService,
   ],
 })
 export class AppModule {}

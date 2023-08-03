@@ -24,7 +24,9 @@ export class CustomerService implements CustomerInterface {
 
   async findOne(id: number): Promise<CustomerDto> {
     try {
-      const customer: any = await this.customerRepository.findOneBy({ id });
+      const customer: any = await this.customerRepository.findOne({
+        where: { id },
+      });
       if (!customer) {
         throw new NotFoundException('Categories not found');
       }
@@ -46,7 +48,9 @@ export class CustomerService implements CustomerInterface {
 
   async update(customerDto: CustomerDto, id: number): Promise<CustomerDto> {
     try {
-      const customer: any = await this.customerRepository.findOneBy({ id });
+      const customer: any = await this.customerRepository.findOne({
+        where: { id },
+      });
       if (!customer) {
         throw new NotFoundException('Customer not found');
       }
@@ -59,7 +63,9 @@ export class CustomerService implements CustomerInterface {
 
   async delete(id: number): Promise<CustomerDto> {
     try {
-      const customer: any = await this.customerRepository.findOneBy({ id });
+      const customer: any = await this.customerRepository.findOne({
+        where: { id },
+      });
       await this.customerRepository.remove(customer);
       return customer;
     } catch (error) {

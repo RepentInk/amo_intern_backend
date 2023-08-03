@@ -4,11 +4,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
 } from 'typeorm';
 import { Role } from './role.entity';
 import { Permission } from './permission.entity';
-
 
 @Entity()
 export class RolePermission {
@@ -16,11 +15,11 @@ export class RolePermission {
   id: number;
 
   @ManyToOne(() => Role, (role) => role.id)
-  @JoinColumn()
+  @JoinColumn({ name: 'role_id' })
   role_id: Role;
 
   @ManyToOne(() => Permission, (permission) => permission.id)
-  @JoinColumn()
+  @JoinColumn({ name: 'permission_id' })
   permission_id: Permission;
 
   @CreateDateColumn()

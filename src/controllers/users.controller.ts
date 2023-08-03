@@ -7,14 +7,13 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
+import { UsersService as UserService } from '../services/users.service';
 import { UserDto } from 'src/dto/users.dto';
 import { BasicController } from 'src/interfaces/controller.interface';
 
 @Controller('users')
 export class UsersController implements BasicController {
-
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   findAll(): Promise<UserDto[]> {
@@ -40,5 +39,4 @@ export class UsersController implements BasicController {
   delete(@Param('id') id: number): Promise<UserDto> {
     return this.userService.delete(id);
   }
-  
 }
