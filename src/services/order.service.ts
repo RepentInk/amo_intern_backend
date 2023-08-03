@@ -7,12 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrderService implements OrderInterface {
-  constructor(
-    @InjectRepository(Order) private orderRepository: Repository<Order>,
-  ) {}
-  constructor(
-    @InjectRepository(Order) private orderRepository: Repository<Order>,
-  ) {}
+  constructor(@InjectRepository(Order) private orderRepository: Repository<Order>) { }
 
   async findAll(): Promise<OrderDto[]> {
     try {
@@ -83,11 +78,11 @@ export class OrderService implements OrderInterface {
         .addSelect('COUNT(order.id)', 'count')
         .groupBy('year, month')
         .getRawMany();
-  
+
       return totalOrders;
     } catch (error) {
       console.log(error);
     }
   }
-  
+
 }
