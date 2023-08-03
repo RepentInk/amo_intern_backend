@@ -22,8 +22,7 @@ import { Categories } from 'src/entities/category.entity';
 @Controller('categories')
 @ApiTags('Categories')
 export class CategoryController implements BasicController {
-
-  constructor(private readonly categoryService: CategoryService) { }
+  constructor(private readonly categoryService: CategoryService) {}
 
   @Get()
   @ApiOkResponse({
@@ -61,7 +60,10 @@ export class CategoryController implements BasicController {
     type: Categories,
   })
   @ApiNotFoundResponse({ description: 'Category not found' })
-  async update(@Body() categoryDto: CategoryDto, @Param('id') id: number): Promise<CategoryDto> {
+  async update(
+    @Body() categoryDto: CategoryDto,
+    @Param('id') id: number,
+  ): Promise<CategoryDto> {
     return this.categoryService.update(categoryDto, id);
   }
 
@@ -71,5 +73,4 @@ export class CategoryController implements BasicController {
   async delete(@Param('id') id: number): Promise<CategoryDto> {
     return this.categoryService.delete(id);
   }
-
 }

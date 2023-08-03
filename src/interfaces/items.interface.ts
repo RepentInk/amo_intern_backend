@@ -1,4 +1,4 @@
-import { ItemsDto } from "src/dto/items.dto";
+import { ItemsDto } from 'src/dto/items.dto';
 
 export interface ItemsInterface {
   findAll(): Promise<ItemsDto[]>;

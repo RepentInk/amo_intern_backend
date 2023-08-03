@@ -15,7 +15,7 @@ import { BasicController } from 'src/interfaces/controller.interface';
 import { RolePermissionDto } from 'src/dto/rolepermissions.dto';
 
 @Controller('rolepermissions')
-export class RolePermissionsControlle implements BasicController {
+export class RolePermissionsController implements BasicController {
   constructor(private readonly rolePermissionService: RolePermissionService) {}
 
   @Get()

@@ -13,7 +13,6 @@ import { UserLogDto } from 'src/dto/userLog.dto';
 
 @Controller('userLog')
 export class UserLogController implements BasicController {
-
   constructor(private readonly userLogService: UserLogService) {}
 
   @Get()
@@ -32,7 +31,10 @@ export class UserLogController implements BasicController {
   }
 
   @Put(':id')
-  update(@Body() userLogDto: UserLogDto, @Param('id') id: number): Promise<UserLogDto> {
+  update(
+    @Body() userLogDto: UserLogDto,
+    @Param('id') id: number,
+  ): Promise<UserLogDto> {
     return this.userLogService.update(userLogDto, id);
   }
 
@@ -40,5 +42,4 @@ export class UserLogController implements BasicController {
   delete(@Param('id') id: number): Promise<UserLogDto> {
     return this.userLogService.delete(id);
   }
-  
 }

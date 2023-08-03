@@ -27,7 +27,7 @@ export class SettingController implements BasicController {
     throw new Error('Method not implemented.');
   }
 
-  findAll(): Promise<SettingDto> {
+  findAll(): Promise<SettingDto[]> {
     return this.settingService.findAll();
   }
 

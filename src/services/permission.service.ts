@@ -7,8 +7,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class PermissionService implements PermissionInterface {
-
-  constructor(@InjectRepository(Permission) private permissionRepository: Repository<Permission>) {}
+  constructor(
+    @InjectRepository(Permission)
+    private permissionRepository: Repository<Permission>,
+  ) {}
 
   async findAll(): Promise<PermissionDto[]> {
     try {
@@ -20,7 +22,9 @@ export class PermissionService implements PermissionInterface {
 
   async findOne(id: number): Promise<PermissionDto> {
     try {
-      const permission = await this.permissionRepository.findOneBy({ id });
+      const permission = await this.permissionRepository.findOne({
+        where: { id },
+      });
       if (!permission) {
         throw new NotFoundException('Permsission not found');
       }
@@ -39,7 +43,10 @@ export class PermissionService implements PermissionInterface {
     }
   }
 
-  async update(permissionDto: PermissionDto, id: number): Promise<PermissionDto> {
+  async update(
+    permissionDto: PermissionDto,
+    id: number,
+  ): Promise<PermissionDto> {
     try {
       const permission: any = await this.findOne(id);
       if (!permission) {

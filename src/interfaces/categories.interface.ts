@@ -1,4 +1,4 @@
-import { CategoryDto } from "src/dto/category.dto";
+import { CategoryDto } from 'src/dto/category.dto';
 
 export interface CategoryInterface {
   findAll(): Promise<CategoryDto[]>;

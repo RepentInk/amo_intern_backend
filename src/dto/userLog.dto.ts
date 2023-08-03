@@ -13,5 +13,4 @@ export class UserLogDto {
   created_at: Date;
   updated_at?: Date;
   deleted_at?: Date;
-
 }

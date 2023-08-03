@@ -7,8 +7,9 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService implements UserInterface {
-
-  constructor(@InjectRepository(Users) private userRepository: Repository<Users>) { }
+  constructor(
+    @InjectRepository(Users) private userRepository: Repository<Users>,
+  ) {}
 
   async findAll(): Promise<UserDto[]> {
     try {
@@ -22,7 +23,7 @@ export class UsersService implements UserInterface {
 
   async findOne(id: number): Promise<UserDto> {
     try {
-      const role: any = await this.userRepository.findOneBy({ id });
+      const role: any = await this.userRepository.findOne({ where: { id } });
       if (!role) {
         throw new NotFoundException('User not found');
       }
@@ -64,5 +65,4 @@ export class UsersService implements UserInterface {
       console.log(error);
     }
   }
-
 }

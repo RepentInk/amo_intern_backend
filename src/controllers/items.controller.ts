@@ -21,8 +21,7 @@ import {
 @Controller('items')
 @ApiTags('Items')
 export class ItemsController implements BasicController {
-
-  constructor(private readonly itemsService: ItemsService) { }
+  constructor(private readonly itemsService: ItemsService) {}
 
   @Get()
   @ApiOkResponse({
@@ -57,7 +56,10 @@ export class ItemsController implements BasicController {
   @Put(':id')
   @ApiOkResponse({ description: 'Item updated successfully.', type: ItemsDto })
   @ApiNotFoundResponse({ description: 'Item not found' })
-  async update(@Body() itemsDto: ItemsDto, @Param('id') id: number): Promise<ItemsDto> {
+  async update(
+    @Body() itemsDto: ItemsDto,
+    @Param('id') id: number,
+  ): Promise<ItemsDto> {
     return this.itemsService.update(itemsDto, id);
   }
 
@@ -67,5 +69,4 @@ export class ItemsController implements BasicController {
   async delete(@Param('id') id: number): Promise<ItemsDto> {
     return this.itemsService.delete(id);
   }
-
 }

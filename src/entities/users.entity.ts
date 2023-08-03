@@ -59,5 +59,4 @@ export class Users {
   @OneToMany(() => Role, (role) => role.users)
   @JoinColumn({ name: 'role_id' })
   role: Role;
-  
 }
