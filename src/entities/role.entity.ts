@@ -20,7 +20,7 @@ export class Role {
   @Column()
   description: string;
 
-  @ManyToMany(() => Permission, permission=> permission.roles)
+  @ManyToMany(() => Permission, (permission) => permission.roles)
   @JoinTable()
   permissions: Permission[];
 
