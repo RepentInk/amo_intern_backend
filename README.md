@@ -2,8 +2,7 @@
 * Note: All branch names should be lowercaps
 * run npm install when you pull from new branch
 * start the app with: npm run start
-* *npx typeorm-ts-node-commonjs migration:run -- -d path-to-datasource-config*
-* with js file -> *typeorm migration:run -- -d path-to-datasource-config*
+* with js file -> *npx typeorm migration:run -d dist/database/datasource.config*
 * run dummy data with: *typeorm migration:run*
 
 
@@ -35,14 +34,14 @@ compile ts to js
 
 ### run migrations file
 import migration file into migration array in the `datasource.confiig.ts`
-`typeorm migration:run -d path-to-datasource-config`
+`npx typeorm migration:run -d path-to-datasource-config`
 
 in this instance
 * run
 compile ts to js
 `npm run start`
 * run 
-` typeorm migration:run -d dist/database/datasource.config`
+` npx typeorm migration:run -d dist/database/datasource.config` -> this work better
 
 
 * imports all entities and exports the array to the dbConfig.ts in database folder.
