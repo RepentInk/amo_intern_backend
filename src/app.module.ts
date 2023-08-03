@@ -23,13 +23,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { dbConfig } from './database/dbconfig';
 import { SmsService } from './services/sms.service';
-import { UserLog } from './entities/userLog.entities';
-import { Items } from './entities/items.entity';
+import entities from './database/entities';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(dbConfig),
+    TypeOrmModule.forFeature(entities),
   ],
   controllers: [
     AppController,
