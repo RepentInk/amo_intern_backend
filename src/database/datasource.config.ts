@@ -6,6 +6,7 @@ import { Items } from 'src/entities/items.entity';
 import { Categories } from 'src/entities/category.entity';
 import { Customer } from 'src/entities/customer.entity';
 import { OrderItems } from 'src/entities/orderItems.entity';
+import entities from './entities';
 
 const AppDataSource = new DataSource({
   type: 'mysql',
@@ -14,7 +15,7 @@ const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [Users, Order, Items, Categories, Customer, OrderItems, UserLog],
+  entities,
   synchronize: true,
   migrations: [],
 });

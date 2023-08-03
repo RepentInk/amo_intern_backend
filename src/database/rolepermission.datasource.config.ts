@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { Role } from 'src/entities/role.entity';
 import { Permission } from 'src/entities/permission.entity';
 import { RolePermission } from 'src/entities/rolepermssion.entity';
+import entities from './entities';
 
 ConfigModule.forRoot();
 
@@ -13,7 +14,7 @@ export default new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [Role, Permission, RolePermission],
+  entities: entities,
   synchronize: false,
   migrations: [],
 });
