@@ -7,8 +7,9 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrderService implements OrderInterface {
-
-  constructor(@InjectRepository(Order) private orderRepository: Repository<Order>) { }
+  constructor(
+    @InjectRepository(Order) private orderRepository: Repository<Order>,
+  ) {}
 
   async findAll(): Promise<OrderDto[]> {
     try {
@@ -21,7 +22,7 @@ export class OrderService implements OrderInterface {
 
   async findOne(id: number): Promise<OrderDto> {
     try {
-      const order: any = await this.orderRepository.findOneBy({ id });
+      const order: any = await this.orderRepository.findOne({ where: { id } });
       if (!order) {
         throw new NotFoundException('Order not found');
       }
@@ -44,7 +45,7 @@ export class OrderService implements OrderInterface {
 
   async update(orderDto: OrderDto, id: number): Promise<OrderDto> {
     try {
-      const order: any = await this.orderRepository.findOneBy({ id });
+      const order: any = await this.orderRepository.findOne({ where: { id } });
 
       if (!order) {
         throw new NotFoundException('Order not found');
@@ -69,5 +70,4 @@ export class OrderService implements OrderInterface {
       console.log(error);
     }
   }
-
 }

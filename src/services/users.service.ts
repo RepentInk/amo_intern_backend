@@ -23,7 +23,7 @@ export class UsersService implements UserInterface {
 
   async findOne(id: number): Promise<UserDto> {
     try {
-      const role: any = await this.userRepository.findOneBy({ id });
+      const role: any = await this.userRepository.findOne({ where: { id } });
       if (!role) {
         throw new NotFoundException('User not found');
       }

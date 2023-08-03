@@ -1,4 +1,4 @@
-import { CustomerDto } from "src/dto/customer.dto";
+import { CustomerDto } from 'src/dto/customer.dto';
 
 export interface CustomerInterface {
   findAll(): Promise<CustomerDto[]>;

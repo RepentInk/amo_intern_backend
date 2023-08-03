@@ -7,8 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CategoryService implements CategoryInterface {
-
-  constructor(@InjectRepository(Categories) private categoryRepository: Repository<Categories>) { }
+  constructor(
+    @InjectRepository(Categories)
+    private categoryRepository: Repository<Categories>,
+  ) {}
 
   async findAll(): Promise<CategoryDto[]> {
     try {
@@ -22,7 +24,9 @@ export class CategoryService implements CategoryInterface {
 
   async findOne(id: number): Promise<CategoryDto> {
     try {
-      const category: any = await this.categoryRepository.findOneBy({ id });
+      const category: any = await this.categoryRepository.findOne({
+        where: { id },
+      });
       if (!category) {
         throw new NotFoundException('Categories not found');
       }
@@ -44,7 +48,9 @@ export class CategoryService implements CategoryInterface {
 
   async update(categoryDto: CategoryDto, id: number): Promise<CategoryDto> {
     try {
-      const category: any = await this.categoryRepository.findOneBy({ id });
+      const category: any = await this.categoryRepository.findOne({
+        where: { id },
+      });
       if (!category) {
         throw new NotFoundException('User not found');
       }
@@ -57,12 +63,13 @@ export class CategoryService implements CategoryInterface {
 
   async delete(id: number): Promise<CategoryDto> {
     try {
-      const category: any = await this.categoryRepository.findOneBy({ id });
+      const category: any = await this.categoryRepository.findOne({
+        where: { id },
+      });
       await this.categoryRepository.remove(category);
       return category;
     } catch (error) {
       console.log(error);
     }
   }
-
 }

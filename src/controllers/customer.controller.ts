@@ -21,8 +21,7 @@ import {
 @Controller('customers')
 @ApiTags('Customers')
 export class CustomerController implements BasicController {
-
-  constructor(private readonly customerService: CustomerService) { }
+  constructor(private readonly customerService: CustomerService) {}
 
   @Get()
   @ApiOkResponse({
@@ -60,7 +59,10 @@ export class CustomerController implements BasicController {
     type: CustomerDto,
   })
   @ApiNotFoundResponse({ description: 'Customer not found' })
-  async update(@Body() customerDto: CustomerDto, @Param('id') id: number): Promise<CustomerDto> {
+  async update(
+    @Body() customerDto: CustomerDto,
+    @Param('id') id: number,
+  ): Promise<CustomerDto> {
     return this.customerService.update(customerDto, id);
   }
 
@@ -70,5 +72,4 @@ export class CustomerController implements BasicController {
   async delete(@Param('id') id: number): Promise<CustomerDto> {
     return this.customerService.delete(id);
   }
-
 }

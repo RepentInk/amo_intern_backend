@@ -18,8 +18,6 @@ export class Categories {
   @Column({ nullable: true })
   deleted_at: Date;
 
-  
   @OneToMany(() => Items, (item) => item.category)
   items: Items[];
-  
 }

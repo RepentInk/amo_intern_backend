@@ -4,11 +4,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
 } from 'typeorm';
 import { Role } from './role.entity';
 import { Permission } from './permission.entity';
-
 
 @Entity()
 export class RolePermission {

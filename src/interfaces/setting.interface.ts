@@ -1,7 +1,7 @@
 import { SettingDto } from 'src/dto/setting.dto';
 
 export interface Setting {
-  findAll(): Promise<SettingDto>;
+  findAll(): Promise<SettingDto[]>;
 
   findOne(settingDto: SettingDto): Promise<SettingDto>;
 

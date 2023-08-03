@@ -21,6 +21,5 @@ export class UserDto {
   @IsDate()
   created_at: Date;
   updated_at?: Date;
-  deleted_at?: Date
-  
+  deleted_at?: Date;
 }
