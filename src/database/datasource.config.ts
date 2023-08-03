@@ -1,28 +1,18 @@
+import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
-import { Users } from 'src/entities/users.entity';
-import { UserLog } from 'src/entities/userLog.entities';
-import { Order } from 'src/entities/order.entity';
-import { Items } from 'src/entities/items.entity';
-import { Categories } from 'src/entities/category.entity';
-import { Customer } from 'src/entities/customer.entity';
-import { OrderItems } from 'src/entities/orderItems.entity';
+import entities from './entities';
+import { Dbmigration1691053913018 } from 'src/migrations/1691053913018-dbmigration';
+import { DummyData1690859241130 } from 'src/migrations/1690859241130-dummyData';
 
-const AppDataSource = new DataSource({
+ConfigModule.forRoot();
+export default new DataSource({
   type: 'mysql',
   host: process.env.HOST_NAME,
   port: parseInt(process.env.PORT, 10),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [Users, Order, Items, Categories, Customer, OrderItems, UserLog],
-  synchronize: true,
-  migrations: [],
+  entities: entities,
+  synchronize: false,
+  migrations: [Dbmigration1691053913018]
 });
-
-AppDataSource.initialize()
-  .then(() => {
-    console.log('Data Source has been initialized!');
-  })
-  .catch((err) => {
-    console.error('Error during Data Source initialization', err);
-  });

@@ -7,6 +7,7 @@ import {
   DeleteDateColumn,
   OneToMany,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Order } from './order.entity';
 import { UserLog } from './userLog.entities';
@@ -56,7 +57,7 @@ export class Users {
   @OneToMany(() => UserLog, (userLog) => userLog.userLog)
   userLog: UserLog;
 
-  @OneToMany(() => Role, (role) => role.users)
+  @ManyToOne(() => Role, (role) => role.users)
   @JoinColumn({ name: 'role_id' })
   role: Role;
 }
