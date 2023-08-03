@@ -7,8 +7,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class CustomerService implements CustomerInterface {
-
-  constructor(@InjectRepository(Customer) private customerRepository: Repository<Customer>) { }
+  constructor(
+    @InjectRepository(Customer)
+    private customerRepository: Repository<Customer>,
+  ) {}
 
   async findAll(): Promise<CustomerDto[]> {
     try {
@@ -64,5 +66,4 @@ export class CustomerService implements CustomerInterface {
       console.log(error);
     }
   }
-
 }

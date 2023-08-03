@@ -7,8 +7,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CategoryService implements CategoryInterface {
-
-  constructor(@InjectRepository(Categories) private categoryRepository: Repository<Categories>) { }
+  constructor(
+    @InjectRepository(Categories)
+    private categoryRepository: Repository<Categories>,
+  ) {}
 
   async findAll(): Promise<CategoryDto[]> {
     try {
@@ -64,5 +66,4 @@ export class CategoryService implements CategoryInterface {
       console.log(error);
     }
   }
-
 }

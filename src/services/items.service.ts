@@ -7,8 +7,9 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ItemsService implements ItemsInterface {
-
-  constructor(@InjectRepository(Items) private itemRepository: Repository<Items>) { }
+  constructor(
+    @InjectRepository(Items) private itemRepository: Repository<Items>,
+  ) {}
 
   async findAll(): Promise<ItemsDto[]> {
     try {
@@ -64,5 +65,4 @@ export class ItemsService implements ItemsInterface {
       console.log(error);
     }
   }
-
 }

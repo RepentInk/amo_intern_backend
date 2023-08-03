@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
 import { AppService } from './services/app.service';
 import { UserLogService } from './services/userLog.service';
+import { UserLogController } from './controllers/userLog.controller';
 import { ItemsController } from './controllers/items.controller';
 import { ItemsService } from './services/items.service';
 import { CategoryController } from './controllers/categories.controller';
@@ -16,7 +17,7 @@ import { PermissionController } from './controllers/permission.controller';
 import { PermissionService } from './services/permission.service';
 import { UsersController } from './controllers/users.controller';
 import { UsersService } from './services/users.service';
-import { RolePermissionsControlle } from './controllers/rolepermissions.controller';
+import { RolePermissionsController } from './controllers/rolepermissions.controller';
 import { RolePermissionService } from './services/rolepermissions.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -36,7 +37,8 @@ import { dbConfig } from './database/dbconfig';
     OrderItemController,
     PermissionController,
     UsersController,
-    RolePermissionsControlle,
+    RolePermissionsController,
+    UserLogController,
   ],
   providers: [
     AppService,

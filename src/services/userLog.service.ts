@@ -7,8 +7,9 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserLogService implements UserLogInterface {
-
-  constructor(@InjectRepository(UserLog) private userLogRepository: Repository<UserLog>) { }
+  constructor(
+    @InjectRepository(UserLog) private userLogRepository: Repository<UserLog>,
+  ) {}
 
   async findAll(): Promise<UserLogDto[]> {
     try {
@@ -66,5 +67,4 @@ export class UserLogService implements UserLogInterface {
       console.log(error);
     }
   }
-
 }

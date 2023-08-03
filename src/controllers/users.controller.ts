@@ -7,14 +7,14 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { UserService } from '../services/users.service';
+import { UsersService } from '../services/users.service';
 import { UserDto } from 'src/dto/users.dto';
 import { BasicController } from 'src/interfaces/controller.interface';
 
 @Controller('users')
 export class UsersController implements BasicController {
 
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UsersService) {}
 
   @Get()
   findAll(): Promise<UserDto[]> {

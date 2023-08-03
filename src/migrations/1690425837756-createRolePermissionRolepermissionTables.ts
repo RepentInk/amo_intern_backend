@@ -15,6 +15,7 @@ export class CreateRolePermissionRolepermissionTables1690425837756
         await queryRunner.query(`ALTER TABLE \`role_permission\` ADD CONSTRAINT \`FK_e3a3ba47b7ca00fd23be4ebd6cf\` FOREIGN KEY (\`permission_id\`) REFERENCES \`permission\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`role_rolepermissons_permission\` ADD CONSTRAINT \`FK_2607491b7c6429f5a2a4b26914b\` FOREIGN KEY (\`roleId\`) REFERENCES \`role\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
         await queryRunner.query(`ALTER TABLE \`role_rolepermissons_permission\` ADD CONSTRAINT \`FK_76e259c730b280bb090b0a27673\` FOREIGN KEY (\`permissionId\`) REFERENCES \`permission\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE`);
+   )
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

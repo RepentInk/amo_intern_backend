@@ -7,8 +7,10 @@ import { OrderItemsInterface } from 'src/interfaces/orderItems.interface';
 
 @Injectable()
 export class OrderItemService implements OrderItemsInterface {
-
-  constructor(@InjectRepository(OrderItems) private orderItemsRepository: Repository<OrderItems>) { }
+  constructor(
+    @InjectRepository(OrderItems)
+    private orderItemsRepository: Repository<OrderItems>,
+  ) {}
 
   async findAll(): Promise<OrderItemsDto[]> {
     try {
@@ -21,7 +23,7 @@ export class OrderItemService implements OrderItemsInterface {
   async findOne(id: number): Promise<OrderItemsDto> {
     try {
       const orderItem = await this.findOne(id);
-      
+
       if (!orderItem) {
         throw new NotFoundException('OrderItem not found');
       }
@@ -41,16 +43,19 @@ export class OrderItemService implements OrderItemsInterface {
     }
   }
 
-  async update(orderItemDto: OrderItemsDto, id: number): Promise<OrderItemsDto> {
+  async update(
+    orderItemDto: OrderItemsDto,
+    id: number,
+  ): Promise<OrderItemsDto> {
     try {
       const orderItem = await this.orderItemsRepository.findOneBy({ id });
-      
+
       if (!orderItem) {
         throw new NotFoundException('Order Item not found!');
       }
 
       this.orderItemsRepository.merge(orderItem, orderItemDto);
-      
+
       return this.orderItemsRepository.save(orderItem);
     } catch (error) {
       console.log(error);
@@ -66,5 +71,4 @@ export class OrderItemService implements OrderItemsInterface {
       console.log(error);
     }
   }
-
 }
