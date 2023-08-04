@@ -10,21 +10,16 @@ import { OrderItems } from '../entities/orderItems.entity';
 import { UserLog } from '../entities/userLog.entities';
 
 const entities = [
-  //swanzy
-  Customer,
   Categories,
+  Customer,
   Items,
-
-  //Ayariga
   Order,
-  Users,
   OrderItems,
-  UserLog,
-
-  //Adams
-  Role,
   Permission,
+  Users,
+  Role,
   RolePermission,
+  UserLog,
 ];
 
 export default entities;

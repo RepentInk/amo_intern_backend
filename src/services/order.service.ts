@@ -7,9 +7,7 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrderService implements OrderInterface {
-  constructor(
-    @InjectRepository(Order) private orderRepository: Repository<Order>,
-  ) {}
+  constructor(@InjectRepository(Order) private orderRepository: Repository<Order>) { }
 
   async findAll(): Promise<OrderDto[]> {
     try {
@@ -70,4 +68,21 @@ export class OrderService implements OrderInterface {
       console.log(error);
     }
   }
+
+  async OrderData(): Promise<{ year: number; month: number; count: number }[]> {
+    try {
+      const totalOrders: any = await this.orderRepository
+        .createQueryBuilder('order')
+        .select('YEAR(order.createdAt)', 'year')
+        .addSelect('MONTH(order.createdAt)', 'month')
+        .addSelect('COUNT(order.id)', 'count')
+        .groupBy('year, month')
+        .getRawMany();
+
+      return totalOrders;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }
