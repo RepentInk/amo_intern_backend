@@ -13,7 +13,8 @@ import { OrderService } from 'src/services/order.service';
 
 @Controller('orders')
 export class OrderController implements BasicController {
-  constructor(private readonly orderService: OrderService) {}
+  
+  constructor(private readonly orderService: OrderService) { }
 
   @Get()
   findAll(): Promise<OrderDto[]> {
@@ -31,10 +32,7 @@ export class OrderController implements BasicController {
   }
 
   @Put(':id')
-  update(
-    @Body() orderDto: OrderDto,
-    @Param('id') id: number,
-  ): Promise<OrderDto> {
+  update(@Body() orderDto: OrderDto, @Param('id') id: number): Promise<OrderDto> {
     return this.orderService.update(orderDto, id);
   }
 
@@ -44,8 +42,8 @@ export class OrderController implements BasicController {
   }
 
   @Get('chart_data')
-   orderData(): Promise<any> {
-     return this.orderService.OrderData()
-   }
+  orderData(): Promise<any> {
+    return this.orderService.OrderData()
+  }
 
 }
