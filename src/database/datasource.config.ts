@@ -1,8 +1,10 @@
 import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import entities from './entities';
-import { Dbmigration1691053913018 } from 'src/migrations/1691053913018-dbmigration';
+
+import { Dbmigration21691090628686 } from 'src/migrations/1691090628686-dbmigration';
 import { DummyData1690859241130 } from 'src/migrations/1690859241130-dummyData';
+
 
 ConfigModule.forRoot();
 export default new DataSource({
@@ -14,5 +16,5 @@ export default new DataSource({
   database: process.env.DB_NAME,
   entities: entities,
   synchronize: false,
-  migrations: [Dbmigration1691053913018]
+  migrations: [Dbmigration21691090628686],
 });
