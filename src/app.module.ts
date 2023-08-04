@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './controllers/app.controller';
 import { AppService } from './services/app.service';
 import { UserLogService } from './services/userLog.service';
-import { UserLogController } from './controllers/userLog.controller';
 import { ItemsController } from './controllers/items.controller';
 import { ItemsService } from './services/items.service';
 import { CategoryController } from './controllers/categories.controller';

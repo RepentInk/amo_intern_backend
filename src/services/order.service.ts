@@ -10,9 +10,6 @@ export class OrderService implements OrderInterface {
   constructor(
     @InjectRepository(Order) private orderRepository: Repository<Order>,
   ) {}
-  constructor(
-    @InjectRepository(Order) private orderRepository: Repository<Order>,
-  ) {}
 
   async findAll(): Promise<OrderDto[]> {
     try {
