@@ -14,5 +14,5 @@ export default new DataSource({
   database: process.env.DB_NAME,
   entities: entities,
   synchronize: false,
-  migrations: [Dbmigration1691160447041],
+  migrations: [Dbmigration1691160447041]
 });
