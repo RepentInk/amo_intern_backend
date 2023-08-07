@@ -1,6 +1,5 @@
 import { Role } from '../entities/role.entity';
 import { Permission } from '../entities/permission.entity';
-import { RolePermission } from '../entities/rolepermssion.entity';
 import { Customer } from '../entities/customer.entity';
 import { Categories } from '../entities/category.entity';
 import { Items } from '../entities/items.entity';
@@ -18,7 +17,6 @@ const entities = [
   Permission,
   Users,
   Role,
-  RolePermission,
   UserLog,
 ];
 
