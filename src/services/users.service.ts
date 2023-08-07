@@ -65,4 +65,8 @@ export class UsersService implements UserInterface {
       console.log(error);
     }
   }
+
+  async findByEmail(email: string): Promise<Users> {
+    return this.userRepository.findOne({ where: { email } });
+  }
 }
