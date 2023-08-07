@@ -18,6 +18,7 @@ export class RoleDto {
     description: 'description of functional ability of an access name',
   })
   description?: string;
+  
   created_at?: Date;
   updated_at?: Date;
 }
