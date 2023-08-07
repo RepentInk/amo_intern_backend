@@ -15,6 +15,8 @@ import {
   ApiOkResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
+  ApiBadRequestResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 
 @Controller('userLog')
@@ -47,6 +49,12 @@ export class UserLogController implements BasicController {
     description: 'User log created successfully.',
     type: UserLogDto,
   })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiBody({
+    type: UserLogDto,
+    description: 'User log data to be created',
+    required: true,
+  })
   async create(@Body() userLogDto: UserLogDto): Promise<UserLogDto> {
     return this.userLogService.create(userLogDto);
   }
@@ -57,6 +65,12 @@ export class UserLogController implements BasicController {
     type: UserLogDto,
   })
   @ApiNotFoundResponse({ description: 'User log not found' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiBody({
+    type: UserLogDto,
+    description: 'User log data to be updated',
+    required: true,
+  })
   async update(
     @Body() userLogDto: UserLogDto,
     @Param('id') id: number,
