@@ -3,8 +3,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 export function setupSwagger(app: INestApplication) {
   const options = new DocumentBuilder()
-    .setTitle('Your App API Documentation')
-    .setDescription('API documentation for your app')
+    .setTitle('Amo Ordering App Documentation')
+    .setDescription('This documentation is for an ordering application for AMO build by trinity interns')
     .setVersion('1.0')
     .build();
 

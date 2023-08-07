@@ -13,7 +13,6 @@ import { OrderController } from './controllers/order.controller';
 import { OrderService } from './services/order.service';
 import { OrderItemService } from './services/orderItems.service';
 import { OrderItemController } from './controllers/orderItems.controller';
-import { UserLogController } from './controllers/userLog.controller';
 import { PermissionController } from './controllers/permission.controller';
 import { PermissionService } from './services/permission.service';
 import { UsersController } from './controllers/users.controller';
