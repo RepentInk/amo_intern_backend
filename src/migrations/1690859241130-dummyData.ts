@@ -1,21 +1,21 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { Category } from 'src/seeds/dummy.category';
-import { Items } from 'src/seeds/dummy.items';
-import { Orders } from 'src/seeds/dummy.orders';
-import { OrderItems } from 'src/seeds/dummy.orderItems';
-import { Users } from 'src/seeds/dummy.users';
-import { Customers } from 'src/seeds/dummy.customers';
-import { UserLog } from 'src/seeds/dummy.userLog';
-import { Roles } from 'src/seeds/dummy.role';
-import { Permissions } from 'src/seeds/dummy.permissions';
-import { RolePermissions } from 'src/seeds/dummy.rolePermissions';
+import { Category } from '../seeds/dummy.category';
+import { Items } from '../seeds/dummy.items';
+import { Orders } from '../seeds/dummy.orders';
+import { OrderItems } from '../seeds/dummy.orderItems';
+import { Users } from '../seeds/dummy.users';
+import { Customers } from '../seeds/dummy.customers';
+import { UserLog } from '../seeds/dummy.userLog';
+import { Roles } from '../seeds/dummy.role';
+import { Permissions } from '../seeds/dummy.permissions';
+import { RolePermissions } from '../seeds/dummy.rolePermissions';
 
 export class DummyData1690859241130 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
 
     await entityManager.save('Users', Users);
-    await entityManager.save('Orders', Orders);
+    await entityManager.save('Order', Orders);
     await entityManager.save('Items', Items);
     await entityManager.save('Customers', Customers);
     await entityManager.save('Roles', Roles);
