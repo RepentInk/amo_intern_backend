@@ -14,6 +14,7 @@ export class RoleDto {
   @MinLength(3)
   name: string;
   @ApiProperty({
+    required: false,
     example: 'admin can create, view, update and delete all entities',
     description: 'description of functional ability of an access name',
   })
