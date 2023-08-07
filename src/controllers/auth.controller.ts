@@ -18,7 +18,7 @@ import { UserDto } from 'src/dto/users.dto';
 @Controller('auth')
 @ApiTags('Authentication')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('login')
   @ApiOkResponse({ description: 'User logged in successfully.', type: UserDto })
