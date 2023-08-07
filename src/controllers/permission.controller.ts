@@ -18,7 +18,9 @@ import {
   ApiBearerAuth,
   ApiResponse,
   ApiTags,
+  ApiParam
 } from '@nestjs/swagger';
+import { type } from 'os';
 @ApiBearerAuth()
 @ApiTags('permssion')
 @Controller('permission')
@@ -48,6 +50,22 @@ export class PermissionController implements BasicController {
   }
 
   @Post()
+  @ApiParam(
+    { 
+      name: 'display_name', 
+      required: true, 
+      description: 'Display name of permission to be use by users',
+      type: String,
+      example: "Create Permission"
+  })
+  @ApiParam(
+    { 
+      name: 'name', 
+      required: true, 
+      description: 'Name of permission to be used by system',
+      type: String,
+      example: "create_permission"
+  })
   @ApiOperation({ summary: 'create permission' })
   @ApiResponse({
     status: 200,
