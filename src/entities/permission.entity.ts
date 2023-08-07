@@ -3,11 +3,8 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToMany,
-  JoinTable,
+  UpdateDateColumn
 } from 'typeorm';
-import { Role } from './role.entity';
 
 @Entity()
 export class Permission {
