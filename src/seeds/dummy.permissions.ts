@@ -1,6 +1,6 @@
 export const Permissions = [
-  { name: 'Create Orders', display_name: 'Order', created_at: new Date() },
-  { name: 'Delete orders', display_name: 'Cancel', created_at: new Date() },
-  { name: 'Confirm orders', display_name: 'Confirm', created_at: new Date() },
-  { name: 'Add users', display_name: 'Add User', created_at: new Date() },
+  { name: 'create_order', display_name: 'Create Orders', created_at: new Date() },
+  { name: 'delete_order', display_name: 'Delete Orders', created_at: new Date() },
+  { name: 'confirm_order', display_name: 'Confirm Orders', created_at: new Date() },
+  { name: 'create_user', display_name: 'Create Users', created_at: new Date() },
 ];

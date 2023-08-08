@@ -1,8 +1,6 @@
 import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import entities from './entities';
-// import { Dbmigration1691160447041 } from 'src/migrations/1691160447041-dbmigration';
-import { DummyData1690859241130 } from 'src/migrations/1690859241130-dummyData';
 
 ConfigModule.forRoot();
 export default new DataSource({

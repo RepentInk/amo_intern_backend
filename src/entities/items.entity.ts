@@ -6,6 +6,7 @@ import {
   JoinColumn,
   OneToOne,
   OneToMany,
+  ManyToMany,
 } from 'typeorm';
 import { Categories } from './category.entity';
 import { OrderItems } from './orderItems.entity';
@@ -31,7 +32,7 @@ export class Items {
   @JoinColumn({ name: 'category_id' })
   category?: Categories;
 
-  @OneToMany(() => OrderItems, (orderItems) => orderItems.items)
+  @ManyToMany(() => OrderItems, (orderItems) => orderItems.items)
   orderItems: OrderItems;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })

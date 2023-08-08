@@ -9,6 +9,7 @@ import {
   OneToMany,
   JoinColumn,
   OneToOne,
+  ManyToMany,
 } from 'typeorm';
 import { Users } from './users.entity';
 import { OrderItems } from './orderItems.entity';
@@ -59,7 +60,7 @@ export class Order {
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @OneToMany(() => OrderItems, (orderItems) => orderItems.order)
+  @ManyToMany(() => OrderItems, (orderItems) => orderItems.order)
   orderItems: OrderItems[];
 
   @OneToOne(() => Customer, (customer) => customer.order)
