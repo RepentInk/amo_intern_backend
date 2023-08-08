@@ -16,6 +16,7 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiBadRequestResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 
 @Controller('customers')
@@ -49,6 +50,11 @@ export class CustomerController implements BasicController {
     type: CustomerDto,
   })
   @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiBody({
+    type: CustomerDto,
+    description: 'Customer data to be created',
+    required: true,
+  })
   async create(@Body() customerDto: CustomerDto): Promise<CustomerDto> {
     return this.customerService.create(customerDto);
   }
@@ -59,6 +65,12 @@ export class CustomerController implements BasicController {
     type: CustomerDto,
   })
   @ApiNotFoundResponse({ description: 'Customer not found' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiBody({
+    type: CustomerDto,
+    description: 'Customer data to be updated',
+    required: true,
+  })
   async update(
     @Body() customerDto: CustomerDto,
     @Param('id') id: number,

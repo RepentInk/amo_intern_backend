@@ -16,6 +16,7 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiBadRequestResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 
 @Controller('items')
@@ -49,6 +50,11 @@ export class ItemsController implements BasicController {
     type: ItemsDto,
   })
   @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiBody({
+    type: ItemsDto,
+    description: 'Item data to be created',
+    required: true,
+  })
   async create(@Body() itemsDto: ItemsDto): Promise<ItemsDto> {
     return this.itemsService.create(itemsDto);
   }
@@ -56,6 +62,12 @@ export class ItemsController implements BasicController {
   @Put(':id')
   @ApiOkResponse({ description: 'Item updated successfully.', type: ItemsDto })
   @ApiNotFoundResponse({ description: 'Item not found' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiBody({
+    type: ItemsDto,
+    description: 'Item data to be updated',
+    required: true,
+  })
   async update(
     @Body() itemsDto: ItemsDto,
     @Param('id') id: number,

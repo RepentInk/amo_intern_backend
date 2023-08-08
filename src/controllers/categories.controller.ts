@@ -16,6 +16,7 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiBadRequestResponse,
+  ApiBody,
 } from '@nestjs/swagger';
 import { Categories } from 'src/entities/category.entity';
 
@@ -50,6 +51,11 @@ export class CategoryController implements BasicController {
     type: Categories,
   })
   @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiBody({
+    type: CategoryDto,
+    description: 'Category data to be created',
+    required: true,
+  })
   async create(@Body() categoryDto: CategoryDto): Promise<CategoryDto> {
     return this.categoryService.create(categoryDto);
   }
@@ -60,6 +66,12 @@ export class CategoryController implements BasicController {
     type: Categories,
   })
   @ApiNotFoundResponse({ description: 'Category not found' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiBody({
+    type: CategoryDto,
+    description: 'Category data to be updated',
+    required: true,
+  })
   async update(
     @Body() categoryDto: CategoryDto,
     @Param('id') id: number,

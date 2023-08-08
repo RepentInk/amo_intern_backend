@@ -41,4 +41,5 @@ export class Role {
   created_at: Date;
   @UpdateDateColumn()
   updated_at: Date;
+  permission: Permission[];
 }

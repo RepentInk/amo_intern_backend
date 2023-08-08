@@ -22,6 +22,8 @@ import { ConfigModule } from '@nestjs/config';
 import { dbConfig } from './database/dbconfig';
 import { SmsService } from './services/sms.service';
 import entities from './database/entities';
+import { RoleController } from './controllers/role.controller';
+import { RoleService } from './services/role.service';
 
 @Module({
   imports: [
@@ -39,6 +41,7 @@ import entities from './database/entities';
     OrderItemController,
     UsersController,
     PermissionController,
+    RoleController
   ],
   providers: [
     AppService,
@@ -49,6 +52,7 @@ import entities from './database/entities';
     OrderService,
     OrderItemService,
     PermissionService,
+    RoleService,
     UsersService,
     SmsService,
   ],

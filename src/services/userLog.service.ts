@@ -4,6 +4,7 @@ import { UserLogDto } from 'src/dto/userLog.dto';
 import { UserLog } from 'src/entities/userLog.entities';
 import { UserLogInterface } from 'src/interfaces/userLog.interface';
 import { Repository } from 'typeorm';
+
 @Injectable()
 export class UserLogService implements UserLogInterface {
   constructor(
@@ -31,6 +32,7 @@ export class UserLogService implements UserLogInterface {
       return userLog;
     } catch (error) {
       console.log(error);
+      throw new NotFoundException('UserLog not found');
     }
   }
 
@@ -40,6 +42,7 @@ export class UserLogService implements UserLogInterface {
       return this.userLogRepository.save(userLog);
     } catch (error) {
       console.log(error);
+      throw new Error('Failed to create user log');
     }
   }
 
@@ -49,12 +52,13 @@ export class UserLogService implements UserLogInterface {
         where: { id },
       });
       if (!userLog) {
-        throw new NotFoundException('UserLog not found!');
+        throw new NotFoundException('UserLog not found');
       }
       this.userLogRepository.merge(userLog, userLogDto);
       return this.userLogRepository.save(userLog);
     } catch (error) {
       console.log(error);
+      throw new NotFoundException('UserLog not found');
     }
   }
 
@@ -70,6 +74,7 @@ export class UserLogService implements UserLogInterface {
       return userLog;
     } catch (error) {
       console.log(error);
+      throw new NotFoundException('UserLog not found');
     }
   }
 }
