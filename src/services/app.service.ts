@@ -3,6 +3,6 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class AppService {
   getHello(): string {
-    return 'Backend Data is from the service';
+    return 'Hello Welcome to Amo Ordering Application api, to view the documentatiion go to /api-docs';
   }
 }
