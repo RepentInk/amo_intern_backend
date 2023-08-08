@@ -13,6 +13,7 @@ import {
   ApiUnauthorizedResponse,
   ApiBadRequestResponse,
   ApiBody,
+  ApiParam,
 } from '@nestjs/swagger';
 import { UserDto } from 'src/dto/users.dto';
 
@@ -22,6 +23,20 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
+  @ApiParam({
+    name: 'email',
+    required: true,
+    description: 'Users email',
+    type: String,
+    example: 'calvinasty@example.com',
+  })
+  @ApiParam({
+    name: 'password',
+    required: true,
+    description: 'Users password',
+    type: String,
+    example: '@examplE123',
+  })
   @ApiOkResponse({ description: 'User logged in successfully.', type: UserDto })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
   @ApiBadRequestResponse({ description: 'Bad Request' })

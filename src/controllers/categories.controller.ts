@@ -17,6 +17,7 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiBody,
+  ApiParam,
 } from '@nestjs/swagger';
 import { Categories } from 'src/entities/category.entity';
 
@@ -36,6 +37,13 @@ export class CategoryController implements BasicController {
   }
 
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: Number,
+    description: 'id of the category u want to retrieve',
+    example: 1,
+  })
   @ApiOkResponse({
     description: 'Successfully retrieved the category.',
     type: Categories,
@@ -46,6 +54,13 @@ export class CategoryController implements BasicController {
   }
 
   @Post()
+  @ApiParam({
+    name: 'name',
+    required: true,
+    type: String,
+    description: 'name of the category u want to create',
+    example: 'electronics',
+  })
   @ApiCreatedResponse({
     description: 'Category created successfully.',
     type: Categories,
@@ -61,6 +76,20 @@ export class CategoryController implements BasicController {
   }
 
   @Put(':id')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: Number,
+    description: 'id of the category u want to update',
+    example: 1,
+  })
+  @ApiParam({
+    name: 'new name',
+    required: true,
+    type: String,
+    description: 'new name of the category u want to update',
+    example: 'devices',
+  })
   @ApiOkResponse({
     description: 'Category updated successfully.',
     type: Categories,
@@ -80,6 +109,13 @@ export class CategoryController implements BasicController {
   }
 
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: Number,
+    description: 'id of the category u want to delete',
+    example: 1,
+  })
   @ApiOkResponse({ description: 'Category deleted successfully.' })
   @ApiNotFoundResponse({ description: 'Category not found' })
   async delete(@Param('id') id: number): Promise<CategoryDto> {

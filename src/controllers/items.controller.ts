@@ -17,6 +17,7 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiBody,
+  ApiParam,
 } from '@nestjs/swagger';
 
 @Controller('items')
@@ -35,6 +36,13 @@ export class ItemsController implements BasicController {
   }
 
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of item to be retrieved',
+    type: Number,
+    required: true,
+    example: 1,
+  })
   @ApiOkResponse({
     description: 'Successfully retrieved the item.',
     type: ItemsDto,
@@ -45,6 +53,41 @@ export class ItemsController implements BasicController {
   }
 
   @Post()
+  @ApiParam({
+    name: 'name',
+    description: 'name of item to be created',
+    type: String,
+    required: true,
+    example: 'calculator',
+  })
+  @ApiParam({
+    name: 'description',
+    description: 'description of item to be created',
+    type: String,
+    required: false,
+    example: 'digital scientific calculators',
+  })
+  @ApiParam({
+    name: 'unit',
+    description: 'unit of item to be created',
+    type: Number,
+    required: true,
+    example: 1,
+  })
+  @ApiParam({
+    name: 'price',
+    description: 'price of item to be created',
+    type: Number,
+    required: true,
+    example: 100,
+  })
+  @ApiParam({
+    name: 'category_id',
+    description: 'category_id of the category the item belongs to',
+    type: Number,
+    required: true,
+    example: 1,
+  })
   @ApiCreatedResponse({
     description: 'Item created successfully.',
     type: ItemsDto,
@@ -60,6 +103,48 @@ export class ItemsController implements BasicController {
   }
 
   @Put(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of item to be updated',
+    type: Number,
+    required: true,
+    example: 1,
+  })
+  @ApiParam({
+    name: 'new name',
+    description: 'new name of item to be updated',
+    type: String,
+    required: false,
+    example: 'calculator',
+  })
+  @ApiParam({
+    name: 'new description',
+    description: 'new description of item to be updated',
+    type: String,
+    required: false,
+    example: 'digital scientific calculators',
+  })
+  @ApiParam({
+    name: 'new unit',
+    description: 'new unit of item to be updated',
+    type: Number,
+    required: false,
+    example: 1,
+  })
+  @ApiParam({
+    name: 'new price',
+    description: 'new price of item to be updated',
+    type: Number,
+    required: false,
+    example: 100,
+  })
+  @ApiParam({
+    name: 'new category_id',
+    description: 'new category_id of the category the item belongs to',
+    type: Number,
+    required: false,
+    example: 1,
+  })
   @ApiOkResponse({ description: 'Item updated successfully.', type: ItemsDto })
   @ApiNotFoundResponse({ description: 'Item not found' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
@@ -76,6 +161,13 @@ export class ItemsController implements BasicController {
   }
 
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of item to be deleted',
+    type: Number,
+    required: true,
+    example: 1,
+  })
   @ApiOkResponse({ description: 'Item deleted successfully.' })
   @ApiNotFoundResponse({ description: 'Item not found' })
   async delete(@Param('id') id: number): Promise<ItemsDto> {
