@@ -4,8 +4,11 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
   JoinColumn,
+  OneToOne,
+  OneToMany,
 } from 'typeorm';
 import { Categories } from './category.entity';
+import { OrderItems } from './orderItems.entity';
 
 @Entity()
 export class Items {
@@ -27,6 +30,9 @@ export class Items {
   @ManyToOne(() => Categories, (category) => category.items, { nullable: true })
   @JoinColumn({ name: 'category_id' })
   category?: Categories;
+
+  @OneToMany(() => OrderItems, (orderItems) => orderItems.items)
+  orderItems: OrderItems;
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

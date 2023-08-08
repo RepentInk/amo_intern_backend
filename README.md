@@ -10,10 +10,26 @@
 
 
 # Razak Ayariga
+## Dummy data
+Create a seeds folder that contains the dummy data file of each entity.
 
+## dummy data migration file
+create a dummy data migration file in the migrations folder using:
+`typeorm migration:create path-to-output-file/your-file-name`
 
+In this case
+* run
+`typeorm migration:create src/migrations/dummyData`
 
+## run dummy data migration file
+Write a script for the migration command in the package.json
+"migration:run": `npx typeorm-ts-node-esm migration:run  --dataSource path-to-datasource-file`
 
+in this case
+"migration:run": `npx typeorm-ts-node-esm migration:run  --dataSource src/database/datasource.config.ts`
+
+* run
+`npm run migration:run`
 
 
 # Razak Adams

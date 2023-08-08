@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
+  OneToMany,
   JoinColumn,
   OneToOne,
 } from 'typeorm';
@@ -58,7 +59,7 @@ export class Order {
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @OneToOne(() => OrderItems, (OrderItems) => OrderItems.order)
+  @OneToMany(() => OrderItems, (orderItems) => orderItems.order)
   orderItems: OrderItems[];
 
   @OneToOne(() => Customer, (customer) => customer.order)

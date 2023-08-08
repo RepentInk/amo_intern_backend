@@ -39,6 +39,10 @@ export class Users {
   @Column({ nullable: true })
   pwd_code: number;
 
+  @ManyToOne(() => Role, (role) => role.users)
+  @JoinColumn({ name: 'role_id' })
+  role: Role;
+
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
@@ -56,8 +60,4 @@ export class Users {
 
   @OneToMany(() => UserLog, (userLog) => userLog.userLog)
   userLog: UserLog;
-
-  @ManyToOne(() => Role, (role) => role.users)
-  @JoinColumn({ name: 'role_id' })
-  role: Role;
 }

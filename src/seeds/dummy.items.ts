@@ -4,7 +4,7 @@ export const Items = [
     description: 'A double-sided wooden clock for learning time',
     unit: 2,
     price: 100,
-    category: 'ALM',
+    category_id: 1,
     created_at: new Date(),
   },
   {
@@ -12,7 +12,7 @@ export const Items = [
     description: 'Wooden abacus for children to learn addition and subtraction',
     unit: 1,
     price: 178,
-    category: 'ALM',
+    category_id: 2,
     created_at: new Date(),
   },
   {
@@ -20,7 +20,7 @@ export const Items = [
     description: 'A board for spelling during English lessons',
     unit: 1,
     price: 8,
-    category: 'MLM',
+    category_id: 3,
     created_at: new Date(),
   },
   {
@@ -28,7 +28,7 @@ export const Items = [
     description: 'Boards with animal pictures',
     unit: 1,
     price: 298,
-    category: 'MLM',
+    category_id: 4,
     created_at: new Date(),
   },
 ];

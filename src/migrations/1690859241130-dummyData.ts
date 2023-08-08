@@ -15,27 +15,27 @@ export class DummyData1690859241130 implements MigrationInterface {
     const entityManager = queryRunner.manager;
 
     await entityManager.save('Users', Users);
-    await entityManager.save('Order', Orders);
     await entityManager.save('Items', Items);
-    await entityManager.save('Customers', Customers);
-    await entityManager.save('Roles', Roles);
-    await entityManager.save('Category', Category);
-    await entityManager.save('OrderItems', OrderItems);
+    await entityManager.save('Customer', Customers);
+    await entityManager.save('Order', Orders);
+    await entityManager.save('Role', Roles);
+    await entityManager.save('Categories', Category);
+    // await entityManager.save('OrderItems', OrderItems);
     await entityManager.save('UserLog', UserLog);
-    await entityManager.save('Permissions', Permissions);
-    await entityManager.save('RolePermissions', RolePermissions);
+    await entityManager.save('Permission', Permissions);
+    // await entityManager.save('RolePermissions', RolePermissions);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('Users');
     await queryRunner.dropTable('UserLog');
     await queryRunner.dropTable('Items');
-    await queryRunner.dropTable('Orders');
+    await queryRunner.dropTable('Order');
     await queryRunner.dropTable('OrderItems');
-    await queryRunner.dropTable('Roles');
-    await queryRunner.dropTable('Permissions');
+    await queryRunner.dropTable('Role');
+    await queryRunner.dropTable('Permission');
     await queryRunner.dropTable('RolePermissions');
-    await queryRunner.dropTable('Customers');
-    await queryRunner.dropTable('Category');
+    await queryRunner.dropTable('Customer');
+    await queryRunner.dropTable('Categories');
   }
 }
