@@ -17,6 +17,7 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiBody,
+  ApiParam,
 } from '@nestjs/swagger';
 
 @Controller('userLog')
@@ -35,6 +36,13 @@ export class UserLogController implements BasicController {
   }
 
   @Get(':id')
+   @ApiParam({
+     name: 'id',
+     description: 'id of the userLog you are retrieving',
+     type: Number,
+     required: true,
+     example: 7
+   })
   @ApiOkResponse({
     description: 'Successfully retrieved the user log.',
     type: UserLogDto,
@@ -45,6 +53,19 @@ export class UserLogController implements BasicController {
   }
 
   @Post()
+  @ApiParam({
+    name: 'activity',
+    description: 'the activity for the the userLog being created',
+    type: String,
+    required: true,
+  })
+  @ApiParam({
+    name: 'user_id',
+    description: 'the id of the user being created',
+    type: Number,
+    required: true,
+    example: 8
+  })
   @ApiCreatedResponse({
     description: 'User log created successfully.',
     type: UserLogDto,
@@ -60,6 +81,27 @@ export class UserLogController implements BasicController {
   }
 
   @Put(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of the userLog you are updating',
+    type: Number,
+    required: true,
+    example: 7
+  })
+  @ApiParam({
+    name: 'activity',
+    description: 'the activity for the the userLog being updated',
+    type: String,
+    required: false,
+    example: 'Taking orders from customers'
+  })
+  @ApiParam({
+    name: 'user_id',
+    description: 'the id of the user being updated',
+    type: Number,
+    required: false,
+    example: 6
+  })
   @ApiOkResponse({
     description: 'User log updated successfully.',
     type: UserLogDto,
@@ -79,6 +121,13 @@ export class UserLogController implements BasicController {
   }
 
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of the userLog you are deleting',
+    type: Number,
+    required: true,
+    example: 12
+  })
   @ApiOkResponse({
     description: 'User log deleted successfully.',
     type: UserLogDto,

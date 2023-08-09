@@ -16,6 +16,7 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiBadRequestResponse,
+  ApiParam,
 } from '@nestjs/swagger';
 
 @Controller('orderItems')
@@ -34,6 +35,13 @@ export class OrderItemController implements BasicController {
   }
 
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of the orderItem you are retrieving',
+    type: Number,
+    required: true,
+    example: 12
+  })
   @ApiOkResponse({
     description: 'Successfully retrieved the order item.',
     type: OrderItemsDto,
@@ -44,6 +52,27 @@ export class OrderItemController implements BasicController {
   }
 
   @Post()
+  @ApiParam({
+    name: 'item_id',
+    description: 'id of the item ordered',
+    type: Number,
+    required: true,
+    example: 4
+  })
+  @ApiParam({
+    name: 'quantity',
+    description: 'Quantity of the order made',
+    type: Number,
+    required: true,
+    example: 3
+  })
+  @ApiParam({
+    name: 'price',
+    description: 'price of the item ordered',
+    type: Number,
+    required: true,
+    example: 300
+  })
   @ApiCreatedResponse({
     description: 'Order item created successfully.',
     type: OrderItemsDto,
@@ -54,6 +83,41 @@ export class OrderItemController implements BasicController {
   }
 
   @Put(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of the orderItem you are updating',
+    type: Number,
+    required: true,
+    example: 12
+  })
+  @ApiParam({
+    name: 'order_id',
+    description: 'id of the order made',
+    type: Number,
+    required: false,
+    example: 12
+  })
+  @ApiParam({
+    name: 'item_id',
+    description: 'id of the item ordered',
+    type: Number,
+    required: false,
+    example: 4
+  })
+  @ApiParam({
+    name: 'quantity',
+    description: 'Quantity of the order made',
+    type: Number,
+    required: false,
+    example: 3
+  })
+  @ApiParam({
+    name: 'price',
+    description: 'price of the item ordered',
+    type: Number,
+    required: false,
+    example: 300
+  })
   @ApiOkResponse({
     description: 'Order item updated successfully.',
     type: OrderItemsDto,
@@ -68,6 +132,13 @@ export class OrderItemController implements BasicController {
   }
 
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of the orderItem you are deleting',
+    type: Number,
+    required: true,
+    example: 4
+  })
   @ApiOkResponse({
     description: 'Order item deleted successfully.',
     type: OrderItemsDto,
