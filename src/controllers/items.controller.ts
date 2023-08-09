@@ -111,35 +111,35 @@ export class ItemsController implements BasicController {
     example: 1,
   })
   @ApiParam({
-    name: 'new name',
-    description: 'new name of item to be updated',
+    name: 'name',
+    description: 'name of item to be updated',
     type: String,
     required: false,
     example: 'calculator',
   })
   @ApiParam({
-    name: 'new description',
+    name: 'description',
     description: 'new description of item to be updated',
     type: String,
     required: false,
     example: 'digital scientific calculators',
   })
   @ApiParam({
-    name: 'new unit',
+    name: 'unit',
     description: 'new unit of item to be updated',
     type: Number,
     required: false,
     example: 1,
   })
   @ApiParam({
-    name: 'new price',
+    name: 'price',
     description: 'new price of item to be updated',
     type: Number,
     required: false,
     example: 100,
   })
   @ApiParam({
-    name: 'new category_id',
+    name: 'category_id',
     description: 'new category_id of the category the item belongs to',
     type: Number,
     required: false,

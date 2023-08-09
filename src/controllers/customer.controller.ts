@@ -111,35 +111,35 @@ export class CustomerController implements BasicController {
     example: 3,
   })
   @ApiParam({
-    name: 'new name',
+    name: 'name',
     type: 'string',
     required: false,
     description: 'new name of the customer to be updated',
     example: 'Jonathan Doeson',
   })
   @ApiParam({
-    name: 'new phone_number',
+    name: 'phone_number',
     type: 'string',
     required: false,
     description: 'new phone number of the customer to be updated',
     example: '1234567890',
   })
   @ApiParam({
-    name: 'new gender',
+    name: 'gender',
     type: 'string',
     required: false,
     description: 'new gender of the customer to be updated',
     example: 'Male',
   })
   @ApiParam({
-    name: 'new email',
+    name: 'email',
     type: 'string',
     required: false,
     description: 'new email of the customer to be updated',
     example: 'jonatan.doe@example.com',
   })
   @ApiParam({
-    name: 'new organization',
+    name: 'organization',
     type: 'string',
     required: false,
     description: 'new organization of the customer to be updated',

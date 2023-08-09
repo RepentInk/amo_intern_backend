@@ -84,7 +84,7 @@ export class CategoryController implements BasicController {
     example: 1,
   })
   @ApiParam({
-    name: 'new name',
+    name: 'name',
     required: true,
     type: String,
     description: 'new name of the category u want to update',
