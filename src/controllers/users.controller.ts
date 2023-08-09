@@ -17,6 +17,7 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
   ApiBody,
+  ApiParam,
 } from '@nestjs/swagger';
 
 @Controller('users')
@@ -28,13 +29,20 @@ export class UsersController implements BasicController {
   @ApiOkResponse({
     description: 'Successfully retrieved all users.',
     type: UserDto,
-    isArray: true,
+    isArray: false,
   })
   async findAll(): Promise<UserDto[]> {
     return this.userService.findAll();
   }
 
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description:'Enter id of the user',
+    type: Number,
+    example: 2,
+  })
   @ApiOkResponse({
     description: 'Successfully retrieved the user.',
     type: UserDto,
@@ -44,7 +52,63 @@ export class UsersController implements BasicController {
     return this.userService.findOne(id);
   }
 
-  @Post('create')
+  @Post()
+  @ApiParam({
+       name: 'name',
+       required: true,
+       description: 'full name of the user being created',
+       type: String,
+       example: 'John Doe'
+  })
+  @ApiParam({
+    name: 'email',
+    required: true,
+    description: 'email of the user being created',
+    type: String,
+    example: 'johndoe@gmail.com'
+  })
+  @ApiParam({
+    name: 'password',
+    required: true,
+    description: 'password of the user being created',
+    type: String,
+    example: '@JohnD123*'
+  })
+  @ApiParam({
+    name: 'phone_number',
+    required: true,
+    description: 'phone number of the user being created',
+    type: String,
+    example: '+2332456789'
+  })
+  @ApiParam({
+    name: 'verified',
+    required: true,
+    description: 'verification status of the user being created',
+    type: Boolean,
+    example: true
+  })
+  @ApiParam({
+    name: 'pwd_expired_at',
+    required: true,
+    description: 'pwd expiration date of the user being created',
+    type: Date,
+    example: 10/12/2023
+  })
+  @ApiParam({
+    name: 'pwd_code',
+    required: true,
+    description: 'pwd code of the user being created',
+    type: Number,
+    example: 240
+  })
+  @ApiParam({
+    name: 'role_id',
+    description: 'The role id the user belongs to',
+    type: Number,
+    required: true,
+    example: 4
+  })
   @ApiCreatedResponse({
     description: 'User created successfully.',
     type: UserDto,
@@ -60,6 +124,69 @@ export class UsersController implements BasicController {
   }
 
   @Put(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of the user to be updated',
+    type: Number,
+    required: true,
+    example: 3
+  })
+  @ApiParam({
+    name: 'name',
+    required: false,
+    description: 'full name of the user to be updated ',
+    type: String,
+    example: 'Mark Doe'
+})
+@ApiParam({
+ name: 'email',
+ required: false,
+ description: 'email of the user to be updated',
+ type: String,
+ example: 'johndoe@gmail.com'
+})
+@ApiParam({
+ name: 'password',
+ required: false,
+ description: 'Password of the user to be updated',
+ type: String,
+ example: '@markD123*'
+})
+@ApiParam({
+ name: 'phone_number',
+ required: false,
+ description: 'Phone number of the user to be updated',
+ type: String,
+ example: '+2332456453'
+})
+@ApiParam({
+ name: 'verified',
+ required: false,
+ description: 'verification status of the user to be updated',
+ type: Boolean,
+ example: true
+})
+@ApiParam({
+ name: 'pwd_expired_at',
+ required: false,
+ description: 'pwd expiration date of the user to be updated',
+ type: Date,
+ example: 10/12/2024
+})
+@ApiParam({
+ name: 'pwd_code',
+ required: false,
+ description: 'pwd code of the user to be updated',
+ type: Number,
+ example: 32
+})
+@ApiParam({
+ name: 'role_id',
+ description: 'role id the user belongs to',
+ type: Number,
+ required: false,
+ example: 2
+})
   @ApiOkResponse({
     description: 'User updated successfully.',
     type: UserDto,
@@ -69,7 +196,7 @@ export class UsersController implements BasicController {
   @ApiBody({
     type: UserDto,
     description: 'User data to be updated',
-    required: true,
+    required: false,
   })
   async update(
     @Body() userDto: UserDto,
@@ -79,6 +206,13 @@ export class UsersController implements BasicController {
   }
 
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'id of the user to be deleted',
+    type: Number,
+    required: true,
+    example: 3
+  })
   @ApiOkResponse({
     description: 'User deleted successfully.',
     type: UserDto,
