@@ -41,7 +41,7 @@ export class CategoryController implements BasicController {
     name: 'id',
     required: true,
     type: Number,
-    description: 'id of the category u want to retrieve',
+    description: 'id of the category you want to retrieve',
     example: 1,
   })
   @ApiOkResponse({
