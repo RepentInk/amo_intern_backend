@@ -1,8 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { compare } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { SmsService } from './sms.service';
-
+import { PwdVerifyDto } from '../dto/pwd.verify.dto';
+import { ConfigModule } from '@nestjs/config';
+ConfigModule.forRoot();
 @Injectable()
 export class AuthService {
 
@@ -48,5 +54,34 @@ export class AuthService {
     await this.userService.update(user, user.id);
 
     return { message: 'Verification code sent successfully' };
+  }
+
+  // verify pwd_code and update password
+  async submitVerificationCode(pwdVerifyDto: PwdVerifyDto) {
+    const user = await this.userService.findByPhoneNumber(
+      pwdVerifyDto.phoneNumber,
+    );
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (
+      user.pwd_code !== pwdVerifyDto.verificationCode ||
+      user.pwd_expired_at < new Date()
+    ) {
+      throw new BadRequestException('Invalid verification code or expired');
+    }
+
+    // Update user's password and clear verification code
+    const hasedPasword = await hash(
+      pwdVerifyDto.newPassword,
+      process.env.BCRYPT_SALT_ROUNDS,
+    );
+    user.password = hasedPasword;
+    user.pwd_code = null
+    user.pwd_expired_at = null
+
+    await this.userService.update(user, user.id);
+    return { message: 'Password updated successfully' };
   }
 }

@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto } from '../dto/auth.dto';
+import { PwdVerifyDto } from '../dto/pwd.verify.dto';
 import {
   ApiTags,
   ApiOkResponse,
@@ -55,6 +56,7 @@ export class AuthController {
     return user;
   }
   // password reset verification
+
   @Post('send-verification-code')
   @ApiParam({
     name: 'phoneNumber',
@@ -72,4 +74,10 @@ export class AuthController {
     }
     return { message: 'Verification code sent successfully' };
   }
+
+  @Post('submit-verification-code')
+  async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
+    return this.authService.submitVerificationCode(pwdVerifyDto)  
+  }
+
 }
