@@ -24,10 +24,15 @@ import { SmsService } from './services/sms.service';
 import entities from './database/entities';
 import { RoleController } from './controllers/role.controller';
 import { RoleService } from './services/role.service';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRETE,
+      signOptions: { expiresIn: process.env.TOKEN_DURATION },
+    }),
     TypeOrmModule.forRoot(dbConfig),
     TypeOrmModule.forFeature(entities),
   ],

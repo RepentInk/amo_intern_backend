@@ -1,14 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { compare } from 'bcrypt';
+import { SmsService } from './sms.service';
 
 @Injectable()
 export class AuthService {
 
-  constructor(private readonly userService: UsersService) {}
+  constructor(
+    private readonly userService: UsersService,
+    private readonly smsService: SmsService,
+  ) {}
 
   async validateUser(email: string, password: string) {
-    
     const user = await this.userService.findByEmail(email);
 
     if (user && (await compare(password, user.password))) {
@@ -22,5 +25,28 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  // send pwd_code
+  async sendVerificationCode(phone_number: string) {
+    const user = await this.userService.findByPhoneNumber(phone_number);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Generate a random 6-digit pwd code
+    const pwd_code = Math.floor(100000 + Math.random() * 900000);
+
+    // Send the pwd code via SMS
+    await this.smsService.sendSms(user.phone_number, pwd_code);
+
+    // Update user's pwdCode and pwdCodeExpiredAt in the database
+    const pwd_expired_at = new Date();
+    pwd_expired_at.setMinutes(pwd_expired_at.getMinutes() + 10); // 10 minutes from now
+    user.pwd_code = pwd_code;
+    user.pwd_expired_at = pwd_expired_at;
+    await this.userService.update(user, user.id);
+
+    return { message: 'Verification code sent successfully' };
   }
 }

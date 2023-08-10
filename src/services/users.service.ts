@@ -8,7 +8,9 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class UsersService implements UserInterface {
 
-  constructor(@InjectRepository(Users) private userRepository: Repository<Users>) {}
+  constructor(
+    @InjectRepository(Users) private userRepository: Repository<Users>,
+  ) {}
 
   async findAll(): Promise<UserDto[]> {
     try {
@@ -67,5 +69,11 @@ export class UsersService implements UserInterface {
 
   async findByEmail(email: string): Promise<Users> {
     return this.userRepository.findOne({ where: { email } });
+  }
+
+  async findByPhoneNumber(phone_number: string): Promise<any> {
+    return await this.userRepository.findOne({
+      where: { phone_number },
+    });
   }
 }
