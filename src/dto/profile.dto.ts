@@ -29,6 +29,7 @@ export class ProfileDto {
   @IsPhoneNumber()
   @IsNotEmpty()
   phoneNumber: string;
+  //properties to aid pasword change
   newPassword: string;
   confirmPassword: string;
 }

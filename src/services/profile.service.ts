@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class ProfileService {
   private users: UserDto[] = [];
+  //change username
   async updateUserName(
     id: number,
     newName: string,
@@ -23,7 +24,7 @@ export class ProfileService {
 
     user.name = newName;
   }
-
+  //change email
   async updateUserEmail(
     id: number,
     newEmail: string,
@@ -41,7 +42,7 @@ export class ProfileService {
 
     user.email = newEmail;
   }
-
+  //change phone number
   async updateUserPhoneNumber(
     id: number,
     newPhoneNumber: string,
@@ -59,7 +60,7 @@ export class ProfileService {
 
     user.phone_number = newPhoneNumber;
   }
-
+  //update password
   async updateUserPassword(
     id: number,
     oldPassword: string,
