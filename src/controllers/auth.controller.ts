@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { LoginDto } from '../dto/auth.dto';
 import {
   ApiTags,

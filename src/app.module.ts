@@ -24,12 +24,15 @@ import { SmsService } from './services/sms.service';
 import entities from './database/entities';
 import { RoleController } from './controllers/role.controller';
 import { RoleService } from './services/role.service';
+import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot(dbConfig),
     TypeOrmModule.forFeature(entities),
+    AuthModule,
   ],
   controllers: [
     AppController,
