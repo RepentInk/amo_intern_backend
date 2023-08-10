@@ -16,6 +16,7 @@ import { OrderItemController } from './controllers/orderItems.controller';
 import { PermissionController } from './controllers/permission.controller';
 import { PermissionService } from './services/permission.service';
 import { UsersController } from './controllers/users.controller';
+import { AuthController } from './controllers/auth.controller';
 import { UsersService } from './services/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -24,6 +25,7 @@ import { SmsService } from './services/sms.service';
 import entities from './database/entities';
 import { RoleController } from './controllers/role.controller';
 import { RoleService } from './services/role.service';
+import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -38,6 +40,7 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   controllers: [
     AppController,
+    AuthController,
     UserLogController,
     ItemsController,
     CategoryController,
@@ -59,6 +62,7 @@ import { JwtModule } from '@nestjs/jwt';
     PermissionService,
     RoleService,
     UsersService,
+    AuthService,
     SmsService,
   ],
 })
