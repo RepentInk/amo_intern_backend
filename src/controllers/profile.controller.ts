@@ -207,9 +207,9 @@ export class ProfileController {
     try {
       await this.profileService.updateUserPassword(
         id,
-        profileDto.password, // Old password
-        profileDto.newPassword, // New password
-        profileDto.confirmPassword, // Confirm new password
+        profileDto.password,
+        profileDto.newPassword,
+        profileDto.confirmPassword,
       );
       return { message: 'User password updated successfully' };
     } catch (error) {
