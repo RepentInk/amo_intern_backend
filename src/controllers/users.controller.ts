@@ -23,7 +23,7 @@ import {
 @Controller('users')
 @ApiTags('Users')
 export class UsersController implements BasicController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get()
   @ApiOkResponse({
@@ -39,7 +39,7 @@ export class UsersController implements BasicController {
   @ApiParam({
     name: 'id',
     required: true,
-    description:'Enter id of the user',
+    description: 'Enter id of the user',
     type: Number,
     example: 2,
   })
@@ -54,11 +54,11 @@ export class UsersController implements BasicController {
 
   @Post()
   @ApiParam({
-       name: 'name',
-       required: true,
-       description: 'full name of the user being created',
-       type: String,
-       example: 'John Doe'
+    name: 'name',
+    required: true,
+    description: 'full name of the user being created',
+    type: String,
+    example: 'John Doe'
   })
   @ApiParam({
     name: 'email',
@@ -68,39 +68,11 @@ export class UsersController implements BasicController {
     example: 'johndoe@gmail.com'
   })
   @ApiParam({
-    name: 'password',
-    required: true,
-    description: 'password of the user being created',
-    type: String,
-    example: '@JohnD123*'
-  })
-  @ApiParam({
     name: 'phone_number',
     required: true,
     description: 'phone number of the user being created',
     type: String,
     example: '+2332456789'
-  })
-  @ApiParam({
-    name: 'verified',
-    required: true,
-    description: 'verification status of the user being created',
-    type: Boolean,
-    example: true
-  })
-  @ApiParam({
-    name: 'pwd_expired_at',
-    required: true,
-    description: 'pwd expiration date of the user being created',
-    type: Date,
-    example: 10/12/2023
-  })
-  @ApiParam({
-    name: 'pwd_code',
-    required: true,
-    description: 'pwd code of the user being created',
-    type: Number,
-    example: 240
   })
   @ApiParam({
     name: 'role_id',
@@ -137,56 +109,28 @@ export class UsersController implements BasicController {
     description: 'full name of the user to be updated ',
     type: String,
     example: 'Mark Doe'
-})
-@ApiParam({
- name: 'email',
- required: false,
- description: 'email of the user to be updated',
- type: String,
- example: 'johndoe@gmail.com'
-})
-@ApiParam({
- name: 'password',
- required: false,
- description: 'Password of the user to be updated',
- type: String,
- example: '@markD123*'
-})
-@ApiParam({
- name: 'phone_number',
- required: false,
- description: 'Phone number of the user to be updated',
- type: String,
- example: '+2332456453'
-})
-@ApiParam({
- name: 'verified',
- required: false,
- description: 'verification status of the user to be updated',
- type: Boolean,
- example: true
-})
-@ApiParam({
- name: 'pwd_expired_at',
- required: false,
- description: 'pwd expiration date of the user to be updated',
- type: Date,
- example: 10/12/2024
-})
-@ApiParam({
- name: 'pwd_code',
- required: false,
- description: 'pwd code of the user to be updated',
- type: Number,
- example: 32
-})
-@ApiParam({
- name: 'role_id',
- description: 'role id the user belongs to',
- type: Number,
- required: false,
- example: 2
-})
+  })
+  @ApiParam({
+    name: 'email',
+    required: false,
+    description: 'email of the user to be updated',
+    type: String,
+    example: 'johndoe@gmail.com'
+  })
+  @ApiParam({
+    name: 'phone_number',
+    required: false,
+    description: 'Phone number of the user to be updated',
+    type: String,
+    example: '+2332456453'
+  })
+  @ApiParam({
+    name: 'role_id',
+    description: 'role id the user belongs to',
+    type: Number,
+    required: false,
+    example: 2
+  })
   @ApiOkResponse({
     description: 'User updated successfully.',
     type: UserDto,
