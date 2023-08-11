@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './controllers/app.controller';
-import { AppService } from './services/app.service';
 import { UserLogService } from './services/userLog.service';
 import { UserLogController } from './controllers/userLog.controller';
 import { ItemsController } from './controllers/items.controller';
@@ -40,7 +38,6 @@ import entities from './database/entities';
     TypeOrmModule.forFeature(entities)
   ],
   controllers: [
-    AppController,
     AuthController,
     UserLogController,
     ItemsController,
@@ -53,7 +50,6 @@ import entities from './database/entities';
     RoleController
   ],
   providers: [
-    AppService,
     UserLogService,
     ItemsService,
     CategoryService,
