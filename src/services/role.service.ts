@@ -4,7 +4,6 @@ import { RoleDto } from 'src/dto/role.dto';
 import { Role } from 'src/entities/role.entity';
 import { RoleInterface } from 'src/interfaces/role.interface';
 import { Repository } from 'typeorm';
-
 @Injectable()
 export class RoleService implements RoleInterface {
   constructor(
