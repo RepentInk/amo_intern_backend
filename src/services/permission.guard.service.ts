@@ -17,7 +17,7 @@ export class PermissionGuard implements CanActivate {
     private jwtService: JwtService,
     private readonly userService: UsersService,
     private readonly roleService: RoleService,
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // get the permission required to access this route
