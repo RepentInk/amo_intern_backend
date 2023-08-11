@@ -22,7 +22,7 @@ export class PermissionGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // get the permission required to access this route
     const requiredPermission = this.reflector.get<any>(
-      'permissions',
+      'permission',
       context.getHandler(),
     );
     if (!requiredPermission) {

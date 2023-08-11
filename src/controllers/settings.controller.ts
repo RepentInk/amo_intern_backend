@@ -24,7 +24,7 @@ export class SettingController implements BasicController {
 
   @Get('get-one')
   @UseGuards(PermissionGuard) //use permission guard middlewrae  
-  @Permissions('view-settings') // Define the required permissions using the custom Permission decorator
+  @Permissions('findone-setting') // Define the required permissions using the custom Permission decorator
   findOne(id: number): Promise<SettingDto> {
     throw new Error('Method not implemented.');
   }
