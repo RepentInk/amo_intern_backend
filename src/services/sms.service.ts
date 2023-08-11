@@ -13,7 +13,7 @@ export class SmsService implements SmsInterface {
     this.twilioClient = Twilio(process.env.SMS_SID, process.env.SMS_TOKEN);
   }
 
-  async sendSms(customerNumber: string, message: string): Promise<void> {
+  async sendSms(customerNumber: string, message: any): Promise<void> {
     try {
       await this.twilioClient.messages.create({
         to: customerNumber,
