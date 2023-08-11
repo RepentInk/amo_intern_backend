@@ -26,7 +26,6 @@ import { RoleController } from './controllers/role.controller';
 import { RoleService } from './services/role.service';
 import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthModule } from './auth/auth.module';
 
 import entities from './database/entities';
 
@@ -38,8 +37,7 @@ import entities from './database/entities';
       signOptions: { expiresIn: process.env.TOKEN_DURATION },
     }),
     TypeOrmModule.forRoot(dbConfig),
-    TypeOrmModule.forFeature(entities),
-    AuthModule,
+    TypeOrmModule.forFeature(entities)
   ],
   controllers: [
     AppController,
