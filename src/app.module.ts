@@ -22,11 +22,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { dbConfig } from './database/dbconfig';
 import { SmsService } from './services/sms.service';
-import entities from './database/entities';
 import { RoleController } from './controllers/role.controller';
 import { RoleService } from './services/role.service';
 import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './auth/auth.module';
+
+import entities from './database/entities';
 
 @Module({
   imports: [
@@ -37,6 +39,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     TypeOrmModule.forRoot(dbConfig),
     TypeOrmModule.forFeature(entities),
+    AuthModule,
   ],
   controllers: [
     AppController,

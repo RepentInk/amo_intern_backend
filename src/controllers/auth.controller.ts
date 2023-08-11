@@ -22,7 +22,7 @@ import { UserDto } from 'src/dto/users.dto';
 @Controller('auth')
 @ApiTags('Authentication')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('login')
   @ApiParam({
@@ -55,6 +55,8 @@ export class AuthController {
 
     return user;
   }
+
+
   // password reset verification
   @ApiTags('Password Reset')
   @Post('reset-pssword/send-verification-code')
@@ -74,10 +76,12 @@ export class AuthController {
     }
     return { message: 'Verification code sent successfully' };
   }
+
+
   @ApiTags('Password Reset')
   @Post('reset-password/submit-verification-code')
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
-    return this.authService.submitVerificationCode(pwdVerifyDto)  
+    return this.authService.submitVerificationCode(pwdVerifyDto)
   }
 
 }
