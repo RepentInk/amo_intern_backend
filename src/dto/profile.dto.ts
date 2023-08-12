@@ -10,7 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class ProfileDto {
   @ApiProperty({ example: 'John Doe', description: 'User full name' })
   @IsNotEmpty()
-  fullName: string;
+  full_name: string;
 
   @ApiProperty({
     example: 'john@example.com',
@@ -28,8 +28,7 @@ export class ProfileDto {
   @ApiProperty({ example: '1234567890', description: 'User phone number' })
   @IsPhoneNumber()
   @IsNotEmpty()
-  phoneNumber: string;
+  phone_number: string;
   //properties to aid pasword change
-  newPassword: string;
-  confirmPassword: string;
+  confirm_password: string;
 }

@@ -1,87 +1,61 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UserDto } from 'src/dto/users.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Users } from '../entities/users.entity';
 import { ProfileDto } from 'src/dto/profile.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class ProfileService {
-  private users: UserDto[] = [];
-  //change username
-  async updateUserName(
+  Users: any;
+  users: any;
+  constructor(
+    @InjectRepository(Users) private readonly userRepository: Repository<Users>,
+  ) {}
+
+  async updateUserInfo(
     id: number,
-    newName: string,
-    password: string,
+    newData: { name?: string; email?: string; phone_number?: string },
   ): Promise<void> {
-    const user = this.users.find((u) => u.id === id);
+    const user = this.users.find((u: { id: number }) => u.id === id);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    if (!bcrypt.compareSync(password, user.password)) {
-      throw new Error('Invalid password');
+    if (newData.name) {
+      user.name = newData.name;
     }
 
-    user.name = newName;
+    if (newData.email) {
+      user.email = newData.email;
+    }
+
+    if (newData.phone_number) {
+      user.phone_number = newData.phone_number;
+    }
+
+    await this.userRepository.save(user);
   }
-  //change email
-  async updateUserEmail(
-    id: number,
-    newEmail: string,
-    password: string,
-  ): Promise<void> {
-    const user = this.users.find((u) => u.id === id);
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    if (!bcrypt.compareSync(password, user.password)) {
-      throw new Error('Invalid password');
-    }
-
-    user.email = newEmail;
-  }
-  //change phone number
-  async updateUserPhoneNumber(
-    id: number,
-    newPhoneNumber: string,
-    password: string,
-  ): Promise<void> {
-    const user = this.users.find((u) => u.id === id);
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    if (!bcrypt.compareSync(password, user.password)) {
-      throw new Error('Invalid password');
-    }
-
-    user.phone_number = newPhoneNumber;
-  }
-  //update password
   async updateUserPassword(
     id: number,
-    oldPassword: string,
-    newPassword: string,
-    confirmPassword: string,
+    password: string,
+    confirm_password: string,
   ): Promise<void> {
-    const user = this.users.find((u) => u.id === id);
+    const user = this.users.find((u: { id: number }) => u.id === id);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    if (!bcrypt.compareSync(oldPassword, user.password)) {
-      throw new Error('Invalid old password');
-    }
-
-    if (newPassword !== confirmPassword) {
+    if (password !== confirm_password) {
       throw new Error('Passwords do not match');
     }
 
-    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+    const hashedPassword = bcrypt.hashSync(password, 10);
     user.password = hashedPassword;
+
+    await this.userRepository.save(user);
   }
 }
