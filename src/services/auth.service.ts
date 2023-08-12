@@ -11,6 +11,7 @@ import { SmsService } from './sms.service';
 import { PwdVerifyDto } from '../dto/pwd.verify.dto';
 import { ConfigModule } from '@nestjs/config';
 ConfigModule.forRoot();
+
 @Injectable()
 export class AuthService {
 
