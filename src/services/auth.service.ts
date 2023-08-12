@@ -2,7 +2,9 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  UnauthorizedException
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { compare, hash } from 'bcrypt';
 import { SmsService } from './sms.service';
@@ -15,6 +17,7 @@ export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly smsService: SmsService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -31,6 +34,17 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  // generate jwt
+  async signIn(email: string, password: string) {
+    const user = await this.userService.findByEmail(email)
+    if(user?.password !== password) {
+      throw new UnauthorizedException();
+    }
+    const payload = { name: user.name, email: user.email };
+    const token = await this.jwtService.signAsync(payload, {secret: process.env.JWT_CONSTANT});
+    return token;
   }
 
   // send pwd_code
