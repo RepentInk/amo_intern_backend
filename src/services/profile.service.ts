@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Users } from '../entities/users.entity';
 import { ProfileDto } from 'src/dto/profile.dto';
 import * as bcrypt from 'bcrypt';
+import { UserDto } from 'src/dto/users.dto';
 
 @Injectable()
 export class ProfileService {
@@ -11,49 +12,30 @@ export class ProfileService {
   users: any;
   constructor(
     @InjectRepository(Users) private readonly userRepository: Repository<Users>,
-  ) {}
+  ) { }
 
-  async updateUserInfo(
-    id: number,
-    newData: { name?: string; email?: string; phone_number?: string },
-  ): Promise<void> {
-    const user = this.users.find((u: { id: number }) => u.id === id);
+  async updateUserInfo(id: number, userProfile: ProfileDto): Promise<void> {
+    const userExist: UserDto = this.users.find((user: UserDto) => user.id === id);
 
-    if (!user) {
+    if (!userExist) {
       throw new NotFoundException('User not found');
     }
 
-    if (newData.name) {
-      user.name = newData.name;
-    }
-
-    if (newData.email) {
-      user.email = newData.email;
-    }
-
-    if (newData.phone_number) {
-      user.phone_number = newData.phone_number;
-    }
-
-    await this.userRepository.save(user);
+    await this.userRepository.save(userProfile);
   }
 
-  async updateUserPassword(
-    id: number,
-    password: string,
-    confirm_password: string,
-  ): Promise<void> {
-    const user = this.users.find((u: { id: number }) => u.id === id);
+  async updateUserPassword(id: number, userProfile: ProfileDto): Promise<void> {
+    const user = this.users.find((user: ProfileDto) => user.id === id);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    if (password !== confirm_password) {
+    if (userProfile.password !== userProfile.confirm_password) {
       throw new Error('Passwords do not match');
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    const hashedPassword = bcrypt.hashSync(userProfile.password, 10);
     user.password = hashedPassword;
 
     await this.userRepository.save(user);

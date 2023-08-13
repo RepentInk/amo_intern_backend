@@ -8,9 +8,10 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ProfileDto {
+  readonly id: number;
   @ApiProperty({ example: 'John Doe', description: 'User full name' })
   @IsNotEmpty()
-  full_name: string;
+  name: string;
 
   @ApiProperty({
     example: 'john@example.com',

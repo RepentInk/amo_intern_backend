@@ -16,29 +16,47 @@ import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiParam,
+  ApiTags,
 } from '@nestjs/swagger';
 
-@Controller('profile')
+@ApiTags('Profile')
+@Controller('')
 @UseGuards(AuthService)
 export class ProfileController {
-  constructor(private readonly profileService: ProfileService) {}
+  constructor(private readonly profileService: ProfileService) { }
 
-  @Put(':id/update-profile')
+  @Put('update-profile/:id')
   @ApiParam({
     name: 'id',
     type: 'number',
     required: true,
-    description: 'ID of the user to update profile',
+    description: 'ID of the user to update',
     example: 1,
   })
   @ApiParam({
-    name: 'name || email || phone_number',
+    name: 'name',
     type: 'string',
     required: true,
-    description: 'profile field to be updated (at least 1 field is required)',
+    description: 'User fullname',
     example: 'John Doe',
   })
+  @ApiParam({
+    name: 'email',
+    type: 'string',
+    required: true,
+    description: 'User email address',
+    example: 'nyarko@gmail.com',
+  })
+  @ApiParam({
+    name: 'phone_number',
+    type: 'string',
+    required: true,
+    description: 'User phone number',
+    example: '0544474706',
+  })
+  @ApiOperation({ summary: 'Update auth user profile' })
   @ApiOkResponse({ description: 'User profile updated successfully' })
   @ApiNotFoundResponse({ description: 'User not found' })
   @ApiBadRequestResponse({ description: 'Passwords do not match' })
@@ -49,6 +67,8 @@ export class ProfileController {
     await this.profileService.updateUserInfo(id, updateUserData);
   }
 
+
+  @ApiOperation({ summary: 'Update auth user password' })
   @Put('update_password/:id')
   @ApiParam({
     name: 'id',
@@ -81,11 +101,7 @@ export class ProfileController {
     @Body() profileDto: ProfileDto,
   ) {
     try {
-      await this.profileService.updateUserPassword(
-        id,
-        profileDto.password,
-        profileDto.confirm_password,
-      );
+      await this.profileService.updateUserPassword(id, profileDto);
       return { message: 'User password updated successfully' };
     } catch (error) {
       if (error instanceof NotFoundException) {

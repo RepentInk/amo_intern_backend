@@ -24,6 +24,8 @@ import { RoleController } from './controllers/role.controller';
 import { RoleService } from './services/role.service';
 import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ProfileController } from './controllers/profile.controller';
+import { ProfileService } from './services/profile.service';
 
 import entities from './database/entities';
 
@@ -47,7 +49,8 @@ import entities from './database/entities';
     OrderItemController,
     UsersController,
     PermissionController,
-    RoleController
+    RoleController,
+    ProfileController
   ],
   providers: [
     UserLogService,
@@ -61,6 +64,7 @@ import entities from './database/entities';
     UsersService,
     AuthService,
     SmsService,
+    ProfileService
   ],
 })
 export class AppModule {}
