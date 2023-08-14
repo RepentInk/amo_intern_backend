@@ -3,170 +3,73 @@ import {
   Put,
   Body,
   Param,
+  ParseIntPipe,
+  UseGuards,
+  NotFoundException,
   HttpException,
   HttpStatus,
-  NotFoundException,
 } from '@nestjs/common';
 import { ProfileService } from '../services/profile.service';
 import { ProfileDto } from '../dto/profile.dto';
+import { AuthService } from '../auth/auth.service';
 import {
-  ApiTags,
-  ApiParam,
-  ApiOkResponse,
   ApiBadRequestResponse,
   ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
 } from '@nestjs/swagger';
 
-@Controller('profile')
 @ApiTags('Profile')
+@Controller('')
+@UseGuards(AuthService)
 export class ProfileController {
-  constructor(private readonly profileService: ProfileService) {}
+  constructor(private readonly profileService: ProfileService) { }
 
-  @Put('updateName/:id')
+  @Put('update-profile/:id')
   @ApiParam({
     name: 'id',
     type: 'number',
     required: true,
-    description: 'ID of the user to be updated',
+    description: 'ID of the user to update',
     example: 1,
   })
   @ApiParam({
-    name: 'newName',
+    name: 'name',
     type: 'string',
     required: true,
-    description: 'New name of the user',
+    description: 'User fullname',
     example: 'John Doe',
   })
   @ApiParam({
-    name: 'password',
+    name: 'email',
     type: 'string',
     required: true,
-    description: 'the users password used to verify credentials',
-    example: 'password123',
+    description: 'User email address',
+    example: 'nyarko@gmail.com',
   })
-  @ApiOkResponse({ description: 'User name updated successfully' })
+  @ApiParam({
+    name: 'phone_number',
+    type: 'string',
+    required: true,
+    description: 'User phone number',
+    example: '0544474706',
+  })
+  @ApiOperation({ summary: 'Update auth user profile' })
+  @ApiOkResponse({ description: 'User profile updated successfully' })
   @ApiNotFoundResponse({ description: 'User not found' })
-  @ApiBadRequestResponse({ description: 'Invalid password' })
-  async updateName(@Param('id') id: number, @Body() profileDto: ProfileDto) {
-    try {
-      await this.profileService.updateUserName(
-        id,
-        profileDto.fullName,
-        profileDto.password,
-      );
-      return { message: 'User name updated successfully' };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      } else if (error.message === 'Invalid password') {
-        throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
-      } else {
-        throw new HttpException(
-          'Update failed',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
+  @ApiBadRequestResponse({ description: 'Passwords do not match' })
+  async updateUserInfo(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserData: ProfileDto,
+  ): Promise<void> {
+    await this.profileService.updateUserInfo(id, updateUserData);
   }
 
-  @Put('updateEmail/:id')
-  @ApiParam({
-    name: 'id',
-    type: 'number',
-    required: true,
-    description: 'ID of the user to update email',
-    example: 1,
-  })
-  @ApiParam({
-    name: 'newEmail',
-    type: 'string',
-    required: true,
-    description: 'New email of the user',
-    example: 'john@example',
-  })
-  @ApiParam({
-    name: 'password',
-    type: 'string',
-    required: true,
-    description: 'the users password used to verify credentials',
-    example: 'password123',
-  })
-  @ApiOkResponse({ description: 'User email updated successfully' })
-  @ApiNotFoundResponse({ description: 'User not found' })
-  @ApiBadRequestResponse({ description: 'Invalid password' })
-  async updateEmail(@Param('id') id: number, @Body() profileDto: ProfileDto) {
-    try {
-      await this.profileService.updateUserEmail(
-        id,
-        profileDto.email,
-        profileDto.password,
-      );
-      return { message: 'User email updated successfully' };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      } else if (error.message === 'Invalid password') {
-        throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
-      } else {
-        throw new HttpException(
-          'Update failed',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
-  }
 
-  @Put('updatePhone/:id')
-  @ApiParam({
-    name: 'id',
-    type: 'number',
-    required: true,
-    description: 'ID of the user to update phone number',
-    example: 1,
-  })
-  @ApiParam({
-    name: 'newPhoneNumber',
-    type: 'string',
-    required: true,
-    description: 'New phone number of the user',
-    example: '1234567890',
-  })
-  @ApiParam({
-    name: 'password',
-    type: 'string',
-    required: true,
-    description: 'the users password used to verify credentials',
-    example: 'password123',
-  })
-  @ApiOkResponse({ description: 'User phone number updated successfully' })
-  @ApiNotFoundResponse({ description: 'User not found' })
-  @ApiBadRequestResponse({ description: 'Invalid password' })
-  async updatePhoneNumber(
-    @Param('id') id: number,
-    @Body() profileDto: ProfileDto,
-  ) {
-    try {
-      await this.profileService.updateUserPhoneNumber(
-        id,
-        profileDto.phoneNumber,
-        profileDto.password,
-      );
-      return { message: 'User phone number updated successfully' };
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      } else if (error.message === 'Invalid password') {
-        throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
-      } else {
-        throw new HttpException(
-          'Update failed',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
-  }
-
-  @Put('update-password/:id')
+  @ApiOperation({ summary: 'Update auth user password' })
+  @Put('update_password/:id')
   @ApiParam({
     name: 'id',
     type: 'number',
@@ -178,18 +81,11 @@ export class ProfileController {
     name: 'password',
     type: 'string',
     required: true,
-    description: 'the users password used to verify credentials',
-    example: 'Paasword123',
-  })
-  @ApiParam({
-    name: 'newPassword',
-    type: 'string',
-    required: true,
     description: 'New password of the user',
     example: 'passworD123',
   })
   @ApiParam({
-    name: 'confirmPassword',
+    name: 'confirm_password',
     type: 'string',
     required: true,
     description: 'Confirm new password of the user',
@@ -205,12 +101,7 @@ export class ProfileController {
     @Body() profileDto: ProfileDto,
   ) {
     try {
-      await this.profileService.updateUserPassword(
-        id,
-        profileDto.password,
-        profileDto.newPassword,
-        profileDto.confirmPassword,
-      );
+      await this.profileService.updateUserPassword(id, profileDto);
       return { message: 'User password updated successfully' };
     } catch (error) {
       if (error instanceof NotFoundException) {
