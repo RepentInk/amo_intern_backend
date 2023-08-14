@@ -59,14 +59,14 @@ export class AuthService {
   // verify pwd_code and update password
   async submitVerificationCode(pwdVerifyDto: PwdVerifyDto) {
     const user = await this.userService.findByPhoneNumber(
-      pwdVerifyDto.phoneNumber,
+      pwdVerifyDto.phone_number,
     );
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     if (
-      user.pwd_code !== pwdVerifyDto.verificationCode ||
+      user.pwd_code !== pwdVerifyDto.verification_code ||
       user.pwd_expired_at < new Date()
     ) {
       throw new BadRequestException('Invalid verification code or expired');
@@ -74,7 +74,7 @@ export class AuthService {
 
     // Update user's password and clear verification code
     const hasedPasword = await hash(
-      pwdVerifyDto.newPassword,
+      pwdVerifyDto.password,
       process.env.BCRYPT_SALT_ROUNDS,
     );
     user.password = hasedPasword;

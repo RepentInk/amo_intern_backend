@@ -59,18 +59,18 @@ export class AuthController {
 
   // password reset verification
   @ApiTags('Password Reset')
-  @Post('reset-pssword/send-verification-code')
+  @Post('forgot-password')
   @ApiParam({
-    name: 'phoneNumber',
+    name: 'phone_number',
     required: true,
     description: 'Users phone number',
     type: String,
     example: '+233204088090',
   })
   async sendVerificationCode(
-    @Body() body: { phoneNumber: string },
+    @Body() body: { phone_number: string },
   ): Promise<any> {
-    const user = await this.authService.sendVerificationCode(body.phoneNumber);
+    const user = await this.authService.sendVerificationCode(body.phone_number);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -79,7 +79,7 @@ export class AuthController {
 
 
   @ApiTags('Password Reset')
-  @Post('reset-password/submit-verification-code')
+  @Post('reset-password')
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
     return this.authService.submitVerificationCode(pwdVerifyDto)
   }

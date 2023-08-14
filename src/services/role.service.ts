@@ -8,10 +8,10 @@ import { Repository } from 'typeorm';
 export class RoleService implements RoleInterface {
   constructor(
     @InjectRepository(Role)
-    private roleRepository: Repository<Role>,
+    private roleRepository: Repository<RoleDto>,
   ) {}
 
-  async findAll(): Promise<Role[]> {
+  async findAll(): Promise<RoleDto[]> {
     try {
       return this.roleRepository.find();
     } catch (error) {
@@ -19,7 +19,7 @@ export class RoleService implements RoleInterface {
     }
   }
 
-  async findOne(id: number): Promise<Role> {
+  async findOne(id: number): Promise<RoleDto> {
     try {
       const role = await this.roleRepository.findOne({ where: { id } });
       if (!role) {
@@ -31,7 +31,7 @@ export class RoleService implements RoleInterface {
     }
   }
 
-  async create(roleDto: RoleDto): Promise<Role> {
+  async create(roleDto: RoleDto): Promise<RoleDto> {
     try {
       const newRole = this.roleRepository.create(roleDto);
       return this.roleRepository.save(newRole);
@@ -40,7 +40,7 @@ export class RoleService implements RoleInterface {
     }
   }
 
-  async update(roleDto: RoleDto, id: number): Promise<Role> {
+  async update(roleDto: RoleDto, id: number): Promise<RoleDto> {
     try {
       const role = await this.findOne(id);
       if (!role) {
@@ -53,7 +53,7 @@ export class RoleService implements RoleInterface {
     }
   }
 
-  async delete(id: number): Promise<Role> {
+  async delete(id: number): Promise<RoleDto> {
     try {
       const role = await this.findOne(id);
       await this.roleRepository.remove(role);

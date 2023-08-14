@@ -22,8 +22,8 @@ import {
 } from '@nestjs/swagger';
 import { type } from 'os';
 @ApiBearerAuth()
-@ApiTags('permssion')
-@Controller('permission')
+@ApiTags('permssions')
+@Controller('permissions')
 export class PermissionController implements BasicController {
   constructor(private readonly permissionService: PermissionService) {}
 

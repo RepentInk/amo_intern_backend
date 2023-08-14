@@ -1,22 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PwdVerifyDto {
-   @ApiProperty({
-    name: 'phoneNumber',
+  @ApiProperty({
+    name: 'phone_number',
     description: 'Users phone number',
     example: '+233204088090',
   })
-  phoneNumber: string;
+  phone_number: string;
   @ApiProperty({
-    name: 'verificationCode',
+    name: 'verification_code',
     description: 'six digit verification code sent to user via sms',
     example: 188090,
   })
-  verificationCode: number;
+  verification_code: number;
   @ApiProperty({
-    name: 'newPassword',
+    name: 'password',
     description: "user's new password",
     example: 'dsadlafe7wqDQdd',
   })
-  newPassword: string;
+  password: string;
 }
