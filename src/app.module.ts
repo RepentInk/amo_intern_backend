@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './controllers/app.controller';
-import { AppService } from './services/app.service';
 import { UserLogService } from './services/userLog.service';
 import { UserLogController } from './controllers/userLog.controller';
 import { ItemsController } from './controllers/items.controller';
@@ -26,6 +24,8 @@ import { RoleController } from './controllers/role.controller';
 import { RoleService } from './services/role.service';
 import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ProfileController } from './controllers/profile.controller';
+import { ProfileService } from './services/profile.service';
 
 import entities from './database/entities';
 
@@ -40,7 +40,6 @@ import entities from './database/entities';
     TypeOrmModule.forFeature(entities)
   ],
   controllers: [
-    AppController,
     AuthController,
     UserLogController,
     ItemsController,
@@ -50,10 +49,10 @@ import entities from './database/entities';
     OrderItemController,
     UsersController,
     PermissionController,
-    RoleController
+    RoleController,
+    ProfileController
   ],
   providers: [
-    AppService,
     UserLogService,
     ItemsService,
     CategoryService,
@@ -65,6 +64,7 @@ import entities from './database/entities';
     UsersService,
     AuthService,
     SmsService,
+    ProfileService
   ],
 })
 export class AppModule {}

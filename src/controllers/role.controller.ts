@@ -20,8 +20,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+
+
 @ApiBearerAuth()
-@ApiTags('role')
+@ApiTags('Role')
 @Controller('roles')
 export class RoleController implements BasicController {
   constructor(private readonly roleService: RoleService) {}
