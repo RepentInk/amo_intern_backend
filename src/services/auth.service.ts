@@ -3,6 +3,7 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
+import { RedisService } from 'nestjs-redis';
 import { UsersService } from './users.service';
 import { compare, hash } from 'bcrypt';
 import { SmsService } from './sms.service';
@@ -12,7 +13,6 @@ ConfigModule.forRoot();
 
 @Injectable()
 export class AuthService {
-
   constructor(
     private readonly userService: UsersService,
     private readonly smsService: SmsService,
@@ -79,10 +79,28 @@ export class AuthService {
       process.env.BCRYPT_SALT_ROUNDS,
     );
     user.password = hasedPasword;
-    user.pwd_code = null
-    user.pwd_expired_at = null
+    user.pwd_code = null;
+    user.pwd_expired_at = null;
 
     await this.userService.update(user, user.id);
     return { message: 'Password updated successfully' };
+  }
+}
+
+@Injectable()
+export class TokenBlacklistService {
+  constructor(private readonly redisService: RedisService) {}
+
+  async addToBlacklist(token: string): Promise<void> {
+    // blacklist previously used token
+    const redisClient = this.redisService.getClient();
+    await redisClient.set(token, 'blacklisted');
+  }
+
+  async isTokenBlacklisted(token: string): Promise<boolean> {
+    // Check if the token is blacklisted
+    const redisClient = this.redisService.getClient();
+    const result = await redisClient.get(token);
+    return result === 'blacklisted';
   }
 }

@@ -4,9 +4,12 @@ import {
   Body,
   HttpException,
   HttpStatus,
-  NotFoundException
+  NotFoundException,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
-import { AuthService } from '../services/auth.service';
+import { Request } from 'express';
+import { AuthService, TokenBlacklistService } from '../services/auth.service';
 import { LoginDto } from '../dto/auth.dto';
 import { PwdVerifyDto } from '../dto/pwd.verify.dto';
 import {
@@ -22,7 +25,7 @@ import { UserDto } from 'src/dto/users.dto';
 @Controller('auth')
 @ApiTags('Authentication')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   @ApiParam({
@@ -56,7 +59,6 @@ export class AuthController {
     return user;
   }
 
-
   // password reset verification
   @ApiTags('Password Reset')
   @Post('reset-pssword/send-verification-code')
@@ -77,11 +79,28 @@ export class AuthController {
     return { message: 'Verification code sent successfully' };
   }
 
-
   @ApiTags('Password Reset')
   @Post('reset-password/submit-verification-code')
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
-    return this.authService.submitVerificationCode(pwdVerifyDto)
+    return this.authService.submitVerificationCode(pwdVerifyDto);
   }
+}
 
+@Controller('logout')
+@ApiTags('Logout')
+export class LogoutController {
+  constructor(private readonly tokenBlacklistService: TokenBlacklistService) {}
+  @ApiParam({
+    name: 'token',
+    required: true,
+    description: 'Users token',
+    type: String,
+    example: 'bfhhgut.j944843ndh.345jhg83',
+  })
+  @UseGuards()
+  @Post()
+  async logout(@Req() req: Request): Promise<void> {
+    const token = req.headers.authorization.split(' ')[1];
+    await this.tokenBlacklistService.addToBlacklist(token);
+  }
 }
