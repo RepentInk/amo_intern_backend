@@ -19,8 +19,12 @@ export class RoleDto {
     description: 'description of functional ability of an access name',
   })
   description?: string;
+  @ApiProperty({
+    required: false,
+    example:"['{name:create_order, display_name: create order}'] or [1,2,3,4,]",
+    description: 'list of permissions assigend to the role',
+  })
   permissions?: any[];
-
   created_at?: Date;
   updated_at?: Date;
 }

@@ -4,7 +4,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 export class ResponseHandlerService {
   successResponse(
     data: any,
-    message: string = 'Successful',
+    message = 'Successful',
     statusCode: HttpStatus = HttpStatus.OK,
   ) {
     return {

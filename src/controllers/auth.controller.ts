@@ -58,7 +58,6 @@ export class AuthController {
 
 
   // password reset verification
-  @ApiTags('Password Reset')
   @Post('forgot-password')
   @ApiParam({
     name: 'phone_number',
@@ -77,9 +76,26 @@ export class AuthController {
     return { message: 'Verification code sent successfully' };
   }
 
-
-  @ApiTags('Password Reset')
   @Post('reset-password')
+  @ApiParam({
+    name: 'phone_number',
+    required: true,
+    description: 'Users phone number',
+    type: String,
+    example: '+233204088090',
+  })
+  @ApiParam({
+    name: 'verification_code',
+    description: 'six digit verification code sent to user via sms',
+    type: String,
+    example: 188090,
+  })
+  @ApiParam({
+    name: 'password',
+    description: "user's new password",
+    type: String,
+    example: 'dsadlafe7wqDQdd',
+  })
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
     return this.authService.submitVerificationCode(pwdVerifyDto)
   }

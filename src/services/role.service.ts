@@ -1,9 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  HttpException
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoleDto } from 'src/dto/role.dto';
 import { Role } from 'src/entities/role.entity';
 import { RoleInterface } from 'src/interfaces/role.interface';
 import { Repository } from 'typeorm';
+import { ResponseHandlerService } from './responseHandler.service';
 @Injectable()
 export class RoleService implements RoleInterface {
   constructor(
@@ -13,17 +19,20 @@ export class RoleService implements RoleInterface {
 
   async findAll(): Promise<RoleDto[]> {
     try {
-      return this.roleRepository.find();
+      return this.roleRepository.find({ relations: { permissions: true } });
     } catch (error) {
       console.log(error);
     }
   }
 
-  async findOne(id: number): Promise<RoleDto> {
+  async findOne(id: number): Promise<RoleDto | NonNullable<>> {
     try {
-      const role = await this.roleRepository.findOne({ where: { id } });
+      const role = await this.roleRepository.findOne({
+        where: { id },
+        relations: { permissions: true },
+      });
       if (!role) {
-        throw new NotFoundException('Role not found');
+        return new NotFoundException('Role not found');
       }
       return role;
     } catch (error) {
@@ -33,6 +42,12 @@ export class RoleService implements RoleInterface {
 
   async create(roleDto: RoleDto): Promise<RoleDto> {
     try {
+      const roleExit = this.roleRepository.findOne({
+        where: { name: roleDto.name },
+      });
+      if (roleExit) {
+        throw new ConflictException('role already exists')
+      }
       const newRole = this.roleRepository.create(roleDto);
       return this.roleRepository.save(newRole);
     } catch (error) {
