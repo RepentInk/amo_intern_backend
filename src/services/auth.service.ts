@@ -44,7 +44,7 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     const payload = { name: user.name, email: user.email };
-    const token = await this.jwtService.signAsync(payload, {secret: process.env.JWT_CONSTANT});
+    const token = await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRETE });
     return token;
   }
 

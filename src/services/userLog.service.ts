@@ -1,23 +1,27 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserLogDto } from 'src/dto/userLog.dto';
 import { UserLog } from 'src/entities/userLog.entities';
 import { UserLogInterface } from 'src/interfaces/userLog.interface';
 import { Repository } from 'typeorm';
+import { ResponseHandlerService } from './responseHandler.service';
 
 @Injectable()
 export class UserLogService implements UserLogInterface {
   constructor(
     @InjectRepository(UserLog) private userLogRepository: Repository<UserLog>,
+    private readonly responseHandlerService: ResponseHandlerService,
   ) {}
 
   async findAll(): Promise<UserLogDto[]> {
     try {
       const userLogs: any = await this.userLogRepository.find();
-      return userLogs;
+      const successMessage = 'Successful';
+      return this.responseHandlerService.successResponse(successMessage, userLogs);
     } catch (error) {
       console.log(error);
-      throw new Error('An error occurred while fetching user logs');
+      const errorMessage = 'Error getting user logs';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -29,20 +33,25 @@ export class UserLogService implements UserLogInterface {
       if (!userLog) {
         throw new NotFoundException('UserLog not found');
       }
-      return userLog;
+      const successMessage = 'Successful';
+      return this.responseHandlerService.successResponse(successMessage, userLog);
     } catch (error) {
       console.log(error);
-      throw new NotFoundException('UserLog not found');
+      const errorMessage = 'Error getting user log';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async create(userLogDto: UserLogDto): Promise<UserLogDto> {
     try {
       const userLog: any = this.userLogRepository.create(userLogDto);
-      return this.userLogRepository.save(userLog);
+      const createdUserLog = await this.userLogRepository.save(userLog);
+      const successMessage = 'User log created successfully';
+      return this.responseHandlerService.successResponse(successMessage, createdUserLog);
     } catch (error) {
       console.log(error);
-      throw new Error('Failed to create user log');
+      const errorMessage = 'Error creating user log';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -55,10 +64,13 @@ export class UserLogService implements UserLogInterface {
         throw new NotFoundException('UserLog not found');
       }
       this.userLogRepository.merge(userLog, userLogDto);
-      return this.userLogRepository.save(userLog);
+      const updateUserLog = await this.userLogRepository.save(userLog);
+      const successMessage = 'Usr log updated successfully';
+      return this.responseHandlerService.successResponse(successMessage, updateUserLog)
     } catch (error) {
       console.log(error);
-      throw new NotFoundException('UserLog not found');
+      const errorMessage = 'Error updating user log';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -70,11 +82,13 @@ export class UserLogService implements UserLogInterface {
       if (!userLog) {
         throw new NotFoundException('UserLog not found');
       }
-      await this.userLogRepository.remove(userLog);
-      return userLog;
+      const deletedUserLog = await this.userLogRepository.remove(userLog);
+      const successMessage = 'User log deleted successfully';
+      return this.responseHandlerService.successResponse(deletedUserLog, successMessage);
     } catch (error) {
       console.log(error);
-      throw new NotFoundException('UserLog not found');
+      const errorMessage = 'Error deleting user log';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

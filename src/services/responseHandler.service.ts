@@ -6,7 +6,7 @@ export class ResponseHandlerService {
     data: any,
     message: string = 'Successful',
     statusCode: HttpStatus = HttpStatus.OK,
-  ) {
+  ): any {
     return {
       success: true,
       success_message: message,
