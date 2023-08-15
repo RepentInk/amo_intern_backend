@@ -4,6 +4,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  HttpCode,
   NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
@@ -98,4 +99,5 @@ export class AuthController {
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
     return this.authService.submitVerificationCode(pwdVerifyDto);
   }
+
 }

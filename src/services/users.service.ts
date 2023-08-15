@@ -1,23 +1,27 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from 'src/dto/users.dto';
 import { Users } from 'src/entities/users.entity';
 import { UserInterface } from 'src/interfaces/users.interface';
 import { Repository } from 'typeorm';
+import { ResponseHandlerService } from './responseHandler.service';
 
 @Injectable()
 export class UsersService implements UserInterface {
   constructor(
     @InjectRepository(Users) private userRepository: Repository<Users>,
+    private readonly responseHandlerService: ResponseHandlerService,
   ) {}
 
   async findAll(): Promise<UserDto[]> {
     try {
       const users: any = await this.userRepository.find();
-      return users;
+      const successMessage = 'Successful'
+      return this.responseHandlerService.successResponse(successMessage, users);
     } catch (error) {
       console.log(error);
-      throw new Error('An error occurred while fetching users');
+      const errorMessage = 'Error getting users';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -27,19 +31,26 @@ export class UsersService implements UserInterface {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-
-      return user;
+      const successMessage = 'successful'
+      return this.responseHandlerService.successResponse(successMessage, user);
     } catch (error) {
       console.log(error);
+      const errorMessage = 'Error getting user';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   async create(userDto: UserDto): Promise<UserDto> {
     try {
       const user: any = this.userRepository.create(userDto);
-      return this.userRepository.save(user);
+      const createUser = await this.userRepository.save(user);
+      const successMessage = 'User successfully created'
+      return this.responseHandlerService.successResponse(successMessage, createUser);
+     
     } catch (error) {
       console.log(error);
+      const errorMessage = 'Error creating user';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
@@ -50,19 +61,27 @@ export class UsersService implements UserInterface {
         throw new NotFoundException('User not found');
       }
       this.userRepository.merge(user, userDto);
-      return this.userRepository.save(user);
+      const updateUser = await this.userRepository.save(user);
+      const successMessage = 'User updated successfully';
+      return this.responseHandlerService.successResponse(successMessage, updateUser)
+
     } catch (error) {
       console.log(error);
+      const errorMessage = 'Error updating user';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
   async delete(id: number): Promise<UserDto> {
     try {
       const user: any = await this.findOne(id);
-      await this.userRepository.remove(user);
-      return user;
+      const deletedUser = await this.userRepository.remove(user);
+      const successMessage = 'User deleted successfully'
+      return this.responseHandlerService.successResponse(deletedUser, successMessage);
     } catch (error) {
       console.log(error);
+      const errorMessage = 'Error deleting user';
+      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 

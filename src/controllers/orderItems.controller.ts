@@ -19,7 +19,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 
-@Controller('orderItems')
+@Controller('order_items')
 @ApiTags('Order Items')
 export class OrderItemController implements BasicController {
   constructor(private readonly orderItemService: OrderItemService) {}

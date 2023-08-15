@@ -60,8 +60,8 @@ export class Order {
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @ManyToMany(() => OrderItems, (orderItems) => orderItems.order)
-  orderItems: OrderItems[];
+  // @ManyToMany(() => OrderItems, (orderItems) => orderItems.order)
+  // orderItems: OrderItems[];
 
   @OneToOne(() => Customer, (customer) => customer.order)
   @JoinColumn({ name: 'customer_id' })

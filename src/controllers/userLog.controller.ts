@@ -20,7 +20,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 
-@Controller('userLog')
+@Controller('userlogs')
 @ApiTags('User Logs')
 export class UserLogController implements BasicController {
   constructor(private readonly userLogService: UserLogService) {}
@@ -53,19 +53,19 @@ export class UserLogController implements BasicController {
   }
 
   @Post()
-  @ApiParam({
-    name: 'activity',
-    description: 'the activity for the the userLog being created',
-    type: String,
-    required: true,
-  })
-  @ApiParam({
-    name: 'user_id',
-    description: 'the id of the user being created',
-    type: Number,
-    required: true,
-    example: 8,
-  })
+  // @ApiParam({
+  //   name: 'activity',
+  //   description: 'the activity for the the userLog being created',
+  //   type: String,
+  //   required: true,
+  // })
+  // @ApiParam({
+  //   name: 'user_id',
+  //   description: 'the id of the user being created',
+  //   type: Number,
+  //   required: true,
+  //   example: 8
+  // })
   @ApiCreatedResponse({
     description: 'User log created successfully.',
     type: UserLogDto,

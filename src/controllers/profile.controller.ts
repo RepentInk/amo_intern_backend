@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ProfileService } from '../services/profile.service';
 import { ProfileDto } from '../dto/profile.dto';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from 'src/services/auth.service'; 
 import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
