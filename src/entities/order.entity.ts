@@ -63,14 +63,14 @@ export class Order {
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
-  @ManyToOne(() => Users, (user) => user.orders)
+  @ManyToOne(() => Users, (user) => user.orders, {onDelete: 'CASCADE'})
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
   // @ManyToMany(() => OrderItems, (orderItems) => orderItems.order)
   // orderItems: OrderItems[];
 
-  @OneToOne(() => Customer, (customer) => customer.order)
+  @OneToOne(() => Customer, (customer) => customer.order, {onDelete: 'CASCADE'})
   @JoinColumn({ name: 'customer_id' })
   customer: Customer | CustomerDto;
 }

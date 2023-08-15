@@ -205,7 +205,7 @@ export class OrderController implements BasicController {
     type: OrderDto,
   })
   @ApiNotFoundResponse({ description: 'Order not found' })
-  async delete(@Param('id') id: number): Promise<OrderDto> {
+  async delete(@Param('id') id: number) {
     return this.orderService.delete(id);
   }
 
