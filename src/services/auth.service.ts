@@ -2,8 +2,9 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  UnauthorizedException
+  UnauthorizedException,
 } from '@nestjs/common';
+import { RedisService } from 'nestjs-redis';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { compare, hash } from 'bcrypt';
@@ -34,17 +35,6 @@ export class AuthService {
     }
 
     return null;
-  }
-
-  // generate jwt
-  async signIn(email: string, password: string) {
-    const user = await this.userService.findByEmail(email)
-    if(user?.password !== password) {
-      throw new UnauthorizedException();
-    }
-    const payload = { name: user.name, email: user.email };
-    const token = await this.jwtService.signAsync(payload, {secret: process.env.JWT_SECRETE });
-    return token;
   }
 
   // send pwd_code
@@ -95,7 +85,25 @@ export class AuthService {
     user.pwd_code = null;
     user.pwd_expired_at = null;
 
-    return await this.userService.update(user, user.id);
-    // return { message: 'Password updated successfully' };
+    await this.userService.update(user, user.id);
+    return { message: 'Password updated successfully' };
+  }
+}
+
+@Injectable()
+export class TokenBlacklistService {
+  constructor(private readonly redisService: RedisService) {}
+
+  async addToBlacklist(token: string): Promise<void> {
+    // blacklist previously used token
+    const redisClient = this.redisService.getClient();
+    await redisClient.set(token, 'blacklisted');
+  }
+
+  async isTokenBlacklisted(token: string): Promise<boolean> {
+    // Check if the token is blacklisted
+    const redisClient = this.redisService.getClient();
+    const result = await redisClient.get(token);
+    return result === 'blacklisted';
   }
 }

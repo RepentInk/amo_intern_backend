@@ -4,10 +4,10 @@ import {
   Body,
   HttpException,
   HttpStatus,
-  HttpCode,
   NotFoundException,
 } from '@nestjs/common';
-import { AuthService } from '../services/auth.service';
+import { Request } from 'express';
+import { AuthService, TokenBlacklistService } from '../services/auth.service';
 import { LoginDto } from '../dto/auth.dto';
 import { PwdVerifyDto } from '../dto/pwd.verify.dto';
 import {
@@ -76,28 +76,9 @@ export class AuthController {
     return { message: 'Verification code sent successfully' };
   }
 
-  @Post('reset-password')
-  @ApiParam({
-    name: 'phone_number',
-    required: true,
-    description: 'Users phone number',
-    type: String,
-    example: '+233204088090',
-  })
-  @ApiParam({
-    name: 'verification_code',
-    description: 'six digit verification code sent to user via sms',
-    type: String,
-    example: 188090,
-  })
-  @ApiParam({
-    name: 'password',
-    description: "user's new password",
-    type: String,
-    example: 'dsadlafe7wqDQdd',
-  })
+  @ApiTags('Password Reset')
+  @Post('reset-password/submit-verification-code')
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
     return this.authService.submitVerificationCode(pwdVerifyDto);
   }
-
 }

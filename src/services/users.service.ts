@@ -16,12 +16,15 @@ export class UsersService implements UserInterface {
   async findAll(): Promise<UserDto[]> {
     try {
       const users: any = await this.userRepository.find();
-      const successMessage = 'Successful'
+      const successMessage = 'Successful';
       return this.responseHandlerService.successResponse(successMessage, users);
     } catch (error) {
       console.log(error);
       const errorMessage = 'Error getting users';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(
+        errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -31,12 +34,15 @@ export class UsersService implements UserInterface {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-      const successMessage = 'successful'
+      const successMessage = 'successful';
       return this.responseHandlerService.successResponse(successMessage, user);
     } catch (error) {
       console.log(error);
       const errorMessage = 'Error getting user';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(
+        errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -44,13 +50,18 @@ export class UsersService implements UserInterface {
     try {
       const user: any = this.userRepository.create(userDto);
       const createUser = await this.userRepository.save(user);
-      const successMessage = 'User successfully created'
-      return this.responseHandlerService.successResponse(successMessage, createUser);
-     
+      const successMessage = 'User successfully created';
+      return this.responseHandlerService.successResponse(
+        successMessage,
+        createUser,
+      );
     } catch (error) {
       console.log(error);
       const errorMessage = 'Error creating user';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(
+        errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -60,15 +71,20 @@ export class UsersService implements UserInterface {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-      this.userRepository.merge(user, userDto);
-      const updateUser = await this.userRepository.save(user);
+      const updatedUser = this.userRepository.merge(user, userDto);
+      const updateUser: any = await this.userRepository.save(updatedUser);
       const successMessage = 'User updated successfully';
-      return this.responseHandlerService.successResponse(successMessage, updateUser)
-
+      return this.responseHandlerService.successResponse(
+        successMessage,
+        updateUser,
+      );
     } catch (error) {
       console.log(error);
       const errorMessage = 'Error updating user';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(
+        errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -76,12 +92,18 @@ export class UsersService implements UserInterface {
     try {
       const user: any = await this.findOne(id);
       const deletedUser = await this.userRepository.remove(user);
-      const successMessage = 'User deleted successfully'
-      return this.responseHandlerService.successResponse(deletedUser, successMessage);
+      const successMessage = 'User deleted successfully';
+      return this.responseHandlerService.successResponse(
+        deletedUser,
+        successMessage,
+      );
     } catch (error) {
       console.log(error);
       const errorMessage = 'Error deleting user';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(
+        errorMessage,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
