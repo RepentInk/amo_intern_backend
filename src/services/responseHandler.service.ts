@@ -8,6 +8,7 @@ export class ResponseHandlerService {
     statusCode: HttpStatus = HttpStatus.OK,
   ): any {
     return {
+      status: statusCode,
       success: true,
       success_message: message,
       data,
@@ -21,7 +22,7 @@ export class ResponseHandlerService {
         error_message: message,
         data: null,
       },
-      statusCode,
+      statusCode
     );
   }
 }

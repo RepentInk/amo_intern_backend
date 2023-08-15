@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
   HttpCode,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto } from '../dto/auth.dto';
@@ -23,7 +23,7 @@ import { UserDto } from 'src/dto/users.dto';
 @Controller('auth')
 @ApiTags('Authentication')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   @ApiParam({
@@ -57,39 +57,47 @@ export class AuthController {
     return user;
   }
 
-
   // password reset verification
-  @ApiTags('Password Reset')
-  @Post('reset-pssword/send-verification-code')
+  @Post('forgot-password')
   @ApiParam({
-    name: 'phoneNumber',
+    name: 'phone_number',
     required: true,
     description: 'Users phone number',
     type: String,
     example: '+233204088090',
   })
   async sendVerificationCode(
-    @Body() body: { phoneNumber: string },
+    @Body() body: { phone_number: string },
   ): Promise<any> {
-    const user = await this.authService.sendVerificationCode(body.phoneNumber);
+    const user = await this.authService.sendVerificationCode(body.phone_number);
     if (!user) {
       throw new NotFoundException('User not found');
     }
     return { message: 'Verification code sent successfully' };
   }
 
-
-  @ApiTags('Password Reset')
-  @Post('reset-password/submit-verification-code')
+  @Post('reset-password')
+  @ApiParam({
+    name: 'phone_number',
+    required: true,
+    description: 'Users phone number',
+    type: String,
+    example: '+233204088090',
+  })
+  @ApiParam({
+    name: 'verification_code',
+    description: 'six digit verification code sent to user via sms',
+    type: String,
+    example: 188090,
+  })
+  @ApiParam({
+    name: 'password',
+    description: "user's new password",
+    type: String,
+    example: 'dsadlafe7wqDQdd',
+  })
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
-    return this.authService.submitVerificationCode(pwdVerifyDto)
+    return this.authService.submitVerificationCode(pwdVerifyDto);
   }
-
-  // jwt verification
-  @HttpCode(HttpStatus.OK)
-    @Post('login')
-    signIn(@Body() loginDto: LoginDto) {
-        return this.authService.signIn(loginDto.email, loginDto.password)
-    }
 
 }

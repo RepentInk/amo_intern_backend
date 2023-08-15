@@ -27,7 +27,6 @@ import { JwtModule } from '@nestjs/jwt';
 import { ProfileController } from './controllers/profile.controller';
 import { ProfileService } from './services/profile.service';
 import { ResponseHandlerService } from './services/responseHandler.service';
-
 import entities from './database/entities';
 
 @Module({
@@ -38,7 +37,7 @@ import entities from './database/entities';
       signOptions: { expiresIn: process.env.TOKEN_DURATION },
     }),
     TypeOrmModule.forRoot(dbConfig),
-    TypeOrmModule.forFeature(entities)
+    TypeOrmModule.forFeature(entities),
   ],
   controllers: [
     AuthController,
@@ -51,7 +50,7 @@ import entities from './database/entities';
     UsersController,
     PermissionController,
     RoleController,
-    ProfileController
+    ProfileController,
   ],
   providers: [
     UserLogService,

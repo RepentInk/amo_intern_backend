@@ -8,7 +8,6 @@ import { ResponseHandlerService } from './responseHandler.service';
 
 @Injectable()
 export class UsersService implements UserInterface {
-
   constructor(
     @InjectRepository(Users) private userRepository: Repository<Users>,
     private readonly responseHandlerService: ResponseHandlerService,

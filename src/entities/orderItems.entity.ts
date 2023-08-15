@@ -5,12 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  ManyToOne,
-  JoinColumn,
-  ManyToMany,
 } from 'typeorm';
-import { Order } from './order.entity';
-import { Items } from './items.entity';
 
 @Entity()
 export class OrderItems {
