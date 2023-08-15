@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { error } from 'console';
 
 @Injectable()
 export class ResponseHandlerService {
@@ -18,11 +19,11 @@ export class ResponseHandlerService {
   errorResponse(message: string, statusCode: HttpStatus) {
     throw new HttpException(
       {
-        error: true,
+        error: error,
         error_message: message,
-        data: null,
+        status: statusCode,
       },
-      statusCode
+      statusCode,
     );
   }
 }
