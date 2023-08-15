@@ -19,7 +19,6 @@ export class UsersService implements UserInterface {
       const successMessage = 'Successful';
       return this.responseHandlerService.successResponse(successMessage, users);
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error getting users';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
@@ -37,7 +36,6 @@ export class UsersService implements UserInterface {
       const successMessage = 'successful';
       return this.responseHandlerService.successResponse(successMessage, user);
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error getting user';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
@@ -56,7 +54,6 @@ export class UsersService implements UserInterface {
         createUser,
       );
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error creating user';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
@@ -79,7 +76,6 @@ export class UsersService implements UserInterface {
         updateUser,
       );
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error updating user';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
@@ -91,6 +87,9 @@ export class UsersService implements UserInterface {
   async delete(id: number): Promise<UserDto> {
     try {
       const user: any = await this.findOne(id);
+      if(!user){
+        throw new NotFoundException('User not found')
+      }
       const deletedUser = await this.userRepository.remove(user);
       const successMessage = 'User deleted successfully';
       return this.responseHandlerService.successResponse(
@@ -98,7 +97,6 @@ export class UsersService implements UserInterface {
         successMessage,
       );
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error deleting user';
       throw this.responseHandlerService.errorResponse(
         errorMessage,

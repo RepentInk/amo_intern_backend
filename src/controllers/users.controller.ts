@@ -145,7 +145,7 @@ export class UsersController implements BasicController {
   async update(
     @Body() userDto: UserDto,
     @Param('id') id: number,
-  ): Promise<UserDto> {
+  ): Promise<any> {
     return this.userService.update(userDto, id);
   }
 
@@ -162,7 +162,7 @@ export class UsersController implements BasicController {
     type: UserDto,
   })
   @ApiNotFoundResponse({ description: 'User not found' })
-  async delete(@Param('id') id: number): Promise<UserDto> {
+  async delete(@Param('id') id: number): Promise<any> {
     return this.userService.delete(id);
   }
 }
