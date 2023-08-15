@@ -1,15 +1,18 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OrderDto } from 'src/dto/order.dto';
 import { Order } from 'src/entities/order.entity';
 import { OrderInterface } from 'src/interfaces/order.interface';
 import { Repository } from 'typeorm';
 import { ResponseHandlerService } from './responseHandler.service';
+import { CustomerService } from './customer.service';
+import { CustomerDto } from 'src/dto/customer.dto';
 
 @Injectable()
 export class OrderService implements OrderInterface {
   constructor(@InjectRepository(Order) private orderRepository: Repository<Order>,
   private readonly responseHandlerService: ResponseHandlerService,
+  private readonly customerService: CustomerService,
   ) { }
 
   async findAll(): Promise<OrderDto[]> {
@@ -19,8 +22,7 @@ export class OrderService implements OrderInterface {
       return this. responseHandlerService.successResponse(successMessage, order) 
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error getting orders';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
 
@@ -34,21 +36,27 @@ export class OrderService implements OrderInterface {
       return this.responseHandlerService.successResponse(successMessage, order);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error getting order';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
 
   async create(orderDto: OrderDto): Promise<OrderDto> {
     try {
-      const newOrder: any = this.orderRepository.create(orderDto);
-      const createOrder = await this.orderRepository.save(newOrder);
-      const successMessage = 'Order created successfully';
-      return this.responseHandlerService.successResponse(successMessage, createOrder);
+      const newOrder = await this.orderRepository.create(orderDto);
+
+        //retrieve customer id and use that to create the order
+        const CustomerDto: CustomerDto = await this.customerService.findOne(orderDto.customer_id);
+
+       //create order for the customer
+       newOrder.customer = CustomerDto;
+       const createOrder = await this.orderRepository.save(newOrder);
+
+       const successMessage = 'Order created successfully';
+       return this.responseHandlerService.successResponse(createOrder, successMessage);
+    
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error creating order';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
 
@@ -59,14 +67,13 @@ export class OrderService implements OrderInterface {
       if (!order) {
         throw new NotFoundException('Order not found');
       }
-      this.orderRepository.merge(order, orderDto);
-      const updatedOrder = this.orderRepository.save(order);
+      const newOrder = this.orderRepository.merge(order, orderDto);
+      const updatedOrder = this.orderRepository.save(newOrder);
       const successMessage = 'Order updated successfully';
       return this.responseHandlerService.successResponse(updatedOrder, successMessage)
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error updating order';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -81,8 +88,7 @@ export class OrderService implements OrderInterface {
       return this.responseHandlerService.successResponse(deletedOrder, successMessage);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error deleting order';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
 

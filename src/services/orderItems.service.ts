@@ -21,8 +21,7 @@ export class OrderItemService implements OrderItemsInterface {
       return this.responseHandlerService.successResponse(successMessage, orderItems)
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error getting order items';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
 
@@ -39,8 +38,7 @@ export class OrderItemService implements OrderItemsInterface {
       return this.responseHandlerService.successResponse(orderItem, successMessage);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error getting order item';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -52,8 +50,7 @@ export class OrderItemService implements OrderItemsInterface {
       return this.responseHandlerService.successResponse(createdOrderItem, successMessage);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error creating order item';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -75,8 +72,7 @@ export class OrderItemService implements OrderItemsInterface {
       return this.responseHandlerService.successResponse(updatedOrder, successMessage)
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error updating updating oder item';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
 
@@ -90,8 +86,7 @@ export class OrderItemService implements OrderItemsInterface {
       return this.responseHandlerService.successResponse(deletedOrderItem, successMessage);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error deleting error item';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 }

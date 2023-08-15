@@ -10,10 +10,13 @@ import {
   JoinColumn,
   OneToOne,
   ManyToMany,
+  BeforeInsert,
 } from 'typeorm';
 import { Users } from './users.entity';
 import { OrderItems } from './orderItems.entity';
 import { Customer } from './customer.entity';
+import { CustomerDto } from 'src/dto/customer.dto';
+import {v4 as uuidv4} from 'uuid';
 
 @Entity()
 export class Order {
@@ -23,6 +26,10 @@ export class Order {
   @Column()
   unique_number: string;
 
+  @BeforeInsert()
+  generateUniqueNumber(){
+    this.unique_number = uuidv4();
+  }
   @Column()
   order_code: string;
 
@@ -65,5 +72,5 @@ export class Order {
 
   @OneToOne(() => Customer, (customer) => customer.order)
   @JoinColumn({ name: 'customer_id' })
-  customer: Customer;
+  customer: Customer | CustomerDto;
 }

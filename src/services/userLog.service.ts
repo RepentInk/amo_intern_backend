@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserLogDto } from 'src/dto/userLog.dto';
 import { UserLog } from 'src/entities/userLog.entities';
@@ -20,8 +20,7 @@ export class UserLogService implements UserLogInterface {
       return this.responseHandlerService.successResponse(successMessage, userLogs);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error getting user logs';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -37,8 +36,7 @@ export class UserLogService implements UserLogInterface {
       return this.responseHandlerService.successResponse(successMessage, userLog);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error getting user log';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -50,8 +48,7 @@ export class UserLogService implements UserLogInterface {
       return this.responseHandlerService.successResponse(successMessage, createdUserLog);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error creating user log';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -63,14 +60,13 @@ export class UserLogService implements UserLogInterface {
       if (!userLog) {
         throw new NotFoundException('UserLog not found');
       }
-      this.userLogRepository.merge(userLog, userLogDto);
-      const updateUserLog = await this.userLogRepository.save(userLog);
+      const newUserLog = this.userLogRepository.merge(userLog, userLogDto);
+      const updateUserLog = await this.userLogRepository.save(newUserLog);
       const successMessage = 'Usr log updated successfully';
-      return this.responseHandlerService.successResponse(successMessage, updateUserLog)
+      return this.responseHandlerService.successResponse(updateUserLog, successMessage)
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error updating user log';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -87,8 +83,7 @@ export class UserLogService implements UserLogInterface {
       return this.responseHandlerService.successResponse(deletedUserLog, successMessage);
     } catch (error) {
       console.log(error);
-      const errorMessage = 'Error deleting user log';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error, error.status);
     }
   }
 }
