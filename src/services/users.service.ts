@@ -76,6 +76,9 @@ export class UsersService implements UserInterface {
   async delete(id: number): Promise<UserDto> {
     try {
       const user: any = await this.findOne(id);
+      if(!user){
+        throw new NotFoundException('User not found')
+      }
       const deletedUser = await this.userRepository.remove(user);
       const successMessage = 'User deleted successfully'
       return this.responseHandlerService.successResponse(deletedUser, successMessage);
