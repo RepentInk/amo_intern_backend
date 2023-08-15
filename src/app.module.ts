@@ -9,8 +9,8 @@ import { CustomerController } from './controllers/customer.controller';
 import { CustomerService } from './services/customer.service';
 import { OrderController } from './controllers/order.controller';
 import { OrderService } from './services/order.service';
-import { OrderItemService } from './services/orderItems.service';
-import { OrderItemController } from './controllers/orderItems.controller';
+// import { OrderItemService } from './services/orderItems.service';
+// import { OrderItemController } from './controllers/orderItems.controller';
 import { PermissionController } from './controllers/permission.controller';
 import { PermissionService } from './services/permission.service';
 import { UsersController } from './controllers/users.controller';
@@ -46,7 +46,7 @@ import entities from './database/entities';
     CategoryController,
     CustomerController,
     OrderController,
-    OrderItemController,
+    // OrderItemController,
     UsersController,
     PermissionController,
     RoleController,
@@ -58,7 +58,7 @@ import entities from './database/entities';
     CategoryService,
     CustomerService,
     OrderService,
-    OrderItemService,
+    // OrderItemService,
     PermissionService,
     RoleService,
     UsersService,
