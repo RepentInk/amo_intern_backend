@@ -10,7 +10,7 @@ import { Roles } from '../seeds/dummy.role';
 import { Permissions } from '../seeds/dummy.permissions';
 import { RolePermissions } from '../seeds/dummy.rolePermissions';
 
-export class DummyData1691160447042 implements MigrationInterface {
+export class DummyData1692113622314 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
 
@@ -21,9 +21,9 @@ export class DummyData1691160447042 implements MigrationInterface {
     await entityManager.save('Items', Items);
     await entityManager.save('Customer', Customers);
     await entityManager.save('Order', Orders);
-    // await entityManager.save('OrderItems', OrderItems);
+    await entityManager.save('OrderItems', OrderItems);
     await entityManager.save('UserLog', UserLog);
-    // await entityManager.save('RolePermission', RolePermissions);
+    await entityManager.save('RolePermission', RolePermissions);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
@@ -34,8 +34,8 @@ export class DummyData1691160447042 implements MigrationInterface {
     await queryRunner.dropTable('Items');
     await queryRunner.dropTable('Customer');
     await queryRunner.dropTable('Order');
-    // await queryRunner.dropTable('OrderItems');
+    await queryRunner.dropTable('OrderItems');
     await queryRunner.dropTable('UserLog');
-    // await queryRunner.dropTable('RolePermission');
+    await queryRunner.dropTable('RolePermission');
   }
 }

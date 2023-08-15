@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrderItemsDto } from 'src/dto/orderItems.dto';
@@ -20,9 +20,7 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Successful';
       return this.responseHandlerService.successResponse(successMessage, orderItems)
     } catch (error) {
-      console.log(error);
-      const errorMessage = 'Error getting order items';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
 
@@ -38,9 +36,7 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Error getting order item'
       return this.responseHandlerService.successResponse(orderItem, successMessage);
     } catch (error) {
-      console.log(error);
-      const errorMessage = 'Error getting order item';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -51,9 +47,7 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Order item created successfully';
       return this.responseHandlerService.successResponse(createdOrderItem, successMessage);
     } catch (error) {
-      console.log(error);
-      const errorMessage = 'Error creating order item';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
 
@@ -74,9 +68,7 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Order item updated successfully';
       return this.responseHandlerService.successResponse(updatedOrder, successMessage)
     } catch (error) {
-      console.log(error);
-      const errorMessage = 'Error updating updating oder item';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
+      throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
 
@@ -89,9 +81,8 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Order item deleted successfully';
       return this.responseHandlerService.successResponse(deletedOrderItem, successMessage);
     } catch (error) {
-      console.log(error);
-      const errorMessage = 'Error deleting error item';
-      throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
+  
 }

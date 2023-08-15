@@ -6,14 +6,14 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
-  OneToMany,
   JoinColumn,
   OneToOne,
-  ManyToMany,
+  BeforeInsert
 } from 'typeorm';
 import { Users } from './users.entity';
-import { OrderItems } from './orderItems.entity';
 import { Customer } from './customer.entity';
+import {v4 as uuidv4} from 'uuid';
+import { CustomerDto } from 'src/dto/customer.dto';
 
 @Entity()
 export class Order {
@@ -23,6 +23,10 @@ export class Order {
   @Column()
   unique_number: string;
 
+  @BeforeInsert()
+  generateUniqueNumber(){
+    this.unique_number = uuidv4();
+  }
   @Column()
   order_code: string;
 
@@ -44,6 +48,14 @@ export class Order {
   @Column()
   order_channel: string;
 
+  @ManyToOne(() => Users, (user) => user.orders, {onDelete: 'CASCADE'})
+  @JoinColumn({ name: 'user_id' })
+  user: Users;
+
+  @OneToOne(() => Customer, (customer) => customer.order, {onDelete: 'CASCADE'})
+  @JoinColumn({ name: 'customer_id' })
+  customer: Customer | CustomerDto;
+
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
@@ -56,14 +68,4 @@ export class Order {
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
-  @ManyToOne(() => Users, (user) => user.orders)
-  @JoinColumn({ name: 'user_id' })
-  user: Users;
-
-  // @ManyToMany(() => OrderItems, (orderItems) => orderItems.order)
-  // orderItems: OrderItems[];
-
-  @OneToOne(() => Customer, (customer) => customer.order)
-  @JoinColumn({ name: 'customer_id' })
-  customer: Customer;
 }

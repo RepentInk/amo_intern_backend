@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToMany,
-  JoinTable,
   OneToMany,
 } from 'typeorm';
 import { Permission } from './permission.entity';
@@ -21,17 +20,6 @@ export class Role {
   description: string;
 
   @ManyToMany(() => Permission)
-  @JoinTable({
-    name: 'role_permission', // Specify the name of the pivot table
-    joinColumn: {
-      name: 'role_id', // Specify the name of the foreign key column for Role
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'permission_id', // Specify the name of the foreign key column for Permission
-      referencedColumnName: 'id',
-    },
-  })
   permissions: Permission[];
 
   @OneToMany(() => Users, (users) => users.role)

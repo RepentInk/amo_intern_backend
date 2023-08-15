@@ -7,6 +7,7 @@ import { Order } from '../entities/order.entity';
 import { Users } from '../entities/users.entity';
 import { OrderItems } from '../entities/orderItems.entity';
 import { UserLog } from '../entities/userLog.entities';
+import { RolePermission } from '../entities/rolePermission.entity';
 
 const entities = [
   Categories,
@@ -18,6 +19,7 @@ const entities = [
   Users,
   Role,
   UserLog,
+  RolePermission
 ];
 
 export default entities;
