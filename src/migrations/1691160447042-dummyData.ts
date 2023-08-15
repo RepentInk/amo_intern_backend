@@ -2,13 +2,13 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 import { Category } from '../seeds/dummy.category';
 import { Items } from '../seeds/dummy.items';
 import { Orders } from '../seeds/dummy.orders';
-import { OrderItems } from '../seeds/dummy.orderItems';
+// import { OrderItems } from '../seeds/dummy.orderItems';
 import { Users } from '../seeds/dummy.users';
 import { Customers } from '../seeds/dummy.customers';
 import { UserLog } from '../seeds/dummy.userLog';
 import { Roles } from '../seeds/dummy.role';
 import { Permissions } from '../seeds/dummy.permissions';
-import { RolePermissions } from '../seeds/dummy.rolePermissions';
+// import { RolePermissions } from '../seeds/dummy.rolePermissions';
 
 export class DummyData1691160447042 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

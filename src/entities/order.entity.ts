@@ -6,13 +6,13 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   ManyToOne,
-  OneToMany,
   JoinColumn,
+  JoinTable,
   OneToOne,
   ManyToMany,
 } from 'typeorm';
 import { Users } from './users.entity';
-import { OrderItems } from './orderItems.entity';
+import { Items } from './items.entity';
 import { Customer } from './customer.entity';
 
 @Entity()
@@ -44,6 +44,28 @@ export class Order {
   @Column()
   order_channel: string;
 
+  @ManyToOne(() => Users, (user) => user.orders)
+  @JoinColumn({ name: 'user_id' })
+  user: Users;
+
+  @ManyToMany(() => Items)
+  @JoinTable({
+    name: 'order_items', // Specify the name of the pivot table
+    joinColumn: {
+      name: 'order_id', // Specify the name of the foreign key column for Role
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'item_id', // Specify the name of the foreign key column for Permission
+      referencedColumnName: 'id',
+    },
+  })
+  items: Items[];
+
+  @OneToOne(() => Customer, (customer) => customer.order)
+  @JoinColumn({ name: 'customer_id' })
+  customer: Customer;
+
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
@@ -56,14 +78,5 @@ export class Order {
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
-  @ManyToOne(() => Users, (user) => user.orders)
-  @JoinColumn({ name: 'user_id' })
-  user: Users;
-
-  // @ManyToMany(() => OrderItems, (orderItems) => orderItems.order)
-  // orderItems: OrderItems[];
-
-  @OneToOne(() => Customer, (customer) => customer.order)
-  @JoinColumn({ name: 'customer_id' })
-  customer: Customer;
+  
 }
