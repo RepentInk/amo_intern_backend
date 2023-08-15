@@ -79,9 +79,13 @@ export class OrderService implements OrderInterface {
 
   async delete(id: number): Promise<OrderDto> {
     try {
-      const order:any = await this.findOne(id);
-      await this.orderRepository.remove(order);
-      return order;
+      const order: any = await this.findOne(id);
+      if (!order) {
+        throw new NotFoundException('Order not found');
+      }
+      const deletedOrder = await this.orderRepository.remove(order);
+      const successMessage = 'Order deleted successfully';
+      return this.responseHandlerService.successResponse(deletedOrder, successMessage);
     } catch (error) {
       console.log(error);
       throw this.responseHandlerService.errorResponse(error.message, error.status)
