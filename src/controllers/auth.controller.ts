@@ -4,9 +4,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
-  NotFoundException,
-  UseGuards,
-  Req,
+  NotFoundException
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService, TokenBlacklistService } from '../services/auth.service';
@@ -60,19 +58,18 @@ export class AuthController {
   }
 
   // password reset verification
-  @ApiTags('Password Reset')
-  @Post('reset-pssword/send-verification-code')
+  @Post('forgot-password')
   @ApiParam({
-    name: 'phoneNumber',
+    name: 'phone_number',
     required: true,
     description: 'Users phone number',
     type: String,
     example: '+233204088090',
   })
   async sendVerificationCode(
-    @Body() body: { phoneNumber: string },
+    @Body() body: { phone_number: string },
   ): Promise<any> {
-    const user = await this.authService.sendVerificationCode(body.phoneNumber);
+    const user = await this.authService.sendVerificationCode(body.phone_number);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -86,21 +83,4 @@ export class AuthController {
   }
 }
 
-@Controller('logout')
-@ApiTags('Logout')
-export class LogoutController {
-  constructor(private readonly tokenBlacklistService: TokenBlacklistService) {}
-  @ApiParam({
-    name: 'token',
-    required: true,
-    description: 'Users token',
-    type: String,
-    example: 'bfhhgut.j944843ndh.345jhg83',
-  })
-  @UseGuards()
-  @Post()
-  async logout(@Req() req: Request): Promise<void> {
-    const token = req.headers.authorization.split(' ')[1];
-    await this.tokenBlacklistService.addToBlacklist(token);
-  }
 }

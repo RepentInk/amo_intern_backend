@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ProfileService } from '../services/profile.service';
 import { ProfileDto } from '../dto/profile.dto';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from 'src/services/auth.service'; 
 import {
   ApiBadRequestResponse,
   ApiNotFoundResponse,
@@ -25,7 +25,7 @@ import {
 @Controller('')
 @UseGuards(AuthService)
 export class ProfileController {
-  constructor(private readonly profileService: ProfileService) { }
+  constructor(private readonly profileService: ProfileService) {}
 
   @Put('update-profile/:id')
   @ApiParam({
@@ -66,7 +66,6 @@ export class ProfileController {
   ): Promise<void> {
     await this.profileService.updateUserInfo(id, updateUserData);
   }
-
 
   @ApiOperation({ summary: 'Update auth user password' })
   @Put('update_password/:id')

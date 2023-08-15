@@ -6,7 +6,7 @@ import {
   Param,
   Post,
   Put,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { SettingDto } from 'src/dto/setting.dto';
 import { BasicController } from 'src/interfaces/controller.interface';
@@ -23,7 +23,7 @@ export class SettingController implements BasicController {
   ) {}
 
   @Get('get-one')
-  @UseGuards(PermissionGuard) //use permission guard middlewrae  
+  @UseGuards(PermissionGuard) //use permission guard middlewrae
   @Permissions('findone-setting') // Define the required permissions using the custom Permission decorator
   findOne(id: number): Promise<SettingDto> {
     throw new Error('Method not implemented.');

@@ -1,3 +1,3 @@
 export interface SmsInterface {
-  sendSms(customerNumber: string, message: any): Promise<any>;
+  sendSms(customer_number: string, message: any): Promise<any>;
 }

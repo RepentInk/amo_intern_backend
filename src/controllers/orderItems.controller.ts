@@ -19,7 +19,7 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 
-@Controller('orderItems')
+@Controller('order_items')
 @ApiTags('Order Items')
 export class OrderItemController implements BasicController {
   constructor(private readonly orderItemService: OrderItemService) {}
@@ -40,7 +40,7 @@ export class OrderItemController implements BasicController {
     description: 'id of the orderItem you are retrieving',
     type: Number,
     required: true,
-    example: 12
+    example: 12,
   })
   @ApiOkResponse({
     description: 'Successfully retrieved the order item.',
@@ -57,21 +57,21 @@ export class OrderItemController implements BasicController {
     description: 'id of the item ordered',
     type: Number,
     required: true,
-    example: 4
+    example: 4,
   })
   @ApiParam({
     name: 'quantity',
     description: 'Quantity of the order made',
     type: Number,
     required: true,
-    example: 3
+    example: 3,
   })
   @ApiParam({
     name: 'price',
     description: 'price of the item ordered',
     type: Number,
     required: true,
-    example: 300
+    example: 300,
   })
   @ApiCreatedResponse({
     description: 'Order item created successfully.',
@@ -88,35 +88,35 @@ export class OrderItemController implements BasicController {
     description: 'id of the orderItem you are updating',
     type: Number,
     required: true,
-    example: 12
+    example: 12,
   })
   @ApiParam({
     name: 'order_id',
     description: 'id of the order made',
     type: Number,
     required: false,
-    example: 12
+    example: 12,
   })
   @ApiParam({
     name: 'item_id',
     description: 'id of the item ordered',
     type: Number,
     required: false,
-    example: 4
+    example: 4,
   })
   @ApiParam({
     name: 'quantity',
     description: 'Quantity of the order made',
     type: Number,
     required: false,
-    example: 3
+    example: 3,
   })
   @ApiParam({
     name: 'price',
     description: 'price of the item ordered',
     type: Number,
     required: false,
-    example: 300
+    example: 300,
   })
   @ApiOkResponse({
     description: 'Order item updated successfully.',
@@ -137,7 +137,7 @@ export class OrderItemController implements BasicController {
     description: 'id of the orderItem you are deleting',
     type: Number,
     required: true,
-    example: 4
+    example: 4,
   })
   @ApiOkResponse({
     description: 'Order item deleted successfully.',

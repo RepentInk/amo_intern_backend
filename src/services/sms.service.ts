@@ -6,17 +6,16 @@ ConfigModule.forRoot();
 
 @Injectable()
 export class SmsService implements SmsInterface {
- 
   private readonly twilioClient: Twilio.Twilio;
-  
+
   constructor() {
     this.twilioClient = Twilio(process.env.SMS_SID, process.env.SMS_TOKEN);
   }
 
-  async sendSms(customerNumber: string, message: any): Promise<void> {
+  async sendSms(customer_number: string, message: any): Promise<void> {
     try {
       await this.twilioClient.messages.create({
-        to: customerNumber,
+        to: customer_number,
         from: process.env.VIRTUAL_NUMBER, // Replace with your Twilio phone number
         body: message,
       });
@@ -25,5 +24,4 @@ export class SmsService implements SmsInterface {
       throw new Error('Failed to send SMS');
     }
   }
-
 }

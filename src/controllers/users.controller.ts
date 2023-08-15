@@ -23,7 +23,7 @@ import {
 @Controller('users')
 @ApiTags('Users')
 export class UsersController implements BasicController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Get()
   @ApiOkResponse({
@@ -58,28 +58,28 @@ export class UsersController implements BasicController {
     required: true,
     description: 'full name of the user being created',
     type: String,
-    example: 'John Doe'
+    example: 'John Doe',
   })
   @ApiParam({
     name: 'email',
     required: true,
     description: 'email of the user being created',
     type: String,
-    example: 'johndoe@gmail.com'
+    example: 'johndoe@gmail.com',
   })
   @ApiParam({
     name: 'phone_number',
     required: true,
     description: 'phone number of the user being created',
     type: String,
-    example: '+2332456789'
+    example: '+2332456789',
   })
   @ApiParam({
     name: 'role_id',
     description: 'The role id the user belongs to',
     type: Number,
     required: true,
-    example: 4
+    example: 4,
   })
   @ApiCreatedResponse({
     description: 'User created successfully.',
@@ -101,35 +101,35 @@ export class UsersController implements BasicController {
     description: 'id of the user to be updated',
     type: Number,
     required: true,
-    example: 3
+    example: 3,
   })
   @ApiParam({
     name: 'name',
     required: false,
     description: 'full name of the user to be updated ',
     type: String,
-    example: 'Mark Doe'
+    example: 'Mark Doe',
   })
   @ApiParam({
     name: 'email',
     required: false,
     description: 'email of the user to be updated',
     type: String,
-    example: 'johndoe@gmail.com'
+    example: 'johndoe@gmail.com',
   })
   @ApiParam({
     name: 'phone_number',
     required: false,
     description: 'Phone number of the user to be updated',
     type: String,
-    example: '+2332456453'
+    example: '+2332456453',
   })
   @ApiParam({
     name: 'role_id',
     description: 'role id the user belongs to',
     type: Number,
     required: false,
-    example: 2
+    example: 2,
   })
   @ApiOkResponse({
     description: 'User updated successfully.',
@@ -155,7 +155,7 @@ export class UsersController implements BasicController {
     description: 'id of the user to be deleted',
     type: Number,
     required: true,
-    example: 3
+    example: 3,
   })
   @ApiOkResponse({
     description: 'User deleted successfully.',

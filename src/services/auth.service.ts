@@ -2,8 +2,10 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { RedisService } from 'nestjs-redis';
+import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users.service';
 import { compare, hash } from 'bcrypt';
 import { SmsService } from './sms.service';
@@ -16,6 +18,7 @@ export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private readonly smsService: SmsService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -52,22 +55,22 @@ export class AuthService {
     pwd_expired_at.setMinutes(pwd_expired_at.getMinutes() + 10); // 10 minutes from now
     user.pwd_code = pwd_code;
     user.pwd_expired_at = pwd_expired_at;
-    await this.userService.update(user, user.id);
+    return await this.userService.update(user, user.id);
 
-    return { message: 'Verification code sent successfully' };
+    // return { message: 'Verification code sent successfully' };
   }
 
   // verify pwd_code and update password
   async submitVerificationCode(pwdVerifyDto: PwdVerifyDto) {
     const user = await this.userService.findByPhoneNumber(
-      pwdVerifyDto.phoneNumber,
+      pwdVerifyDto.phone_number,
     );
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     if (
-      user.pwd_code !== pwdVerifyDto.verificationCode ||
+      user.pwd_code !== pwdVerifyDto.verification_code ||
       user.pwd_expired_at < new Date()
     ) {
       throw new BadRequestException('Invalid verification code or expired');
@@ -75,7 +78,7 @@ export class AuthService {
 
     // Update user's password and clear verification code
     const hasedPasword = await hash(
-      pwdVerifyDto.newPassword,
+      pwdVerifyDto.password,
       process.env.BCRYPT_SALT_ROUNDS,
     );
     user.password = hasedPasword;
