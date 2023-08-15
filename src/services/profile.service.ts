@@ -12,10 +12,12 @@ export class ProfileService {
   users: any;
   constructor(
     @InjectRepository(Users) private readonly userRepository: Repository<Users>,
-  ) { }
+  ) {}
 
   async updateUserInfo(id: number, userProfile: ProfileDto): Promise<void> {
-    const userExist: UserDto = this.users.find((user: UserDto) => user.id === id);
+    const userExist: UserDto = this.users.find(
+      (user: UserDto) => user.id === id,
+    );
 
     if (!userExist) {
       throw new NotFoundException('User not found');

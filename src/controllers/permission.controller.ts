@@ -18,7 +18,7 @@ import {
   ApiBearerAuth,
   ApiResponse,
   ApiTags,
-  ApiParam
+  ApiParam,
 } from '@nestjs/swagger';
 @ApiBearerAuth()
 @ApiTags('Permssions')
@@ -37,6 +37,12 @@ export class PermissionController implements BasicController {
     return this.permissionService.findAll();
   }
 
+  // for testing get functions
+  @Get('list')
+  findList(@Body() permissions: { permissionIds: any[] }): Promise<any> {
+    return this.permissionService.findList(permissions.permissionIds);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'get one permission' })
   @ApiResponse({
@@ -49,21 +55,19 @@ export class PermissionController implements BasicController {
   }
 
   @Post()
-  @ApiParam(
-    { 
-      name: 'display_name', 
-      required: true, 
-      description: 'Display name of permission to be use by users',
-      type: String,
-      example: "Create Permission"
+  @ApiParam({
+    name: 'display_name',
+    required: true,
+    description: 'Display name of permission to be use by users',
+    type: String,
+    example: 'Create Permission',
   })
-  @ApiParam(
-    { 
-      name: 'name', 
-      required: true, 
-      description: 'Name of permission to be used by system',
-      type: String,
-      example: "create_permission"
+  @ApiParam({
+    name: 'name',
+    required: true,
+    description: 'Name of permission to be used by system',
+    type: String,
+    example: 'create_permission',
   })
   @ApiOperation({ summary: 'create permission' })
   @ApiResponse({

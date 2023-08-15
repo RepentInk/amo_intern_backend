@@ -22,7 +22,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-
 @ApiBearerAuth()
 @ApiTags('Roles')
 @Controller('roles')
@@ -47,20 +46,20 @@ export class RoleController implements BasicController {
   @ApiOperation({ summary: 'create role' })
   @ApiParam({
     name: 'permissions',
-    required: true,
+    required: false,
     description: 'All permissions that need to be assigned to the role',
     type: Array,
-    example: [1, 3, 4, 2]
+    example: [{ id: 2 }, { id: 3 }],
   })
   @ApiParam({
     name: 'description',
-    required: true, 
+    required: true,
     description: 'Role name description',
     type: String,
     example: 'Performs all activities in the system',
   })
   @ApiParam({
-    name: 'name', 
+    name: 'name',
     required: true,
     description: 'Name of role',
     type: String,
@@ -75,15 +74,15 @@ export class RoleController implements BasicController {
   @Put(':id')
   @ApiOperation({ summary: 'update role' })
   @ApiParam({
-    name: 'permissions', 
+    name: 'permissions',
     required: true,
     description: 'All permissions that need to be assigned to the role',
     type: Array,
-    example: [1, 2]
+    example: [{ id: 2 }, { id: 3 }],
   })
   @ApiParam({
-    name: 'description', 
-    required: true, 
+    name: 'description',
+    required: true,
     description: 'Role name description',
     type: String,
     example: 'Performs all activities in the system',

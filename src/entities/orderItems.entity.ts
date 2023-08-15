@@ -42,7 +42,7 @@ export class OrderItems {
   @JoinColumn({ name: 'order_id' })
   order: Order[];
 
-  @ManyToMany(()=> Items, (items) => items.orderItems)
-  @JoinColumn({name: 'item_id'})
+  @ManyToMany(() => Items, (items) => items.orderItems)
+  @JoinColumn({ name: 'item_id' })
   items: Items[];
 }

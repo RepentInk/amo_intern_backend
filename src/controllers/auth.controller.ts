@@ -4,7 +4,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginDto } from '../dto/auth.dto';
@@ -22,7 +22,7 @@ import { UserDto } from 'src/dto/users.dto';
 @Controller('auth')
 @ApiTags('Authentication')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   @ApiParam({
@@ -55,7 +55,6 @@ export class AuthController {
 
     return user;
   }
-
 
   // password reset verification
   @Post('forgot-password')
@@ -97,7 +96,6 @@ export class AuthController {
     example: 'dsadlafe7wqDQdd',
   })
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
-    return this.authService.submitVerificationCode(pwdVerifyDto)
+    return this.authService.submitVerificationCode(pwdVerifyDto);
   }
-
 }

@@ -1,12 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { MinLength } from 'class-validator';
 export class RoleDto {
-  @ApiProperty({
-    example: 1,
-    description: 'unique identifyer for the row of inpu',
-  })
+  // @ApiProperty({
+  //   example: 1,
+  //   description: 'unique identifyer for the row of inpu',
+  // })
   id: number;
-
   @ApiProperty({
     example: 'admin',
     description: 'access names given to users',
@@ -21,7 +20,7 @@ export class RoleDto {
   description?: string;
   @ApiProperty({
     required: false,
-    example:"['{name:create_order, display_name: create order}'] or [1,2,3,4,]",
+    example: "['{ id : 3 }','{ id : 2 }']",
     description: 'list of permissions assigend to the role',
   })
   permissions?: any[];

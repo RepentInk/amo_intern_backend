@@ -12,7 +12,6 @@ ConfigModule.forRoot();
 
 @Injectable()
 export class AuthService {
-
   constructor(
     private readonly userService: UsersService,
     private readonly smsService: SmsService,
@@ -79,8 +78,8 @@ export class AuthService {
       process.env.BCRYPT_SALT_ROUNDS,
     );
     user.password = hasedPasword;
-    user.pwd_code = null
-    user.pwd_expired_at = null
+    user.pwd_code = null;
+    user.pwd_expired_at = null;
 
     return await this.userService.update(user, user.id);
     // return { message: 'Password updated successfully' };

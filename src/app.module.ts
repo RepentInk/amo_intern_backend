@@ -37,7 +37,7 @@ import entities from './database/entities';
       signOptions: { expiresIn: process.env.TOKEN_DURATION },
     }),
     TypeOrmModule.forRoot(dbConfig),
-    TypeOrmModule.forFeature(entities)
+    TypeOrmModule.forFeature(entities),
   ],
   controllers: [
     AuthController,
@@ -50,7 +50,7 @@ import entities from './database/entities';
     UsersController,
     PermissionController,
     RoleController,
-    ProfileController
+    ProfileController,
   ],
   providers: [
     UserLogService,
@@ -64,7 +64,7 @@ import entities from './database/entities';
     UsersService,
     AuthService,
     SmsService,
-    ProfileService
+    ProfileService,
   ],
 })
 export class AppModule {}

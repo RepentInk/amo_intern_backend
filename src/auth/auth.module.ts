@@ -9,11 +9,11 @@ import { AuthService } from './auth.service';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_CONSTANT,
-      signOptions: { expiresIn: '1hr'}
+      signOptions: { expiresIn: '1hr' },
     }),
   ],
   providers: [AuthService, UsersService],
   exports: [AuthService],
-  controllers: [AuthController]
+  controllers: [AuthController],
 })
 export class AuthModule {}

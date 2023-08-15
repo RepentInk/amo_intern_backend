@@ -7,7 +7,6 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService implements UserInterface {
-
   constructor(
     @InjectRepository(Users) private userRepository: Repository<Users>,
   ) {}
