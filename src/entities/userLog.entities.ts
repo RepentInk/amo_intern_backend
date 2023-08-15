@@ -5,8 +5,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  OneToMany,
   JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 import { Users } from './users.entity';
 
@@ -27,7 +27,7 @@ export class UserLog {
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
-  @OneToMany(() => Users, (users) => users.userLog)
+  @ManyToOne(() => Users, (users) => users.userLog)
   @JoinColumn({ name: 'user_id' })
-  userLog: UserLog;
+  user: Users;
 }
