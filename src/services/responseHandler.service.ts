@@ -22,7 +22,7 @@ export class ResponseHandlerService {
         error_message: message,
         data: null,
       },
-      statusCode
+      statusCode,
     );
   }
 }
