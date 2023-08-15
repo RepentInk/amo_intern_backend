@@ -7,12 +7,9 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
-  JoinTable,
-  OneToOne,
-  ManyToMany,
+  OneToOne
 } from 'typeorm';
 import { Users } from './users.entity';
-import { Items } from './items.entity';
 import { Customer } from './customer.entity';
 
 @Entity()
@@ -48,20 +45,6 @@ export class Order {
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @ManyToMany(() => Items)
-  @JoinTable({
-    name: 'order_items', // Specify the name of the pivot table
-    joinColumn: {
-      name: 'order_id', // Specify the name of the foreign key column for Role
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'item_id', // Specify the name of the foreign key column for Permission
-      referencedColumnName: 'id',
-    },
-  })
-  items: Items[];
-
   @OneToOne(() => Customer, (customer) => customer.order)
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
@@ -78,5 +61,4 @@ export class Order {
   @DeleteDateColumn({ nullable: true })
   deleted_at: Date;
 
-  
 }
