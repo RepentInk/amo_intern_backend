@@ -21,7 +21,6 @@ export class OrderService implements OrderInterface {
       const successMessage = 'Successful';
       return this. responseHandlerService.successResponse(successMessage, order) 
     } catch (error) {
-      console.log(error);
       throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
@@ -35,7 +34,6 @@ export class OrderService implements OrderInterface {
       const successMessage = 'Successful';
       return this.responseHandlerService.successResponse(successMessage, order);
     } catch (error) {
-      console.log(error);
       throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
@@ -55,7 +53,6 @@ export class OrderService implements OrderInterface {
        return this.responseHandlerService.successResponse(createOrder, successMessage);
     
     } catch (error) {
-      console.log(error);
       throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }
@@ -72,7 +69,6 @@ export class OrderService implements OrderInterface {
       const successMessage = 'Order updated successfully';
       return this.responseHandlerService.successResponse(updatedOrder, successMessage)
     } catch (error) {
-      console.log(error);
       throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
@@ -87,7 +83,6 @@ export class OrderService implements OrderInterface {
       const successMessage = 'Order deleted successfully';
       return this.responseHandlerService.successResponse(deletedOrder, successMessage);
     } catch (error) {
-      console.log(error);
       throw this.responseHandlerService.errorResponse(error.message, error.status)
     }
   }

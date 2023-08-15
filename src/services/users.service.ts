@@ -19,7 +19,6 @@ export class UsersService implements UserInterface {
       const successMessage = 'Successful'
       return this.responseHandlerService.successResponse(successMessage, users);
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error getting users';
       throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -34,7 +33,6 @@ export class UsersService implements UserInterface {
       const successMessage = 'successful'
       return this.responseHandlerService.successResponse(successMessage, user);
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error getting user';
       throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
@@ -48,7 +46,6 @@ export class UsersService implements UserInterface {
       return this.responseHandlerService.successResponse(successMessage, createUser);
      
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error creating user';
       throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
@@ -66,7 +63,6 @@ export class UsersService implements UserInterface {
       return this.responseHandlerService.successResponse(successMessage, updateUser)
 
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error updating user';
       throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
@@ -82,7 +78,6 @@ export class UsersService implements UserInterface {
       const successMessage = 'User deleted successfully'
       return this.responseHandlerService.successResponse(deletedUser, successMessage);
     } catch (error) {
-      console.log(error);
       const errorMessage = 'Error deleting user';
       throw this.responseHandlerService.errorResponse(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR)
     }
