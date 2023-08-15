@@ -4,7 +4,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
-  NotFoundException
+  NotFoundException,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthService, TokenBlacklistService } from '../services/auth.service';
@@ -81,6 +81,4 @@ export class AuthController {
   async submitVerificationCode(@Body() pwdVerifyDto: PwdVerifyDto) {
     return this.authService.submitVerificationCode(pwdVerifyDto);
   }
-}
-
 }
