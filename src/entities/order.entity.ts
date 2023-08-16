@@ -7,12 +7,11 @@ import {
   DeleteDateColumn,
   ManyToOne,
   JoinColumn,
-  OneToOne,
   BeforeInsert
 } from 'typeorm';
 import { Users } from './users.entity';
 import { Customer } from './customer.entity';
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { CustomerDto } from 'src/dto/customer.dto';
 
 @Entity()
@@ -48,11 +47,11 @@ export class Order {
   @Column()
   order_channel: string;
 
-  @ManyToOne(() => Users, (user) => user.orders, {onDelete: 'CASCADE'})
+  @ManyToOne(() => Users, (user) => user.orders, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: Users;
 
-  @OneToOne(() => Customer, (customer) => customer.order, {onDelete: 'CASCADE'})
+  @ManyToOne(() => Customer, (customer) => customer.order, {onDelete: 'CASCADE'})
   @JoinColumn({ name: 'customer_id' })
   customer: Customer | CustomerDto;
 

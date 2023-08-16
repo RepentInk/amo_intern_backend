@@ -10,7 +10,7 @@ import { Roles } from '../seeds/dummy.role';
 import { Permissions } from '../seeds/dummy.permissions';
 import { RolePermissions } from '../seeds/dummy.rolePermissions';
 
-export class DummyData1692113622314 implements MigrationInterface {
+export class DummyData1692118040283 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const entityManager = queryRunner.manager;
 
