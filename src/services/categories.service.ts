@@ -52,9 +52,13 @@ export class CategoryService implements CategoryInterface {
         where: { id },
       });
       if (!category) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundException('category not found');
       }
-      this.categoryRepository.merge(category, categoryDto);
+      const updatedCategory = this.categoryRepository.merge(
+        category,
+        categoryDto,
+      );
+
       return this.categoryRepository.save(category);
     } catch (error) {
       console.log(error);
@@ -66,10 +70,16 @@ export class CategoryService implements CategoryInterface {
       const category: any = await this.categoryRepository.findOne({
         where: { id },
       });
-      await this.categoryRepository.remove(category);
-      return category;
+      // Update the deleted_at timestamp
+      category.deleted_at = new Date();
+
+      // Save the category with the updated deleted_at timestamp
+      const updatedCategory = await this.categoryRepository.save(category);
+
+      return updatedCategory;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 }
