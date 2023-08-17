@@ -4,21 +4,26 @@ import { ItemsDto } from 'src/dto/items.dto';
 import { Items } from 'src/entities/items.entity';
 import { ItemsInterface } from 'src/interfaces/items.interface';
 import { Repository } from 'typeorm';
+import { ResponseHandlerService } from './responseHandler.service';
+const successMessage = 'Items retrieved successfully';
 
 @Injectable()
 export class ItemsService implements ItemsInterface {
   constructor(
     @InjectRepository(Items) private itemRepository: Repository<Items>,
+    private readonly responseHandlerService: ResponseHandlerService,
   ) {}
   async findAll(): Promise<ItemsDto[]> {
     try {
       const items: any = await this.itemRepository.find({
         where: { deleted_at: null },
       });
-      return items;
+      return this.responseHandlerService.successResponse(successMessage, items);
     } catch (error) {
-      console.log(error);
-      throw new Error('An error occurred while fetching users');
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -32,9 +37,12 @@ export class ItemsService implements ItemsInterface {
         throw new NotFoundException('Item not found');
       }
 
-      return item;
+      return this.responseHandlerService.successResponse(successMessage, item);
     } catch (error) {
-      console.log(error);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -57,9 +65,16 @@ export class ItemsService implements ItemsInterface {
         throw new NotFoundException('Item not found');
       }
       this.itemRepository.merge(item, itemsDto);
-      return this.itemRepository.save(item);
+      const updatedItem = await this.itemRepository.save(item);
+      return this.responseHandlerService.successResponse(
+        successMessage,
+        updatedItem,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -71,9 +86,15 @@ export class ItemsService implements ItemsInterface {
       }
       item.deleted_at = new Date();
       const deletedItem = await this.itemRepository.save(item);
-      return deletedItem;
+      return this.responseHandlerService.successResponse(
+        successMessage,
+        deletedItem,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 }

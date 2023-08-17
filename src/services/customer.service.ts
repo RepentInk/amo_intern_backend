@@ -4,12 +4,15 @@ import { CustomerDto } from 'src/dto/customer.dto';
 import { Customer } from 'src/entities/customer.entity';
 import { CustomerInterface } from 'src/interfaces/customer.interface';
 import { Repository } from 'typeorm';
+import { ResponseHandlerService } from './responseHandler.service';
+const successResponse = 'Successful';
 
 @Injectable()
 export class CustomerService implements CustomerInterface {
   constructor(
     @InjectRepository(Customer)
     private customerRepository: Repository<Customer>,
+    private readonly responseHandlerService: ResponseHandlerService,
   ) {}
 
   async findAll(): Promise<CustomerDto[]> {
@@ -17,10 +20,15 @@ export class CustomerService implements CustomerInterface {
       const customers: any = await this.customerRepository.find({
         where: { deleted_at: null },
       });
-      return customers;
+      return this.responseHandlerService.successResponse(
+        successResponse,
+        customers,
+      );
     } catch (error) {
-      console.log(error);
-      throw new Error('An error occurred while fetching users');
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -36,18 +44,31 @@ export class CustomerService implements CustomerInterface {
         throw new NotFoundException('Customer not found');
       }
 
-      return customer;
+      return this.responseHandlerService.successResponse(
+        successResponse,
+        customer,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
   async create(customerDto: CustomerDto): Promise<CustomerDto> {
     try {
       const customer: any = this.customerRepository.create(customerDto);
-      return await this.customerRepository.save(customer);
+      const createdCustomer = await this.customerRepository.save(customer);
+      return this.responseHandlerService.successResponse(
+        successResponse,
+        createdCustomer,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -63,9 +84,16 @@ export class CustomerService implements CustomerInterface {
         throw new NotFoundException('Customer not found');
       }
       this.customerRepository.merge(customer, customerDto);
-      return this.customerRepository.save(customer);
+      const updatedCustomer = await this.customerRepository.save(customer);
+      return this.responseHandlerService.successResponse(
+        successResponse,
+        updatedCustomer,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -80,10 +108,15 @@ export class CustomerService implements CustomerInterface {
       // Update the deleted_at timestamp
       customer.deleted_at = new Date();
       const deletedCustomer = await this.customerRepository.save(customer);
-      return deletedCustomer;
+      return this.responseHandlerService.successResponse(
+        successResponse,
+        deletedCustomer,
+      );
     } catch (error) {
-      console.log(error);
-      throw error;
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 }
