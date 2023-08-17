@@ -14,8 +14,10 @@ export class CustomerService implements CustomerInterface {
 
   async findAll(): Promise<CustomerDto[]> {
     try {
-      const customer: any = await this.customerRepository.find();
-      return customer;
+      const customers: any = await this.customerRepository.find({
+        where: { deleted_at: null },
+      });
+      return customers;
     } catch (error) {
       console.log(error);
       throw new Error('An error occurred while fetching users');
@@ -27,8 +29,11 @@ export class CustomerService implements CustomerInterface {
       const customer: any = await this.customerRepository.findOne({
         where: { id },
       });
+      if (customer.deleted_at !== null) {
+        throw new NotFoundException('Customer not found');
+      }
       if (!customer) {
-        throw new NotFoundException('Categories not found');
+        throw new NotFoundException('Customer not found');
       }
 
       return customer;
@@ -54,6 +59,9 @@ export class CustomerService implements CustomerInterface {
       if (!customer) {
         throw new NotFoundException('Customer not found');
       }
+      if (customer.deleted_at !== null) {
+        throw new NotFoundException('Customer not found');
+      }
       this.customerRepository.merge(customer, customerDto);
       return this.customerRepository.save(customer);
     } catch (error) {
@@ -66,10 +74,16 @@ export class CustomerService implements CustomerInterface {
       const customer: any = await this.customerRepository.findOne({
         where: { id },
       });
-      await this.customerRepository.remove(customer);
-      return customer;
+      if (customer.deleted_at !== null) {
+        throw new NotFoundException('Customer not found');
+      }
+      // Update the deleted_at timestamp
+      customer.deleted_at = new Date();
+      const deletedCustomer = await this.customerRepository.save(customer);
+      return deletedCustomer;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 }

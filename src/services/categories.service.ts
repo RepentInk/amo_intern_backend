@@ -4,6 +4,7 @@ import { CategoryDto } from 'src/dto/category.dto';
 import { Categories } from 'src/entities/category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ResponseHandlerService } from './responseHandler.service';
 
 @Injectable()
 export class CategoryService implements CategoryInterface {
@@ -14,8 +15,10 @@ export class CategoryService implements CategoryInterface {
 
   async findAll(): Promise<CategoryDto[]> {
     try {
-      const categories: any = await this.categoryRepository.find();
-      return categories;
+      const categories: any = await this.categoryRepository.find({
+        where: { deleted_at: null },
+      });
+      return ResponseHandlerService.successResponse(categories);
     } catch (error) {
       console.log(error);
       throw new Error('An error occurred while fetching users');
@@ -27,11 +30,14 @@ export class CategoryService implements CategoryInterface {
       const category: any = await this.categoryRepository.findOne({
         where: { id },
       });
+      if (category.deleted_at !== null) {
+        throw new NotFoundException('Category not found');
+      }
       if (!category) {
-        throw new NotFoundException('Categories not found');
+        throw new NotFoundException('Category not found');
       }
 
-      return category;
+      return ResponseHandlerService.successResponse(category);
     } catch (error) {
       console.log(error);
     }
@@ -51,13 +57,13 @@ export class CategoryService implements CategoryInterface {
       const category: any = await this.categoryRepository.findOne({
         where: { id },
       });
+      if (category.deleted_at !== null) {
+        throw new NotFoundException('Category not found');
+      }
       if (!category) {
         throw new NotFoundException('category not found');
       }
-      const updatedCategory = this.categoryRepository.merge(
-        category,
-        categoryDto,
-      );
+      this.categoryRepository.merge(category, categoryDto);
 
       return this.categoryRepository.save(category);
     } catch (error) {
@@ -70,6 +76,9 @@ export class CategoryService implements CategoryInterface {
       const category: any = await this.categoryRepository.findOne({
         where: { id },
       });
+      if (category.deleted_at !== null) {
+        throw new NotFoundException('Category not found');
+      }
       // Update the deleted_at timestamp
       category.deleted_at = new Date();
 

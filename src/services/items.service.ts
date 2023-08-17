@@ -10,10 +10,11 @@ export class ItemsService implements ItemsInterface {
   constructor(
     @InjectRepository(Items) private itemRepository: Repository<Items>,
   ) {}
-
   async findAll(): Promise<ItemsDto[]> {
     try {
-      const items: any = await this.itemRepository.find();
+      const items: any = await this.itemRepository.find({
+        where: { deleted_at: null },
+      });
       return items;
     } catch (error) {
       console.log(error);
@@ -24,6 +25,9 @@ export class ItemsService implements ItemsInterface {
   async findOne(id: number): Promise<ItemsDto> {
     try {
       const item: any = await this.itemRepository.findOne({ where: { id } });
+      if (item.deleted_at !== null) {
+        throw new NotFoundException('item not found');
+      }
       if (!item) {
         throw new NotFoundException('Item not found');
       }
@@ -46,6 +50,9 @@ export class ItemsService implements ItemsInterface {
   async update(itemsDto: ItemsDto, id: number): Promise<ItemsDto> {
     try {
       const item: any = await this.itemRepository.findOne({ where: { id } });
+      if (item.deleted_at !== null) {
+        throw new NotFoundException('item not found');
+      }
       if (!item) {
         throw new NotFoundException('Item not found');
       }
@@ -59,8 +66,12 @@ export class ItemsService implements ItemsInterface {
   async delete(id: number): Promise<ItemsDto> {
     try {
       const item: any = await this.itemRepository.findOne({ where: { id } });
-      await this.itemRepository.remove(item);
-      return item;
+      if (item.deleted_at !== null) {
+        throw new NotFoundException('item not found');
+      }
+      item.deleted_at = new Date();
+      const deletedItem = await this.itemRepository.save(item);
+      return deletedItem;
     } catch (error) {
       console.log(error);
     }

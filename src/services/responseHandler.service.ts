@@ -3,7 +3,7 @@ import { error } from 'console';
 
 @Injectable()
 export class ResponseHandlerService {
-  successResponse(
+  static successResponse(
     data: any,
     message: string = 'Successful',
     statusCode: HttpStatus = HttpStatus.OK,
@@ -16,7 +16,7 @@ export class ResponseHandlerService {
     };
   }
 
-  errorResponse(message: string, statusCode: HttpStatus) {
+  static errorResponse(message: string, statusCode: HttpStatus) {
     throw new HttpException(
       {
         error: error,
