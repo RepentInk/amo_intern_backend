@@ -84,5 +84,4 @@ export class OrderItemService implements OrderItemsInterface {
       throw this.responseHandlerService.errorResponse(error.message, error.status);
     }
   }
-  
 }

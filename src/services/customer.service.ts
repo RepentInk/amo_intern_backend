@@ -28,7 +28,7 @@ export class CustomerService implements CustomerInterface {
         where: { id },
       });
       if (!customer) {
-        throw new NotFoundException('Categories not found');
+        throw new NotFoundException('Customer not found');
       }
 
       return customer;
