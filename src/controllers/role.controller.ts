@@ -49,7 +49,7 @@ export class RoleController implements BasicController {
     required: false,
     description: 'All permissions that need to be assigned to the role',
     type: Array,
-    example: [{ id: 2 }, { id: 3 }],
+    example: [2, 3, 4],
   })
   @ApiParam({
     name: 'description',
@@ -78,7 +78,7 @@ export class RoleController implements BasicController {
     required: true,
     description: 'All permissions that need to be assigned to the role',
     type: Array,
-    example: [{ id: 2 }, { id: 3 }],
+    example: [2, 3, 4],
   })
   @ApiParam({
     name: 'description',

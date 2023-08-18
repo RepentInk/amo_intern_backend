@@ -27,6 +27,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ProfileController } from './controllers/profile.controller';
 import { ProfileService } from './services/profile.service';
 import { ResponseHandlerService } from './services/responseHandler.service';
+import { RolePermissionService } from './services/rolePermission.service';
 import entities from './database/entities';
 
 @Module({
@@ -65,7 +66,8 @@ import entities from './database/entities';
     AuthService,
     SmsService,
     ProfileService,
-    ResponseHandlerService
+    ResponseHandlerService,
+    RolePermissionService
   ],
 })
 export class AppModule {}

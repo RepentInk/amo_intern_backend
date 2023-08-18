@@ -39,8 +39,8 @@ export class PermissionController implements BasicController {
 
   // for testing get functions
   @Get('list')
-  findList(@Body() permissions: { permissionIds: any[] }): Promise<any> {
-    return this.permissionService.findList(permissions.permissionIds);
+  findByIds(@Body() permissions: { permissionIds: any[] }): Promise<any> {
+    return this.permissionService.findByIds(permissions.permissionIds);
   }
 
   @Get(':id')

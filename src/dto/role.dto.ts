@@ -20,7 +20,7 @@ export class RoleDto {
   description?: string;
   @ApiProperty({
     required: false,
-    example: "['{ id : 3 }','{ id : 2 }']",
+    example: '[ 3 , 2 , 4]',
     description: 'list of permissions assigend to the role',
   })
   permissions?: any[];

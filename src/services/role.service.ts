@@ -3,12 +3,12 @@ import {
   NotFoundException,
   ConflictException,
   HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RoleDto } from 'src/dto/role.dto';
 import { Role } from 'src/entities/role.entity';
 import { PermissionService } from './permission.service';
+import { RolePermissionService } from './rolePermission.service';
 import { RoleInterface } from 'src/interfaces/role.interface';
 import { Repository } from 'typeorm';
 import { ResponseHandlerService } from './responseHandler.service';
@@ -17,31 +17,59 @@ export class RoleService implements RoleInterface {
   constructor(
     @InjectRepository(Role)
     private roleRepository: Repository<RoleDto>,
-    private permissionService: PermissionService,
+    private readonly permissionService: PermissionService,
+    private readonly rolePermissionService: RolePermissionService,
+    private readonly responseHandlerService: ResponseHandlerService,
   ) {}
 
+  async findRolesWithPermissions(rolePermissionIds: any[]): Promise<any[]> {
+    //
+    const rolesWithPermissions = await Promise.all(
+      rolePermissionIds.map(async (item) => {
+        const role = await this.roleRepository.findOne({
+          where: { id: item.role_id },
+        });
+        const permissions = await this.permissionService.findByIds(
+          item.permissions,
+        );
+        return {
+          role: role,
+          permissions: permissions,
+        };
+      }),
+    );
+    // sort out reuslt in accesible array of object
+    const final = await rolesWithPermissions.map((item) => ({
+      ...item.role,
+      permissions: item.permissions['data'],
+    }));
+    return final;
+  }
   async findAll(): Promise<RoleDto[]> {
     try {
-      return this.roleRepository.find({ relations: { permissions: true } });
+      //all roles with corresponding permission ids
+      const rolesWithPermissionIds =
+        await this.rolePermissionService.findRolePermissions();
+      const data = await this.findRolesWithPermissions(rolesWithPermissionIds);
+      return this.responseHandlerService.successResponse(data);
     } catch (error) {
-      console.log(error);
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
   async findOne(id: number): Promise<RoleDto> {
     try {
-      const role = await this.roleRepository.findOne({
-        where: { id },
-        relations: { permissions: true },
-      });
-      if (!role) {
-        throw new NotFoundException('Role not found');
-      }
-      return role;
+      const roleWithPermissionId = await this.rolePermissionService.findOne(id);
+      const role = await this.findRolesWithPermissions([roleWithPermissionId]);
+      return this.responseHandlerService.successResponse(role);
     } catch (error) {
-      // this handles all the erros and send a responds to view
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -54,54 +82,86 @@ export class RoleService implements RoleInterface {
       if (roleExit) {
         throw new ConflictException('role already exists');
       }
-      // find each permission
-      const permissions = await this.permissionService.findList(
+      // create new role
+      const result = await this.roleRepository.create({
+        name: roleDto.name,
+        description: roleDto.description,
+      });
+      const role = await this.roleRepository.save(result);
+      //get role_permission table data
+      const rolePermissionData = {
+        role_id: role.id,
+        permissions: roleDto.permissions,
+      };
+      // find each permission information
+      const permissions = await this.permissionService.findByIds(
         roleDto.permissions,
       );
-
-      // assign list of permissions to role
-      roleDto.permissions = [...roleDto.permissions, ...permissions];
-      const role = await this.roleRepository.create(roleDto);
-      return this.roleRepository.save(role);
+      roleDto = { ...role };
+      roleDto.permissions = permissions['data'];
+      //insert relatioship in role_permission table
+      await this.rolePermissionService.create(rolePermissionData);
+      return this.responseHandlerService.successResponse(role);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
   async update(roleDto: RoleDto, id: number): Promise<RoleDto> {
     try {
-      const role = await this.findOne(id);
-      if (!role) {
+      const roleExist = await this.findOne(id);
+      if (!roleExist) {
         throw new NotFoundException('Role not found');
       }
-
-      // get id for existion permissions and new permissions
-      const updatedPermissionIds = roleDto.permissions.map((permission) => ({
-        id: permission.id,
-      }));
-      const existingPermissionIds = role.permissions.map((permission) => ({
-        id: permission.id,
-      }));
-      // find permissions to add
-      // filter to return newly added permisions if any
-      const permissionIds = updatedPermissionIds.filter(
-        (permission) => !existingPermissionIds.includes(permission),
-      );
-
-      if (permissionIds.length <= 0) {
-        // update with new properties
-        await this.roleRepository.merge(role, roleDto);
-        return await this.roleRepository.save(role);
-      }
-
-      const permissions = await this.permissionService.findList(permissionIds);
+      const role = roleExist['data'][0];
+      const permissionIds = roleDto.permissions;
+      const permissions = await this.permissionService.findByIds(permissionIds);
 
       // update with new properties
-      await this.roleRepository.merge(role, roleDto);
+      const mergedRole = await this.roleRepository.merge(role, roleDto);
+
+      const data = await this.roleRepository.save({
+        id: mergedRole.id,
+        name: mergedRole.name,
+        description: mergedRole.description,
+      });
+
+      // delete old rolePermission entries
+      await this.rolePermissionService.delete('role_id', mergedRole.id);
 
       // Replace permissions and save
-      role.permissions = permissions;
-      return await this.roleRepository.save(role);
+      // role.permissions = permissions['data'];
+
+      // get id for existion permissions and new permissions
+      // const updatedPermissionIds = await roleDto.permissions.map(
+      //   (permission) => permission,
+      // );
+      // console.log('new ids', updatedPermissionIds);
+      // const existingPermissionIds = await role['data'][0].permissions.map(
+      //   (permission) => permission.id,
+      // );
+      // console.log('old ids', existingPermissionIds);
+
+      // find permissions to add
+      // filter to return newly added permissions if any
+      // const permissionIds = await updatedPermissionIds.filter(
+      //   (permission) => !existingPermissionIds.includes(permission),
+      // );
+
+      // console.log('filtered', permissionIds);
+
+      // if (permissionIds.length <= 0) {
+      //   // update with new properties
+      //   await this.roleRepository.merge(role['data'][0], roleDto);
+      //   return role;
+      //   // return await this.roleRepository.save(role);
+      // }
+
+      return data;
+      // return await this.roleRepository.save(role);
     } catch (error) {
       throw new HttpException(error.message, error.status);
     }
@@ -113,7 +173,10 @@ export class RoleService implements RoleInterface {
       await this.roleRepository.remove(role);
       return role;
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 }

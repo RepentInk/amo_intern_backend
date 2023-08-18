@@ -10,34 +10,43 @@ import { PermissionDto } from 'src/dto/permission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from 'src/entities/permission.entity';
 import { Repository } from 'typeorm';
+import { ResponseHandlerService } from '../services/responseHandler.service';
 
 @Injectable()
 export class PermissionService implements PermissionInterface {
   constructor(
     @InjectRepository(Permission)
     private permissionRepository: Repository<Permission>,
+    private readonly responseHandlerService: ResponseHandlerService,
   ) {}
 
   async findAll(): Promise<PermissionDto[]> {
     try {
-      return this.permissionRepository.find();
+      const allPermissions = await this.permissionRepository.find();
+      return this.responseHandlerService.successResponse(allPermissions);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
-  // for test purposes only
-  async findList(permissionIds: any[]): Promise<any[]> {
+
+  async findByIds(permissionIds: any[]): Promise<any[]> {
     try {
       // find each permission
       const permissions = await this.permissionRepository.find({
-        where: [...permissionIds],
+        where: [...permissionIds.map((permissionId) => ({ id: permissionId }))],
       });
       if (!permissions || permissions.length !== permissionIds.length) {
         throw new NotFoundException('One or More Permissions not found');
       }
-      return permissions;
+      return this.responseHandlerService.successResponse(permissions);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -49,9 +58,12 @@ export class PermissionService implements PermissionInterface {
       if (!permission) {
         throw new NotFoundException('Permsission not found');
       }
-      return permission;
+      return this.responseHandlerService.successResponse(permission);
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -61,14 +73,20 @@ export class PermissionService implements PermissionInterface {
         where: { name: permissionDto.name },
       });
       if (permissionExit) {
-        console.log(permissionExit);
         throw new ConflictException('permission already exists');
       }
       const permission = await this.permissionRepository.create(permissionDto);
-      return this.permissionRepository.save(permission);
+      const data = await this.permissionRepository.save(permission);
+      return this.responseHandlerService.successResponse(
+        data,
+        'permission created',
+        HttpStatus.CREATED,
+      );
     } catch (error) {
-      console.log(error);
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -78,13 +96,23 @@ export class PermissionService implements PermissionInterface {
   ): Promise<PermissionDto> {
     try {
       const permission: any = await this.findOne(id);
-      if (!permission) {
+      if (!permission.data) {
         throw new NotFoundException('Permission not found');
       }
-      this.permissionRepository.merge(permission, permissionDto);
-      return this.permissionRepository.save(permission);
+
+      this.permissionRepository.merge(permission.data, permissionDto);
+
+      const data = await this.permissionRepository.save(permission.data);
+
+      return this.responseHandlerService.successResponse(
+        data,
+        'permission updated',
+      );
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -92,9 +120,15 @@ export class PermissionService implements PermissionInterface {
     try {
       const permission: any = await this.findOne(id);
       await this.permissionRepository.remove(permission);
-      return permission;
+      return this.responseHandlerService.successResponse(
+        permission,
+        'permission deleted',
+      );
     } catch (error) {
-      throw new HttpException(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 }

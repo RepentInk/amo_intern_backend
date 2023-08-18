@@ -6,6 +6,7 @@ import {
   UpdateDateColumn,
   ManyToMany,
   OneToMany,
+  JoinColumn
 } from 'typeorm';
 import { Permission } from './permission.entity';
 import { Users } from './users.entity';
