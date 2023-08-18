@@ -29,6 +29,7 @@ import { ProfileService } from './services/profile.service';
 import { ResponseHandlerService } from './services/responseHandler.service';
 import { RolePermissionService } from './services/rolePermission.service';
 import entities from './database/entities';
+import { OrderItemService } from './services/orderItems.service';
 
 @Module({
   imports: [
@@ -59,7 +60,7 @@ import entities from './database/entities';
     CategoryService,
     CustomerService,
     OrderService,
-    // OrderItemService,
+    OrderItemService,
     PermissionService,
     RoleService,
     UsersService,

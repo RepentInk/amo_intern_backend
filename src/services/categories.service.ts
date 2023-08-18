@@ -4,18 +4,26 @@ import { CategoryDto } from 'src/dto/category.dto';
 import { Categories } from 'src/entities/category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ResponseHandlerService } from './responseHandler.service';
+const successMessage = 'Successful';
 
 @Injectable()
 export class CategoryService implements CategoryInterface {
   constructor(
     @InjectRepository(Categories)
+    private readonly ResponseHandlerService: ResponseHandlerService,
     private categoryRepository: Repository<Categories>,
   ) {}
 
   async findAll(): Promise<CategoryDto[]> {
     try {
-      const categories: any = await this.categoryRepository.find();
-      return categories;
+      const categories: any = await this.categoryRepository.find({
+        where: { deleted_at: null },
+      });
+      return this.ResponseHandlerService.successResponse(
+        successMessage,
+        categories,
+      );
     } catch (error) {
       console.log(error);
       throw new Error('An error occurred while fetching users');
@@ -27,22 +35,38 @@ export class CategoryService implements CategoryInterface {
       const category: any = await this.categoryRepository.findOne({
         where: { id },
       });
+      if (category.deleted_at !== null) {
+        throw new NotFoundException('Category not found');
+      }
       if (!category) {
-        throw new NotFoundException('Categories not found');
+        throw new NotFoundException('Category not found');
       }
 
-      return category;
+      return this.ResponseHandlerService.successResponse(
+        successMessage,
+        category,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.ResponseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
   async create(categoryDto: CategoryDto): Promise<CategoryDto> {
     try {
       const category: any = this.categoryRepository.create(categoryDto);
-      return this.categoryRepository.save(category);
+      const createdCategory = await this.categoryRepository.save(category);
+      return this.ResponseHandlerService.successResponse(
+        successMessage,
+        createdCategory,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.ResponseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -51,13 +75,24 @@ export class CategoryService implements CategoryInterface {
       const category: any = await this.categoryRepository.findOne({
         where: { id },
       });
+      if (category.deleted_at !== null) {
+        throw new NotFoundException('Category not found');
+      }
       if (!category) {
-        throw new NotFoundException('User not found');
+        throw new NotFoundException('category not found');
       }
       this.categoryRepository.merge(category, categoryDto);
-      return this.categoryRepository.save(category);
+
+      const updatedCategory = await this.categoryRepository.save(category);
+      return this.ResponseHandlerService.successResponse(
+        successMessage,
+        updatedCategory,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.ResponseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 
@@ -66,10 +101,22 @@ export class CategoryService implements CategoryInterface {
       const category: any = await this.categoryRepository.findOne({
         where: { id },
       });
-      await this.categoryRepository.remove(category);
-      return category;
+      if (category.deleted_at !== null) {
+        throw new NotFoundException('Category not found');
+      }
+      // Update the deleted_at timestamp
+      category.deleted_at = new Date();
+      const updatedCategory = await this.categoryRepository.save(category);
+
+      return this.ResponseHandlerService.successResponse(
+        successMessage,
+        updatedCategory,
+      );
     } catch (error) {
-      console.log(error);
+      throw this.ResponseHandlerService.errorResponse(
+        error.message,
+        error.status,
+      );
     }
   }
 }
