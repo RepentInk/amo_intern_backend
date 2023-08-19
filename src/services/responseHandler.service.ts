@@ -16,12 +16,12 @@ export class ResponseHandlerService {
     };
   }
 
-  errorResponse(message: string, statusCode: HttpStatus) {
+  errorResponse(message: string, statusCode: HttpStatus, error: any) {
     throw new HttpException(
       {
-        error: error,
         error_message: message,
         status: statusCode,
+        error: error
       },
       statusCode,
     );
