@@ -129,38 +129,18 @@ export class RoleService implements RoleInterface {
         description: mergedRole.description,
       });
 
-      // delete old rolePermission entries
+      // delete old rolePermission relationships
       await this.rolePermissionService.delete('role_id', mergedRole.id);
+      // insert new role_permission relationships
+      await this.rolePermissionService.create({
+        role_id: role.id,
+        permissions: permissionIds,
+      });
 
       // Replace permissions and save
-      // role.permissions = permissions['data'];
+      role.permissions = permissions['data'];
 
-      // get id for existion permissions and new permissions
-      // const updatedPermissionIds = await roleDto.permissions.map(
-      //   (permission) => permission,
-      // );
-      // console.log('new ids', updatedPermissionIds);
-      // const existingPermissionIds = await role['data'][0].permissions.map(
-      //   (permission) => permission.id,
-      // );
-      // console.log('old ids', existingPermissionIds);
-
-      // find permissions to add
-      // filter to return newly added permissions if any
-      // const permissionIds = await updatedPermissionIds.filter(
-      //   (permission) => !existingPermissionIds.includes(permission),
-      // );
-
-      // console.log('filtered', permissionIds);
-
-      // if (permissionIds.length <= 0) {
-      //   // update with new properties
-      //   await this.roleRepository.merge(role['data'][0], roleDto);
-      //   return role;
-      //   // return await this.roleRepository.save(role);
-      // }
-
-      return data;
+      return this.responseHandlerService.successResponse(role);
       // return await this.roleRepository.save(role);
     } catch (error) {
       throw new HttpException(error.message, error.status);

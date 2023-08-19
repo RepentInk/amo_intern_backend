@@ -78,7 +78,6 @@ export class RolePermissionService implements RolePermissionInterface {
           permission_id: permission,
         });
         data = await this.rolePermissionRepository.save(rolePermission);
-        console.log(permission);
       });
       return this.responseHandlerService.successResponse(
         data,

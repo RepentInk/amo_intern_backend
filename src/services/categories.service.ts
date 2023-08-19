@@ -11,8 +11,8 @@ const successMessage = 'Successful';
 export class CategoryService implements CategoryInterface {
   constructor(
     @InjectRepository(Categories)
-    private readonly ResponseHandlerService: ResponseHandlerService,
     private categoryRepository: Repository<Categories>,
+    private readonly responseHandlerService: ResponseHandlerService,
   ) {}
 
   async findAll(): Promise<CategoryDto[]> {
@@ -20,7 +20,7 @@ export class CategoryService implements CategoryInterface {
       const categories: any = await this.categoryRepository.find({
         where: { deleted_at: null },
       });
-      return this.ResponseHandlerService.successResponse(
+      return this.responseHandlerService.successResponse(
         successMessage,
         categories,
       );
@@ -42,12 +42,12 @@ export class CategoryService implements CategoryInterface {
         throw new NotFoundException('Category not found');
       }
 
-      return this.ResponseHandlerService.successResponse(
+      return this.responseHandlerService.successResponse(
         successMessage,
         category,
       );
     } catch (error) {
-      throw this.ResponseHandlerService.errorResponse(
+      throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
       );
@@ -58,12 +58,12 @@ export class CategoryService implements CategoryInterface {
     try {
       const category: any = this.categoryRepository.create(categoryDto);
       const createdCategory = await this.categoryRepository.save(category);
-      return this.ResponseHandlerService.successResponse(
+      return this.responseHandlerService.successResponse(
         successMessage,
         createdCategory,
       );
     } catch (error) {
-      throw this.ResponseHandlerService.errorResponse(
+      throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
       );
@@ -84,12 +84,12 @@ export class CategoryService implements CategoryInterface {
       this.categoryRepository.merge(category, categoryDto);
 
       const updatedCategory = await this.categoryRepository.save(category);
-      return this.ResponseHandlerService.successResponse(
+      return this.responseHandlerService.successResponse(
         successMessage,
         updatedCategory,
       );
     } catch (error) {
-      throw this.ResponseHandlerService.errorResponse(
+      throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
       );
@@ -108,12 +108,12 @@ export class CategoryService implements CategoryInterface {
       category.deleted_at = new Date();
       const updatedCategory = await this.categoryRepository.save(category);
 
-      return this.ResponseHandlerService.successResponse(
+      return this.responseHandlerService.successResponse(
         successMessage,
         updatedCategory,
       );
     } catch (error) {
-      throw this.ResponseHandlerService.errorResponse(
+      throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
       );
