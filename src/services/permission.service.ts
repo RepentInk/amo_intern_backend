@@ -9,8 +9,8 @@ import { PermissionDto } from 'src/dto/permission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from 'src/entities/permission.entity';
 import { Repository } from 'typeorm';
-import { RolePermissionService } from '../services/rolePermission.service';
-import { ResponseHandlerService } from '../services/responseHandler.service';
+import { RolePermissionService } from './rolePermission.service';
+import { ResponseHandlerService } from './responseHandler.service';
 
 @Injectable()
 export class PermissionService implements PermissionInterface {

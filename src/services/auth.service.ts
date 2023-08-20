@@ -48,7 +48,7 @@ export class AuthService {
     const pwd_code = Math.floor(100000 + Math.random() * 900000);
 
     // Send the pwd code via SMS
-    await this.smsService.sendSms(user.phone_number, pwd_code);
+    await this.smsService.twilioSms(user.phone_number, pwd_code);
 
     // Update user's pwdCode and pwdCodeExpiredAt in the database
     const pwd_expired_at = new Date();

@@ -16,7 +16,7 @@ export class ResponseHandlerService {
     };
   }
 
-  errorResponse(message: string, statusCode: HttpStatus, error: any) {
+  errorResponse(message: string, statusCode: HttpStatus, error?: any) {
     throw new HttpException(
       {
         error_message: message,
