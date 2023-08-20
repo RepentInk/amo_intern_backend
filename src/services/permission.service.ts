@@ -1,7 +1,6 @@
 import {
   Injectable,
   NotFoundException,
-  HttpException,
   HttpStatus,
   ConflictException,
 } from '@nestjs/common';
@@ -10,6 +9,7 @@ import { PermissionDto } from 'src/dto/permission.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from 'src/entities/permission.entity';
 import { Repository } from 'typeorm';
+import { RolePermissionService } from '../services/rolePermission.service';
 import { ResponseHandlerService } from '../services/responseHandler.service';
 
 @Injectable()
@@ -17,6 +17,7 @@ export class PermissionService implements PermissionInterface {
   constructor(
     @InjectRepository(Permission)
     private permissionRepository: Repository<Permission>,
+    private readonly rolePermissionService: RolePermissionService,
     private readonly responseHandlerService: ResponseHandlerService,
   ) {}
 
@@ -28,6 +29,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -46,6 +48,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -63,6 +66,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -86,6 +90,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -112,6 +117,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -119,15 +125,19 @@ export class PermissionService implements PermissionInterface {
   async delete(id: number): Promise<PermissionDto> {
     try {
       const permission: any = await this.findOne(id);
-      await this.permissionRepository.remove(permission);
+      // delete permission from permission table
+      await this.permissionRepository.remove(permission['data']);
+      // delete role_permission relationships associated with this permission
+      await this.rolePermissionService.delete('permission_id', id);
       return this.responseHandlerService.successResponse(
-        permission,
+        permission['data'],
         'permission deleted',
       );
     } catch (error) {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
