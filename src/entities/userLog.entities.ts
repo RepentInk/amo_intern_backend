@@ -18,6 +18,9 @@ export class UserLog {
   @Column()
   activity: string;
 
+  @Column()
+  model: string;
+
   @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
@@ -30,4 +33,5 @@ export class UserLog {
   @ManyToOne(() => Users, (users) => users.userLog)
   @JoinColumn({ name: 'user_id' })
   user: Users;
+  user_id: number;
 }
