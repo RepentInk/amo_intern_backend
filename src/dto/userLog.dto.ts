@@ -9,6 +9,10 @@ export class UserLogDto {
   @IsNotEmpty()
   activity: string;
 
+  @IsString()
+  @IsNotEmpty()
+  model: string;
+
   @IsDate()
   created_at: Date;
   updated_at?: Date;

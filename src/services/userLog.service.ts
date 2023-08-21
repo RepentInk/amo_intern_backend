@@ -5,6 +5,8 @@ import { UserLog } from 'src/entities/userLog.entities';
 import { UserLogInterface } from 'src/interfaces/userLog.interface';
 import { Repository } from 'typeorm';
 import { ResponseHandlerService } from './responseHandler.service';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
+const successMessage = 'Successful';
 
 @Injectable()
 export class UserLogService implements UserLogInterface {
@@ -12,11 +14,13 @@ export class UserLogService implements UserLogInterface {
     @InjectRepository(UserLog) private userLogRepository: Repository<UserLog>,
     private readonly responseHandlerService: ResponseHandlerService,
   ) {}
+  update(userLogDto: UserLogDto, id: number): Promise<UserLogDto> {
+    throw new Error('Method not implemented.');
+  }
 
   async findAll(): Promise<UserLogDto[]> {
     try {
       const userLogs: any = await this.userLogRepository.find();
-      const successMessage = 'Successful';
       return this.responseHandlerService.successResponse(
         successMessage,
         userLogs,
@@ -54,35 +58,15 @@ export class UserLogService implements UserLogInterface {
 
   async create(userLogDto: UserLogDto): Promise<UserLogDto> {
     try {
-      const userLog: any = this.userLogRepository.create(userLogDto);
-      const createdUserLog = await this.userLogRepository.save(userLog);
-      const successMessage = 'User log created successfully';
-      return this.responseHandlerService.successResponse(
-        successMessage,
-        createdUserLog,
-      );
-    } catch (error) {
-      throw this.responseHandlerService.errorResponse(
-        error.message,
-        error.status,
-        error,
-      );
-    }
-  }
+      const userLog = new UserLog();
+      userLog.user_id = userLogDto.user_id;
+      userLog.activity = userLogDto.activity;
+      userLog.model = userLogDto.model;
+      userLog.created_at = new Date();
 
-  async update(userLogDto: UserLogDto, id: number): Promise<UserLogDto> {
-    try {
-      const userLog: any = await this.userLogRepository.findOne({
-        where: { id },
-      });
-      if (!userLog) {
-        throw new NotFoundException('UserLog not found');
-      }
-      const newUserLog = this.userLogRepository.merge(userLog, userLogDto);
-      const updateUserLog = await this.userLogRepository.save(newUserLog);
-      const successMessage = 'Usr log updated successfully';
+      const createdUserlog = await this.userLogRepository.save(userLog);
       return this.responseHandlerService.successResponse(
-        updateUserLog,
+        createdUserlog,
         successMessage,
       );
     } catch (error) {
