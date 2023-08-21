@@ -7,11 +7,9 @@ import { Repository } from 'typeorm';
 import { ResponseHandlerService } from './responseHandler.service';
 import { CustomerService } from './customer.service';
 import { CustomerDto } from 'src/dto/customer.dto';
-import { OrderItemService } from './orderItems.service';
 import { Items } from 'src/entities/items.entity';
 import { Customer } from 'src/entities/customer.entity';
 import { OrderItems } from 'src/entities/orderItems.entity';
-import { CustomerOrdersDto } from 'src/dto/customerOrders.dto';
 
 @Injectable()
 export class OrderService implements OrderInterface {
@@ -114,6 +112,7 @@ export class OrderService implements OrderInterface {
       }
       const newOrder = this.orderRepository.merge(order, orderDto);
       const updatedOrder: any =  await this.orderRepository.save(newOrder);
+
       return this.responseHandlerService.successResponse(updatedOrder, 'Order updated successfully');
       
     } catch (error) {
