@@ -5,10 +5,12 @@ import { Categories } from 'src/entities/category.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ResponseHandlerService } from './responseHandler.service';
+import { UserLogDto } from 'src/dto/userLog.dto';
 const successMessage = 'Successful';
 
 @Injectable()
 export class CategoryService implements CategoryInterface {
+  userLogService: any;
   constructor(
     @InjectRepository(Categories)
     private categoryRepository: Repository<Categories>,
@@ -59,6 +61,13 @@ export class CategoryService implements CategoryInterface {
     try {
       const category: any = this.categoryRepository.create(categoryDto);
       const createdCategory = await this.categoryRepository.save(category);
+      const userLogDto: UserLogDto = {
+        user_id: 8,
+        activity: 'create',
+        model: 'customer',
+        created_at: new Date(),
+      };
+      await this.userLogService.create(userLogDto);
       return this.responseHandlerService.successResponse(
         successMessage,
         createdCategory,
