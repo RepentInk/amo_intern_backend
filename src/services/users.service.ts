@@ -22,7 +22,8 @@ export class UsersService implements UserInterface {
       const errorMessage = 'Error getting users';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        error.status,
+        error
       );
     }
   }
@@ -39,7 +40,8 @@ export class UsersService implements UserInterface {
       const errorMessage = 'Error getting user';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        error.status,
+        error
       );
     }
   }
@@ -57,7 +59,8 @@ export class UsersService implements UserInterface {
       const errorMessage = 'Error creating user';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        error.status,
+        error
       );
     }
   }
@@ -79,7 +82,8 @@ export class UsersService implements UserInterface {
       const errorMessage = 'Error updating user';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        error.status,
+        error
       );
     }
   }
@@ -90,7 +94,7 @@ export class UsersService implements UserInterface {
       if(!user){
         throw new NotFoundException('User not found')
       }
-      const deletedUser = await this.userRepository.remove(user);
+      const deletedUser = await this.userRepository.softRemove(user);
       const successMessage = 'User deleted successfully';
       return this.responseHandlerService.successResponse(
         deletedUser,
@@ -100,7 +104,8 @@ export class UsersService implements UserInterface {
       const errorMessage = 'Error deleting user';
       throw this.responseHandlerService.errorResponse(
         errorMessage,
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        error.status,
+        error
       );
     }
   }

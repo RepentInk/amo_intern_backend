@@ -50,6 +50,7 @@ export class CategoryService implements CategoryInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -66,6 +67,7 @@ export class CategoryService implements CategoryInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -92,6 +94,7 @@ export class CategoryService implements CategoryInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -116,6 +119,7 @@ export class CategoryService implements CategoryInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }

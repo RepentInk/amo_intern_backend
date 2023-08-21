@@ -20,7 +20,7 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Successful';
       return this.responseHandlerService.successResponse(successMessage, orderItems)
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status)
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error)
     }
   }
 
@@ -36,7 +36,7 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Error getting order item'
       return this.responseHandlerService.successResponse(orderItem, successMessage);
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error);
     }
   }
 
@@ -47,7 +47,7 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Order item created successfully';
       return this.responseHandlerService.successResponse(createdOrderItem, successMessage);
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error);
     }
   }
 
@@ -68,7 +68,7 @@ export class OrderItemService implements OrderItemsInterface {
       const successMessage = 'Order item updated successfully';
       return this.responseHandlerService.successResponse(updatedOrder, successMessage)
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status)
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error)
     }
   }
 
@@ -77,11 +77,11 @@ export class OrderItemService implements OrderItemsInterface {
       const orderItem = await this.orderItemsRepository.findOne({
         where: { id },
       });
-      const deletedOrderItem = await this.orderItemsRepository.remove(orderItem);
+      const deletedOrderItem = await this.orderItemsRepository.softRemove(orderItem);
       const successMessage = 'Order item deleted successfully';
       return this.responseHandlerService.successResponse(deletedOrderItem, successMessage);
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error);
     }
   }
 }

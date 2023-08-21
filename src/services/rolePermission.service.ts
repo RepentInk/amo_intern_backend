@@ -30,6 +30,7 @@ export class RolePermissionService implements RolePermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -62,6 +63,7 @@ export class RolePermissionService implements RolePermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -89,6 +91,7 @@ export class RolePermissionService implements RolePermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -164,6 +167,7 @@ export class RolePermissionService implements RolePermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }

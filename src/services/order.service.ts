@@ -11,6 +11,7 @@ import { OrderItemService } from './orderItems.service';
 import { Items } from 'src/entities/items.entity';
 import { Customer } from 'src/entities/customer.entity';
 import { OrderItems } from 'src/entities/orderItems.entity';
+import { CustomerOrdersDto } from 'src/dto/customerOrders.dto';
 
 @Injectable()
 export class OrderService implements OrderInterface {
@@ -28,7 +29,7 @@ export class OrderService implements OrderInterface {
       const successMessage = 'Successful';
       return this.responseHandlerService.successResponse(successMessage, order)
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status)
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error)
     }
   }
 
@@ -41,7 +42,7 @@ export class OrderService implements OrderInterface {
       const successMessage = 'Successful';
       return this.responseHandlerService.successResponse(successMessage, order);
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status)
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error)
     }
   }
 
@@ -100,7 +101,7 @@ export class OrderService implements OrderInterface {
       return this.responseHandlerService.successResponse(createOrder, "Order created successfully");
 
     } catch (error) {
-       throw this.responseHandlerService.errorResponse(error.message, error.status)
+       throw this.responseHandlerService.errorResponse(error.message, error.status, error)
     }
   }
 
@@ -112,10 +113,11 @@ export class OrderService implements OrderInterface {
         throw new NotFoundException('Order not found');
       }
       const newOrder = this.orderRepository.merge(order, orderDto);
-      const updatedOrder = this.orderRepository.save(newOrder);
+      const updatedOrder: any =  await this.orderRepository.save(newOrder);
       return this.responseHandlerService.successResponse(updatedOrder, 'Order updated successfully');
+      
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error);
     }
   }
 
@@ -125,11 +127,11 @@ export class OrderService implements OrderInterface {
       if (!order) {
         throw new NotFoundException('Order not found');
       }
-      const deletedOrder = await this.orderRepository.remove(order);
+      const deletedOrder = await this.orderRepository.softRemove(order);
       const successMessage = 'Order deleted successfully';
       return this.responseHandlerService.successResponse(deletedOrder, successMessage);
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status)
+      throw this.responseHandlerService.errorResponse(error.message, error.status, error)
     }
   }
 

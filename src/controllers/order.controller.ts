@@ -10,6 +10,7 @@ import {
 import { OrderDto } from 'src/dto/order.dto';
 import { BasicController } from 'src/interfaces/controller.interface';
 import { OrderService } from 'src/services/order.service';
+import { CustomerOrdersDto } from 'src/dto/customerOrders.dto';
 import {
   ApiTags,
   ApiOkResponse,

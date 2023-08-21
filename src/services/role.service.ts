@@ -56,6 +56,7 @@ export class RoleService implements RoleInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -69,6 +70,7 @@ export class RoleService implements RoleInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -106,6 +108,7 @@ export class RoleService implements RoleInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -176,6 +179,7 @@ export class RoleService implements RoleInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }

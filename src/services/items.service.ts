@@ -23,6 +23,7 @@ export class ItemsService implements ItemsInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -42,6 +43,7 @@ export class ItemsService implements ItemsInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -74,6 +76,7 @@ export class ItemsService implements ItemsInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -94,6 +97,7 @@ export class ItemsService implements ItemsInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }

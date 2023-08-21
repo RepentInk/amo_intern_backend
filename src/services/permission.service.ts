@@ -28,6 +28,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -46,6 +47,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -63,6 +65,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -86,6 +89,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -112,6 +116,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
@@ -128,6 +133,7 @@ export class PermissionService implements PermissionInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error
       );
     }
   }
