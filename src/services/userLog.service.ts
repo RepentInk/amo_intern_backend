@@ -17,9 +17,16 @@ export class UserLogService implements UserLogInterface {
     try {
       const userLogs: any = await this.userLogRepository.find();
       const successMessage = 'Successful';
-      return this.responseHandlerService.successResponse(successMessage, userLogs);
+      return this.responseHandlerService.successResponse(
+        successMessage,
+        userLogs,
+      );
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+        error,
+      );
     }
   }
 
@@ -32,9 +39,16 @@ export class UserLogService implements UserLogInterface {
         throw new NotFoundException('UserLog not found');
       }
       const successMessage = 'Successful';
-      return this.responseHandlerService.successResponse(successMessage, userLog);
+      return this.responseHandlerService.successResponse(
+        successMessage,
+        userLog,
+      );
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+        error,
+      );
     }
   }
 
@@ -43,9 +57,16 @@ export class UserLogService implements UserLogInterface {
       const userLog: any = this.userLogRepository.create(userLogDto);
       const createdUserLog = await this.userLogRepository.save(userLog);
       const successMessage = 'User log created successfully';
-      return this.responseHandlerService.successResponse(successMessage, createdUserLog);
+      return this.responseHandlerService.successResponse(
+        successMessage,
+        createdUserLog,
+      );
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+        error,
+      );
     }
   }
 
@@ -60,9 +81,16 @@ export class UserLogService implements UserLogInterface {
       const newUserLog = this.userLogRepository.merge(userLog, userLogDto);
       const updateUserLog = await this.userLogRepository.save(newUserLog);
       const successMessage = 'Usr log updated successfully';
-      return this.responseHandlerService.successResponse(updateUserLog, successMessage)
+      return this.responseHandlerService.successResponse(
+        updateUserLog,
+        successMessage,
+      );
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error.message, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error.message,
+        error.status,
+        error,
+      );
     }
   }
 
@@ -76,9 +104,16 @@ export class UserLogService implements UserLogInterface {
       }
       const deletedUserLog = await this.userLogRepository.remove(userLog);
       const successMessage = 'User log deleted successfully';
-      return this.responseHandlerService.successResponse(deletedUserLog, successMessage);
+      return this.responseHandlerService.successResponse(
+        deletedUserLog,
+        successMessage,
+      );
     } catch (error) {
-      throw this.responseHandlerService.errorResponse(error, error.status);
+      throw this.responseHandlerService.errorResponse(
+        error,
+        error.status,
+        error.message,
+      );
     }
   }
 }

@@ -28,6 +28,7 @@ export class CustomerService implements CustomerInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -52,6 +53,7 @@ export class CustomerService implements CustomerInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -68,6 +70,7 @@ export class CustomerService implements CustomerInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -93,6 +96,7 @@ export class CustomerService implements CustomerInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
@@ -116,6 +120,7 @@ export class CustomerService implements CustomerInterface {
       throw this.responseHandlerService.errorResponse(
         error.message,
         error.status,
+        error,
       );
     }
   }
