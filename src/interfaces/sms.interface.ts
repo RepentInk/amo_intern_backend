@@ -1,3 +1,4 @@
 export interface SmsInterface {
-  sendSms(customer_number: string, message: any): Promise<any>;
+  twilioSms(phoneNumber: string, message: any): Promise<any>;
+  mnotifySms(phoneNumber: string[], message: any): Promise<any>;
 }

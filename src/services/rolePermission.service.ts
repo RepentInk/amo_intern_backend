@@ -1,14 +1,12 @@
 import {
   Injectable,
   NotFoundException,
-  ConflictException,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RolePermissionDto } from 'src/dto/rolePermission.dto';
 import { RolePermission } from 'src/entities/rolePermission.entity';
-import { PermissionService } from './permission.service';
 import { RolePermissionInterface } from 'src/interfaces/rolePermission.interface';
 import { Repository } from 'typeorm';
 import { ResponseHandlerService } from './responseHandler.service';
@@ -17,7 +15,6 @@ export class RolePermissionService implements RolePermissionInterface {
   constructor(
     @InjectRepository(RolePermission)
     private rolePermissionRepository: Repository<RolePermissionDto>,
-    private readonly permissionService: PermissionService,
     private readonly responseHandlerService: ResponseHandlerService,
   ) {}
 
@@ -80,7 +77,6 @@ export class RolePermissionService implements RolePermissionInterface {
           permission_id: permission,
         });
         data = await this.rolePermissionRepository.save(rolePermission);
-        console.log(permission);
       });
       return this.responseHandlerService.successResponse(
         data,
@@ -105,38 +101,11 @@ export class RolePermissionService implements RolePermissionInterface {
       if (!rolePermission) {
         throw new NotFoundException('Role not found');
       }
-
-      // get id for existion permissions and new permissions
-    //   const updatedPermissionIds = rolePermissionDto.permissions.map((permission) => ({
-    //     id: permission.id,
-    //   }));
-
-    //   const existingPermissionIds = role.permissions.map((permission) => ({
-    //     id: permission.id,
-    //   }));
-      // find permissions to add
-      // filter to return newly added permisions if any
-    //   const permissionIds = updatedPermissionIds.filter(
-    //     (permission) => !existingPermissionIds.includes(permission),
-    //   );
-
-    //   if (permissionIds.length <= 0) {
-        // update with new properties
-    //     await this.rolePermissionRepository.merge(role, rolePermissionDto);
-    //     return await this.rolePermissionRepository.save(role);
-    //   }
-
-    //   const permissions = await this.permissionService.findList(permissionIds);
-
       // update with new properties
       const data = this.rolePermissionRepository.merge(
         rolePermission,
         rolePermissionDto,
       );
-
-      // Replace permissions and save
-    //   role.permissions = permissions;
-    //   const data = await this.rolePermissionRepository.save(rolePermission);
       return this.responseHandlerService.successResponse(
         data,
         'rolePermission created',
@@ -149,19 +118,30 @@ export class RolePermissionService implements RolePermissionInterface {
 
   async delete(target: string, id: number): Promise<void> {
     try {
-      const role = await this.findOne(id);
-      if (!role) {
-        throw new NotFoundException('Role not found');
+      if (target === 'role_id') {
+        const role = await this.findOne(id);
+        if (!role) {
+          throw new NotFoundException('Role not found');
+        }
       }
-    //   delete all entrie on the corresponding target
-    const data = await this.rolePermissionRepository
+      if (target === 'permission_id') {
+        const allRoles = await this.findRolePermissions();
+        const permission = await allRoles.find((role) =>
+          role.permissions.includes(id),
+        );
+        if (!permission) {
+          throw new NotFoundException('Permission not found');
+        }
+      }
+      //   delete all entries on the corresponding target
+      const data = await this.rolePermissionRepository
         .createQueryBuilder()
         .delete()
         .where(`${target} = :id`, { id })
         .execute();
-        return this.responseHandlerService.successResponse(
+      return this.responseHandlerService.successResponse(
         data,
-        'rolePermission deleted'
+        'rolePermission deleted',
       );
     } catch (error) {
       throw this.responseHandlerService.errorResponse(
