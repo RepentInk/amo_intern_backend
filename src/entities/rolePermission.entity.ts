@@ -17,9 +17,9 @@ export class RolePermission {
   @Column()
   permission_id: number;
 
-  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn({ onUpdate: 'CURRENT_TIMESTAMP', nullable: true })
+  @UpdateDateColumn()
   updated_at: Date;
 }

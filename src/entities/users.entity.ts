@@ -43,13 +43,10 @@ export class Users {
   @JoinColumn({ name: 'role_id' })
   role: Role;
 
-  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn({
-    default: () => 'CURRENT_TIMESTAMP',
-    onUpdate: 'CURRENT_TIMESTAMP',
-  })
+  @UpdateDateColumn()
   updated_at: Date;
 
   @DeleteDateColumn({ nullable: true })

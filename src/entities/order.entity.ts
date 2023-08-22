@@ -55,16 +55,16 @@ export class Order {
   @JoinColumn({ name: 'customer_id' })
   customer: Customer | CustomerDto;
 
-  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @UpdateDateColumn({
+  @Column({
     default: () => 'CURRENT_TIMESTAMP',
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updated_at: Date;
 
-  @DeleteDateColumn({ nullable: true })
+  @Column({ nullable: true })
   deleted_at: Date;
 
 }

@@ -21,10 +21,10 @@ export class UserLog {
   @Column()
   model: string;
 
-  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn({ onUpdate: 'CURRENT_TIMESTAMP', nullable: true })
+  @UpdateDateColumn({ nullable: true })
   updated_at: Date;
 
   @DeleteDateColumn({ nullable: true })

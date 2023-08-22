@@ -24,12 +24,12 @@ export class OrderItems {
   @Column()
   price: number;
 
-  @CreateDateColumn({ default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
-  @UpdateDateColumn({ onUpdate: 'CURRENT_TIMESTAMP', nullable: true })
+  @Column({ onUpdate: 'CURRENT_TIMESTAMP', nullable: true })
   updated_at: Date;
 
-  @DeleteDateColumn({ nullable: true })
+  @Column({ nullable: true })
   deleted_at: Date;
 }

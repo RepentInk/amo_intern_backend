@@ -2,8 +2,8 @@ import { ConfigModule } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 import entities from './entities';
 //specify import so tables are created before inserting dummy data
-import { Dbmigration1692118040282 } from '../migrations/1692118040282-dbmigration';
-import { DummyData1692118040283 } from '../migrations/1692118040283-dummyData';
+import { Dbmigration1692676799105 } from '../migrations/1692676799105-dbmigration';
+import { DummyData1692676799106 } from '../migrations/1692676799106-dummyData';
 
 ConfigModule.forRoot();
 export default new DataSource({
@@ -15,5 +15,5 @@ export default new DataSource({
   database: process.env.DB_NAME,
   entities: entities,
   synchronize: false,
-  migrations: [Dbmigration1692118040282, DummyData1692118040283],
+  migrations: [Dbmigration1692676799105, DummyData1692676799106],
 });
