@@ -6,6 +6,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // Swagger setup
   setupSwagger(app);
-  await app.listen(3001);
+  await app.listen(8001);
 }
 bootstrap();
